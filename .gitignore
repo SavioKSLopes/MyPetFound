@@ -1,0 +1,31 @@
+# Variáveis de ambiente e segredos
+.env
+.env.*
+!.env.example
+
+# Python / Django
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+.venv/
+venv/
+env/
+staticfiles/
+media/
+
+# Node / React
+node_modules/
+dist/
+coverage/
+.vite/
+
+# IDE e sistema operacional
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
