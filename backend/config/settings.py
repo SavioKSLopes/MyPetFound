@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework",
 
     "apps.animais",
+    "apps.ocorrencias",
 ]
 
 MIDDLEWARE = [
