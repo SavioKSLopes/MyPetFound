@@ -45,6 +45,8 @@ class AnimalSerializer(serializers.ModelSerializer):
         )
         read_only_fields = (
             "id",
+            "tutor",
+            "tutor_nome",
             "criado_em",
             "atualizado_em",
         )
