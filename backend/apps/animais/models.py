@@ -1,7 +1,13 @@
 from django.db import models
-
+from django.conf import settings
 
 class Animal(models.Model):
+    tutor = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="animais",
+        verbose_name="Tutor",
+    )
     class Especie(models.TextChoices):
         CACHORRO = "CACHORRO", "Cachorro"
         GATO = "GATO", "Gato"

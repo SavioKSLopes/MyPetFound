@@ -19,6 +19,11 @@ class AnimalSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    tutor_nome = serializers.CharField(
+        source="tutor.username",
+        read_only=True,
+    )
+
     class Meta:
         model = Animal
         fields = (
@@ -35,6 +40,8 @@ class AnimalSerializer(serializers.ModelSerializer):
             "status_nome",
             "criado_em",
             "atualizado_em",
+            "tutor",
+            "tutor_nome",
         )
         read_only_fields = (
             "id",
