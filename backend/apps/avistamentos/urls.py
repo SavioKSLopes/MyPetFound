@@ -1,6 +1,8 @@
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from .views import AvistamentoViewSet
+from .views import AvistamentoViewSet, RegistrarAvistamentoPublicoView
+
 
 router = DefaultRouter()
 
@@ -10,4 +12,13 @@ router.register(
     basename="avistamento",
 )
 
-urlpatterns = router.urls
+
+urlpatterns = [
+    path(
+        "publico/avistamentos/",
+        RegistrarAvistamentoPublicoView.as_view(),
+        name="registrar-avistamento-publico",
+    ),
+]
+
+urlpatterns += router.urls
