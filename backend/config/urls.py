@@ -9,6 +9,7 @@ urlpatterns = [
     path("api/v1/", include("apps.animais.urls")),
     path("api/v1/", include("apps.ocorrencias.urls")),
     path("api/v1/", include("apps.avistamentos.urls")),
+    path("api/v1/", include("apps.usuarios.urls")),
 ]
 
 if settings.DEBUG:

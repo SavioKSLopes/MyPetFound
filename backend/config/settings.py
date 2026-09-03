@@ -43,12 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     "corsheaders",
     "rest_framework",
+    "rest_framework.authtoken",
 
     "apps.animais",
     "apps.ocorrencias",
     "apps.avistamentos",
+    "apps.usuarios",
 ]
 
 MIDDLEWARE = [
@@ -143,6 +146,9 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
@@ -150,3 +156,4 @@ REST_FRAMEWORK = {
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
