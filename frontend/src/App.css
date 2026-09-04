@@ -461,3 +461,10 @@ a:focus-visible {
     align-items: flex-start;
   }
 }
+
+.botao-detalhes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

@@ -32,3 +32,16 @@ class AnimaisPerdidosPublicosView(generics.ListAPIView):
             .distinct()
             .order_by("-ocorrencias__data_hora")
         )
+
+class AnimalPerdidoPublicoDetalheView(generics.RetrieveAPIView):
+    serializer_class = AnimalPublicoSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        return (
+            Animal.objects.filter(
+                ocorrencias__tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
+                ocorrencias__status=Ocorrencia.Status.ATIVA,
+            )
+            .distinct()
+        )

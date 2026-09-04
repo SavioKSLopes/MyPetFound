@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { Link, Route, Routes } from "react-router-dom";
 
+import DetalhesAnimal from "./pages/DetalhesAnimal";
 import { api } from "./services/api";
 import "./App.css";
 
 
-function App() {
+function Home() {
   const [animais, setAnimais] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -13,8 +15,11 @@ function App() {
     async function carregarAnimaisPerdidos() {
       try {
         const response = await api.get("/publico/animais-perdidos/");
+
         setAnimais(response.data);
       } catch (error) {
+        console.error("Erro ao carregar animais perdidos:", error);
+
         setErro(
           "Não foi possível carregar os animais perdidos. " +
           "Verifique se o backend está em execução.",
@@ -30,17 +35,19 @@ function App() {
   return (
     <div className="pagina">
       <header className="cabecalho">
-        <a className="logo" href="/">
+        <Link className="logo" to="/">
           <span aria-hidden="true">🐾</span>
           MyPetFound
-        </a>
+        </Link>
 
         <nav className="navegacao" aria-label="Navegação principal">
           <a href="#animais-perdidos">Buscar pets</a>
           <a href="#como-funciona">Como funciona</a>
+
           <button className="botao botao-secundario">
             Entrar
           </button>
+
           <button className="botao botao-urgencia">
             Meu pet desapareceu
           </button>
@@ -49,7 +56,9 @@ function App() {
 
       <main>
         <section className="hero">
-          <p className="tag">Uma rede de ajuda para Guanambi-BA</p>
+          <p className="tag">
+            Uma rede de ajuda para Guanambi-BA
+          </p>
 
           <h1>
             Perdeu seu pet?
@@ -133,8 +142,15 @@ function App() {
             <div className="grid-animais">
               {animais.map((animal) => (
                 <article className="card-animal" key={animal.id}>
-                  <div className="foto-placeholder" aria-hidden="true">
-                    🐾
+                  <div className="foto-placeholder">
+                    {animal.foto ? (
+                      <img
+                        src={animal.foto}
+                        alt={`Foto de ${animal.nome}`}
+                      />
+                    ) : (
+                      <span aria-hidden="true">🐾</span>
+                    )}
                   </div>
 
                   <div className="conteudo-card">
@@ -154,9 +170,12 @@ function App() {
                       {animal.raca ? ` · ${animal.raca}` : ""}
                     </p>
 
-                    <button className="botao-detalhes">
+                    <Link
+                      className="botao-detalhes"
+                      to={`/animais/${animal.id}`}
+                    >
                       Ver detalhes
-                    </button>
+                    </Link>
                   </div>
                 </article>
               ))}
@@ -172,7 +191,9 @@ function App() {
           <div className="passos">
             <article className="passo">
               <span aria-hidden="true">1</span>
+
               <h3>Cadastre seu pet</h3>
+
               <p>
                 Salve as características importantes do seu animal.
               </p>
@@ -180,7 +201,9 @@ function App() {
 
             <article className="passo">
               <span aria-hidden="true">2</span>
+
               <h3>Anuncie rapidamente</h3>
+
               <p>
                 Se ele desaparecer, informe o último local onde foi visto.
               </p>
@@ -188,7 +211,9 @@ function App() {
 
             <article className="passo">
               <span aria-hidden="true">3</span>
+
               <h3>Receba avistamentos</h3>
+
               <p>
                 A comunidade pode informar onde viu um animal parecido.
               </p>
@@ -226,5 +251,20 @@ function App() {
     </div>
   );
 }
+
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+
+      <Route
+        path="/animais/:id"
+        element={<DetalhesAnimal />}
+      />
+    </Routes>
+  );
+}
+
 
 export default App;
