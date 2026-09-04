@@ -1,0 +1,463 @@
+:root {
+  font-family: Inter, system-ui, sans-serif;
+  color: #1a1a1a;
+  background: #faf7f2;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #faf7f2;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.pagina {
+  min-height: 100vh;
+}
+
+.cabecalho {
+  min-height: 72px;
+  padding: 0 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: #ffffff;
+  border-bottom: 1px solid #e4e0da;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1565c0;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.navegacao {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #5f6368;
+  font-weight: 600;
+}
+
+.navegacao a:hover,
+.link-botao:hover {
+  color: #1565c0;
+}
+
+.botao {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: 700;
+}
+
+.botao-secundario {
+  color: #1565c0;
+  background: #ffffff;
+  border-color: #1565c0;
+}
+
+.botao-urgencia {
+  color: #ffffff;
+  background: #e65100;
+}
+
+.botao-urgencia:hover {
+  background: #bf4300;
+}
+
+.hero {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 96px 24px 72px;
+  text-align: center;
+}
+
+.tag {
+  margin: 0 0 12px;
+  color: #1565c0;
+  font-size: 0.875rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.hero h1,
+.secao h2,
+.seguranca h2 {
+  margin: 0;
+  color: #1a1a1a;
+  font-weight: 800;
+}
+
+.hero h1 {
+  font-size: clamp(2.25rem, 5vw, 4rem);
+  line-height: 1.12;
+}
+
+.hero-texto {
+  max-width: 680px;
+  margin: 24px auto 0;
+  color: #5f6368;
+  font-size: 1.125rem;
+  line-height: 1.6;
+}
+
+.hero-acoes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+  max-width: 720px;
+  margin: 44px auto 0;
+}
+
+.card-acao {
+  min-height: 190px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-acao:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 30px rgb(0 0 0 / 10%);
+}
+
+.card-acao strong {
+  margin-top: 12px;
+  font-size: 1.25rem;
+}
+
+.card-acao span:last-child {
+  margin-top: 8px;
+  line-height: 1.45;
+}
+
+.icone-acao {
+  font-size: 2rem;
+}
+
+.card-perdido {
+  color: #ffffff;
+  background: #1565c0;
+  border: 2px solid #1565c0;
+}
+
+.card-encontrado {
+  color: #1a1a1a;
+  background: #ffffff;
+  border: 2px solid #c9d7ea;
+}
+
+.secao {
+  padding: 72px 7%;
+}
+
+.animais-perdidos {
+  background: #f0ede9;
+}
+
+.secao-cabecalho {
+  max-width: 1280px;
+  margin: 0 auto 32px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.secao h2,
+.seguranca h2 {
+  font-size: clamp(1.7rem, 3vw, 2.25rem);
+}
+
+.link-botao {
+  min-height: 44px;
+  color: #1565c0;
+  background: transparent;
+  border: 0;
+  font-weight: 800;
+}
+
+.grid-animais {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.card-animal {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e4e0da;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 5%);
+}
+
+.foto-placeholder {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  font-size: 4rem;
+  background: #dce8f6;
+}
+
+.conteudo-card {
+  padding: 18px;
+}
+
+.status {
+  width: fit-content;
+  padding: 5px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.status-perdido {
+  color: #ffffff;
+  background: #e65100;
+}
+
+.card-animal h3 {
+  margin: 16px 0 6px;
+  font-size: 1.25rem;
+}
+
+.card-animal p {
+  margin: 0;
+  color: #5f6368;
+  line-height: 1.5;
+}
+
+.texto-secundario {
+  margin-top: 4px !important;
+  font-size: 0.875rem;
+}
+
+.botao-detalhes {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 20px;
+  color: #1565c0;
+  background: #ffffff;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  font-weight: 800;
+}
+
+.botao-detalhes:hover {
+  color: #ffffff;
+  background: #1565c0;
+}
+
+.mensagem,
+.estado-vazio {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 32px;
+  text-align: center;
+  color: #5f6368;
+  background: #ffffff;
+  border-radius: 16px;
+}
+
+.mensagem-erro {
+  color: #c62828;
+  border: 1px solid #c62828;
+}
+
+.estado-vazio span {
+  font-size: 2rem;
+}
+
+.estado-vazio h3 {
+  margin: 12px 0 8px;
+  color: #1a1a1a;
+}
+
+.como-funciona {
+  max-width: 1280px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.passos {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.passo {
+  padding: 28px;
+  background: #ffffff;
+  border: 1px solid #e4e0da;
+  border-radius: 16px;
+}
+
+.passo > span {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  background: #1565c0;
+  border-radius: 50%;
+  font-weight: 800;
+}
+
+.passo h3 {
+  margin: 16px 0 8px;
+}
+
+.passo p {
+  margin: 0;
+  color: #5f6368;
+  line-height: 1.55;
+}
+
+.seguranca {
+  max-width: 1080px;
+  margin: 0 auto 72px;
+  padding: 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #1a1a1a;
+  background: #fff3e0;
+  border-radius: 16px;
+}
+
+.seguranca-icone {
+  font-size: 2rem;
+}
+
+.seguranca p {
+  margin: 8px 0 0;
+  color: #5f6368;
+  line-height: 1.5;
+}
+
+.rodape {
+  padding: 32px 7%;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  color: #5f6368;
+  background: #ffffff;
+  border-top: 1px solid #e4e0da;
+}
+
+.rodape p {
+  margin: 0;
+}
+
+.rodape nav {
+  display: flex;
+  gap: 18px;
+}
+
+.rodape a:hover {
+  color: #1565c0;
+  text-decoration: underline;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid #1565c0;
+  outline-offset: 3px;
+}
+
+@media (max-width: 900px) {
+  .cabecalho {
+    padding: 16px 20px;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .navegacao {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .grid-animais {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    padding: 64px 20px 48px;
+  }
+
+  .navegacao a {
+    display: none;
+  }
+
+  .botao {
+    flex: 1;
+  }
+
+  .hero-acoes,
+  .grid-animais,
+  .passos {
+    grid-template-columns: 1fr;
+  }
+
+  .secao,
+  .como-funciona {
+    padding: 48px 20px;
+  }
+
+  .secao-cabecalho,
+  .rodape {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .seguranca {
+    margin: 0 20px 48px;
+    align-items: flex-start;
+  }
+}
