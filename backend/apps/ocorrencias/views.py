@@ -12,14 +12,17 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return (
-            Ocorrencia.objects
-            .select_related("animal")
-            .filter(
-                animal__tutor=self.request.user,
-            )
-            .all()
-        )
+        queryset = Ocorrencia.objects.filter(
+            animal__tutor=self.request.user,
+        ).order_by("-data_hora")
+
+        animal_id = self.request.query_params.get("animal")
+
+        if animal_id:
+            queryset = queryset.filter(animal_id=animal_id)
+
+        return queryset
+
 
     def perform_create(self, serializer):
         ocorrencia = serializer.save()
@@ -28,6 +31,34 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
             Animal.objects.filter(pk=ocorrencia.animal_id).update(
                 status=Animal.Status.PERDIDO,
             )
+
+    def perform_create(self, serializer):
+        animal = serializer.validated_data["animal"]
+        tipo = serializer.validated_data.get(
+            "tipo",
+            Ocorrencia.Tipo.DESAPARECIMENTO,
+        )
+
+        if tipo == Ocorrencia.Tipo.DESAPARECIMENTO:
+            ja_existe_ocorrencia_ativa = Ocorrencia.objects.filter(
+                animal=animal,
+                tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
+                status=Ocorrencia.Status.ATIVA,
+            ).exists()
+
+            if ja_existe_ocorrencia_ativa:
+                from rest_framework.exceptions import ValidationError
+
+                raise ValidationError(
+                    {
+                        "animal": (
+                            "Este animal já possui uma ocorrência de "
+                            "desaparecimento ativa."
+                        ),
+                    },
+                )
+
+        serializer.save()
 
     @decorators.action(
         detail=True,
