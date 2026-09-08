@@ -475,3 +475,10 @@ a:focus-visible {
   justify-content: center;
   text-decoration: none;
 }
+
+.link-botao {
+  display: inline-flex;
+  align-items: center;
+  color: #1565c0;
+  text-decoration: none;
+}

@@ -1,3 +1,4 @@
+from django.db.models import Exists, OuterRef
 from rest_framework import generics, permissions, viewsets
 
 from apps.ocorrencias.models import Ocorrencia
@@ -24,13 +25,20 @@ class AnimaisPerdidosPublicosView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
+        ocorrencia_ativa = Ocorrencia.objects.filter(
+            animal=OuterRef("pk"),
+            tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
+            status=Ocorrencia.Status.ATIVA,
+        )
+
         return (
-            Animal.objects.filter(
-                ocorrencias__tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
-                ocorrencias__status=Ocorrencia.Status.ATIVA,
+            Animal.objects.annotate(
+                possui_desaparecimento_ativo=Exists(ocorrencia_ativa),
             )
-            .distinct()
-            .order_by("-ocorrencias__data_hora")
+            .filter(
+                possui_desaparecimento_ativo=True,
+            )
+            .order_by("-id")
         )
 
 class AnimalPerdidoPublicoDetalheView(generics.RetrieveAPIView):
@@ -38,10 +46,17 @@ class AnimalPerdidoPublicoDetalheView(generics.RetrieveAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
+        ocorrencia_ativa = Ocorrencia.objects.filter(
+            animal=OuterRef("pk"),
+            tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
+            status=Ocorrencia.Status.ATIVA,
+        )
+
         return (
-            Animal.objects.filter(
-                ocorrencias__tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
-                ocorrencias__status=Ocorrencia.Status.ATIVA,
+            Animal.objects.annotate(
+                possui_desaparecimento_ativo=Exists(ocorrencia_ativa),
             )
-            .distinct()
+            .filter(
+                possui_desaparecimento_ativo=True,
+            )
         )

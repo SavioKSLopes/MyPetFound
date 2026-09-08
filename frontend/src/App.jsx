@@ -11,6 +11,7 @@ import RotaProtegida from "./components/RotaProtegida";
 import CadastroAnimal from "./pages/CadastroAnimal";
 import GerenciarAnimal from "./pages/GerenciarAnimal";
 import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento";
+import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos";
 
 function Home() {
   const [animais, setAnimais] = useState([]);
@@ -117,9 +118,9 @@ function Home() {
               <h2>Animais perdidos em Guanambi</h2>
             </div>
 
-            <button className="link-botao">
+            <Link className="link-botao" to="/mapa">
               Ver todos no mapa →
-            </button>
+            </Link>
           </div>
 
           {carregando && (
@@ -291,6 +292,10 @@ function App() {
         <Route
           path="/meus-animais/:id/desaparecimento"
           element={<RegistrarDesaparecimento />}
+        />
+        <Route
+          path="/mapa"
+          element={<MapaAnimaisPerdidos />}
         />
       </Route>
 

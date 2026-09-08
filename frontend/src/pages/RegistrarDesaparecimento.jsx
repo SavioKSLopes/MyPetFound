@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 import { api } from "../services/api";
 import "./RegistrarDesaparecimento.css";
+import SeletorLocalizacao from "../components/SeletorLocalizacao";
 
 
 function RegistrarDesaparecimento() {
@@ -18,8 +19,7 @@ function RegistrarDesaparecimento() {
 
   const [dataHora, setDataHora] = useState(dataLocal);
   const [localidade, setLocalidade] = useState("");
-  const [latitude, setLatitude] = useState("");
-  const [longitude, setLongitude] = useState("");
+  const [localizacaoMapa, setLocalizacaoMapa] = useState(null);
   const [descricao, setDescricao] = useState("");
 
   const [enviando, setEnviando] = useState(false);
@@ -39,12 +39,9 @@ function RegistrarDesaparecimento() {
       descricao,
     };
 
-    if (latitude) {
-      dados.latitude = latitude;
-    }
-
-    if (longitude) {
-      dados.longitude = longitude;
+    if (localizacaoMapa) {
+      dados.latitude = localizacaoMapa.latitude.toFixed(6);
+      dados.longitude = localizacaoMapa.longitude.toFixed(6);
     }
 
     try {
@@ -199,52 +196,10 @@ function RegistrarDesaparecimento() {
               />
             </div>
 
-            <details className="coordenadas-opcionais">
-              <summary>
-                Adicionar localização exata no mapa
-              </summary>
-
-              <p>
-                Opcional. Use apenas se você tiver as coordenadas do último
-                local onde o pet foi visto.
-              </p>
-
-              <div className="grid-coordenadas">
-                <div className="campo-desaparecimento">
-                  <label htmlFor="latitude">
-                    Latitude
-                  </label>
-
-                  <input
-                    id="latitude"
-                    type="number"
-                    value={latitude}
-                    onChange={(event) => setLatitude(event.target.value)}
-                    placeholder="-14.2231"
-                    step="0.000001"
-                    min="-90"
-                    max="90"
-                  />
-                </div>
-
-                <div className="campo-desaparecimento">
-                  <label htmlFor="longitude">
-                    Longitude
-                  </label>
-
-                  <input
-                    id="longitude"
-                    type="number"
-                    value={longitude}
-                    onChange={(event) => setLongitude(event.target.value)}
-                    placeholder="-42.7798"
-                    step="0.000001"
-                    min="-180"
-                    max="180"
-                  />
-                </div>
-              </div>
-            </details>
+            <SeletorLocalizacao
+              valor={localizacaoMapa}
+              aoSelecionar={setLocalizacaoMapa}
+            />
 
             {erro && (
               <p className="erro-desaparecimento" role="alert">
