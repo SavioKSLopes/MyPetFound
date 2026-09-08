@@ -1,0 +1,378 @@
+.pagina-cadastro-animal {
+  min-height: 100vh;
+  padding: 30px 7% 60px;
+  color: #1e293b;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(21 101 192 / 10%),
+      transparent 30%
+    ),
+    #f8fafc;
+}
+
+.cabecalho-cadastro-animal,
+.conteudo-cadastro-animal {
+  max-width: 1180px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.cabecalho-cadastro-animal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-cadastro-animal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1565c0;
+  font-size: 1.2rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.voltar-painel {
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.voltar-painel:hover {
+  text-decoration: underline;
+}
+
+.conteudo-cadastro-animal {
+  margin-top: 58px;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(480px, 1.2fr);
+  gap: 50px;
+  align-items: start;
+}
+
+.tag-cadastro-animal {
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  color: #0755a5;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.introducao-cadastro-animal h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.introducao-cadastro-animal > p {
+  margin: 14px 0 0;
+  color: #64748b;
+  line-height: 1.65;
+}
+
+.aviso-cadastro-animal {
+  margin-top: 28px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #475569;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+}
+
+.aviso-cadastro-animal span {
+  font-size: 1.1rem;
+}
+
+.aviso-cadastro-animal p {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.card-cadastro-animal {
+  padding: 28px;
+  background: #ffffff;
+  border: 2px solid #1565c0;
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 5px rgb(21 101 192 / 6%),
+    0 18px 45px rgb(15 23 42 / 8%);
+}
+
+.cabecalho-formulario-animal {
+  margin-bottom: 24px;
+}
+
+.cabecalho-formulario-animal h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.cabecalho-formulario-animal p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.84rem;
+}
+
+.campo-foto-animal > label,
+.campo-cadastro-animal label {
+  margin-bottom: 7px;
+  display: block;
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 780;
+}
+
+.campo-foto-animal > label span {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+.area-upload-foto {
+  padding: 13px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #f8fafc;
+  border: 1px dashed #93c5fd;
+  border-radius: 12px;
+}
+
+.preview-foto-animal {
+  width: 70px;
+  height: 70px;
+  flex: 0 0 70px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #1565c0;
+  background: #dbeafe;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  font-size: 1.9rem;
+}
+
+.preview-foto-animal img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.conteudo-upload-foto {
+  min-width: 0;
+}
+
+.conteudo-upload-foto input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
+
+.botao-escolher-foto {
+  min-height: 34px;
+  padding: 0 11px;
+  display: inline-flex;
+  align-items: center;
+  color: #1565c0;
+  background: #ffffff;
+  border: 1px solid #1565c0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 800;
+  transition: 160ms ease;
+}
+
+.botao-escolher-foto:hover {
+  color: #ffffff;
+  background: #1565c0;
+}
+
+.conteudo-upload-foto p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.76rem;
+  line-height: 1.4;
+}
+
+.grid-campos-animal {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.campo-cadastro-animal.campo-largo {
+  grid-column: 1 / -1;
+}
+
+.campo-cadastro-animal input,
+.campo-cadastro-animal select,
+.campo-cadastro-animal textarea {
+  box-sizing: border-box;
+  width: 100%;
+  color: #1e293b;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.9rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.campo-cadastro-animal input,
+.campo-cadastro-animal select {
+  height: 43px;
+  padding: 0 12px;
+}
+
+.campo-cadastro-animal textarea {
+  min-height: 112px;
+  padding: 11px 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.campo-cadastro-animal input::placeholder,
+.campo-cadastro-animal textarea::placeholder {
+  color: #94a3b8;
+}
+
+.campo-cadastro-animal input:focus,
+.campo-cadastro-animal select:focus,
+.campo-cadastro-animal textarea:focus {
+  outline: none;
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgb(21 101 192 / 14%);
+}
+
+.erro-cadastro-animal {
+  margin: 20px 0 0;
+  padding: 11px 12px;
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.acoes-cadastro-animal {
+  margin-top: 26px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.botao-cancelar-cadastro,
+.botao-salvar-animal {
+  min-height: 42px;
+  padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-cancelar-cadastro {
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.botao-cancelar-cadastro:hover {
+  color: #1e293b;
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.botao-salvar-animal {
+  color: #ffffff;
+  background: #1565c0;
+  border: 1px solid #1565c0;
+  box-shadow: 0 3px 8px rgb(21 101 192 / 18%);
+}
+
+.botao-salvar-animal:hover:not(:disabled) {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+  box-shadow: 0 5px 12px rgb(13 79 155 / 24%);
+  transform: translateY(-1px);
+}
+
+.botao-salvar-animal:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 900px) {
+  .conteudo-cadastro-animal {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 620px) {
+  .pagina-cadastro-animal {
+    padding: 20px 18px 40px;
+  }
+
+  .cabecalho-cadastro-animal {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .conteudo-cadastro-animal {
+    margin-top: 42px;
+  }
+
+  .card-cadastro-animal {
+    padding: 22px 18px;
+  }
+
+  .grid-campos-animal {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-cadastro-animal.campo-largo {
+    grid-column: auto;
+  }
+
+  .acoes-cadastro-animal {
+    flex-direction: column-reverse;
+  }
+
+  .botao-cancelar-cadastro,
+  .botao-salvar-animal {
+    width: 100%;
+  }
+}

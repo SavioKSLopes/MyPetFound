@@ -5,6 +5,10 @@ import DetalhesAnimal from "./pages/DetalhesAnimal";
 import { api } from "./services/api";
 import "./App.css";
 
+import Login from "./pages/Login";
+import MeusAnimais from "./pages/MeusAnimais";
+import RotaProtegida from "./components/RotaProtegida";
+import CadastroAnimal from "./pages/CadastroAnimal";
 
 function Home() {
   const [animais, setAnimais] = useState([]);
@@ -44,9 +48,12 @@ function Home() {
           <a href="#animais-perdidos">Buscar pets</a>
           <a href="#como-funciona">Como funciona</a>
 
-          <button className="botao botao-secundario">
-            Entrar
-          </button>
+        <Link
+          className="botao botao-secundario"
+          to="/entrar"
+        >
+          Entrar
+        </Link>
 
           <button className="botao botao-urgencia">
             Meu pet desapareceu
@@ -262,9 +269,22 @@ function App() {
         path="/animais/:id"
         element={<DetalhesAnimal />}
       />
+
+      <Route path="/entrar" element={<Login />} />
+
+      <Route element={<RotaProtegida />}>
+        <Route
+          path="/meus-animais"
+          element={<MeusAnimais />}
+        />
+
+        <Route
+          path="/meus-animais/novo"
+          element={<CadastroAnimal />}
+        />
+      </Route>
     </Routes>
   );
 }
-
 
 export default App;

@@ -468,3 +468,10 @@ a:focus-visible {
   justify-content: center;
   text-decoration: none;
 }
+
+.botao-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}

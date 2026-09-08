@@ -1,0 +1,353 @@
+.pagina-meus-animais {
+  min-height: 100vh;
+  padding: 30px 7% 56px;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+.cabecalho-painel,
+.intro-painel,
+.grid-meus-animais,
+.estado-painel {
+  max-width: 1180px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.cabecalho-painel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-painel {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1565c0;
+  font-size: 1.2rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.acoes-cabecalho-painel {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.link-pagina-publica {
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.link-pagina-publica:hover {
+  text-decoration: underline;
+}
+
+.botao-sair {
+  min-height: 40px;
+  padding: 0 14px;
+  color: #1565c0;
+  background: #ffffff;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  transition: 160ms ease;
+}
+
+.botao-sair:hover {
+  color: #ffffff;
+  background: #1565c0;
+}
+
+.intro-painel {
+  margin-top: 54px;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 28px;
+}
+
+.tag-painel {
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  color: #0755a5;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.intro-painel h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.intro-painel p:last-child {
+  max-width: 640px;
+  margin: 12px 0 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.botao-cadastrar-animal,
+.botao-cadastrar-vazio,
+.botao-gerenciar-animal,
+.botao-tentar-novamente {
+  font: inherit;
+  font-weight: 800;
+}
+
+.botao-cadastrar-animal {
+  min-height: 44px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  background: #1565c0;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+
+.botao-cadastrar-animal span {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.grid-meus-animais {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.card-meu-animal {
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 5px 16px rgb(15 23 42 / 6%);
+}
+
+.foto-meu-animal {
+  height: 210px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #1565c0;
+  background: #dce8f6;
+  font-size: 3.4rem;
+}
+
+.foto-meu-animal img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.conteudo-meu-animal {
+  padding: 18px;
+}
+
+.cabecalho-card-animal {
+  min-height: 25px;
+}
+
+.status-painel {
+  width: fit-content;
+  padding: 4px 8px;
+  display: inline-flex;
+  color: #475569;
+  background: #f1f5f9;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.status-painel.status-perdido,
+.status-painel.status-desaparecido {
+  color: #9a3412;
+  background: #fff7ed;
+}
+
+.status-painel.status-encontrado,
+.status-painel.status-reencontrado {
+  color: #166534;
+  background: #f0fdf4;
+}
+
+.conteudo-meu-animal h2 {
+  margin: 12px 0 3px;
+  color: #0f172a;
+  font-size: 1.3rem;
+}
+
+.tipo-meu-animal,
+.detalhes-meu-animal {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.detalhes-meu-animal {
+  margin-top: 6px;
+}
+
+.botao-gerenciar-animal {
+  width: 100%;
+  min-height: 40px;
+  margin-top: 18px;
+  color: #1565c0;
+  background: #ffffff;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+
+.estado-painel {
+  min-height: 300px;
+  margin-top: 34px;
+  padding: 34px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+}
+
+.estado-painel > span {
+  margin-bottom: 12px;
+  font-size: 2.5rem;
+}
+
+.estado-painel h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.estado-painel p {
+  max-width: 540px;
+  margin: 10px 0 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.estado-erro {
+  border-color: #fecdca;
+}
+
+.botao-tentar-novamente,
+.botao-cadastrar-vazio {
+  min-height: 42px;
+  margin-top: 20px;
+  padding: 0 15px;
+  color: #ffffff;
+  background: #1565c0;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.botao-cadastrar-vazio {
+  opacity: 0.68;
+  cursor: not-allowed;
+}
+
+.carregador {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 14px;
+  border: 3px solid #dbeafe;
+  border-top-color: #1565c0;
+  border-radius: 50%;
+  animation: girar 700ms linear infinite;
+}
+
+@keyframes girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid-meus-animais {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .pagina-meus-animais {
+    padding: 20px 18px 40px;
+  }
+
+  .acoes-cabecalho-painel {
+    gap: 10px;
+  }
+
+  .link-pagina-publica {
+    display: none;
+  }
+
+  .intro-painel {
+    margin-top: 40px;
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .botao-cadastrar-animal {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .grid-meus-animais {
+    grid-template-columns: 1fr;
+  }
+}
+
+.botao-cadastrar-animal,
+.botao-cadastrar-vazio {
+  text-decoration: none;
+}
+
+.botao-cadastrar-animal {
+  opacity: 1;
+  cursor: pointer;
+  transition: 160ms ease;
+}
+
+.botao-cadastrar-animal:hover {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+  transform: translateY(-1px);
+}
+
+.botao-cadastrar-vazio {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.botao-cadastrar-vazio:hover {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+}
