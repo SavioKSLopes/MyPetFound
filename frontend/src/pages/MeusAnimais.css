@@ -351,3 +351,18 @@
   background: #0d4f9b;
   border-color: #0d4f9b;
 }
+
+.botao-gerenciar-animal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-gerenciar-animal:hover {
+  color: #ffffff;
+  background: #1565c0;
+}

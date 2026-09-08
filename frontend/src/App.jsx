@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import MeusAnimais from "./pages/MeusAnimais";
 import RotaProtegida from "./components/RotaProtegida";
 import CadastroAnimal from "./pages/CadastroAnimal";
+import GerenciarAnimal from "./pages/GerenciarAnimal";
 
 function Home() {
   const [animais, setAnimais] = useState([]);
@@ -282,7 +283,12 @@ function App() {
           path="/meus-animais/novo"
           element={<CadastroAnimal />}
         />
+        <Route
+          path="/meus-animais/:id"
+          element={<GerenciarAnimal />}
+        />
       </Route>
+
     </Routes>
   );
 }

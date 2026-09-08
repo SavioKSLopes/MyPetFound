@@ -181,14 +181,12 @@ function MeusAnimais() {
                   {animal.cor ? ` · ${animal.cor}` : ""}
                 </p>
 
-                <button
+                <Link
                   className="botao-gerenciar-animal"
-                  type="button"
-                  disabled
-                  title="A página de gerenciamento será implementada em breve."
+                  to={`/meus-animais/${animal.id}`}
                 >
                   Gerenciar animal
-                </button>
+                </Link>
               </div>
             </article>
           ))}
