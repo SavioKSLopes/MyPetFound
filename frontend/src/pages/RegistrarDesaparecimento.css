@@ -1,0 +1,330 @@
+.pagina-registrar-desaparecimento {
+  min-height: 100vh;
+  padding: 30px 7% 60px;
+  color: #1e293b;
+  background:
+    radial-gradient(
+      circle at top right,
+      rgb(230 81 0 / 12%),
+      transparent 30%
+    ),
+    #f8fafc;
+}
+
+.cabecalho-registrar-desaparecimento,
+.conteudo-registrar-desaparecimento {
+  max-width: 1180px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.cabecalho-registrar-desaparecimento {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-registrar-desaparecimento {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1565c0;
+  font-size: 1.2rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.voltar-gerenciamento {
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.voltar-gerenciamento:hover {
+  text-decoration: underline;
+}
+
+.conteudo-registrar-desaparecimento {
+  margin-top: 58px;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(480px, 1.2fr);
+  gap: 50px;
+  align-items: start;
+}
+
+.tag-desaparecimento,
+.tag-formulario-desaparecimento {
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  color: #9a3412;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.aviso-desaparecimento h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.aviso-desaparecimento > p {
+  margin: 14px 0 0;
+  color: #64748b;
+  line-height: 1.65;
+}
+
+.dica-desaparecimento,
+.privacidade-desaparecimento {
+  margin-top: 24px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 12px;
+}
+
+.dica-desaparecimento {
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+}
+
+.privacidade-desaparecimento {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.dica-desaparecimento span,
+.privacidade-desaparecimento span {
+  font-size: 1.1rem;
+}
+
+.dica-desaparecimento p,
+.privacidade-desaparecimento p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.card-formulario-desaparecimento {
+  padding: 28px;
+  background: #ffffff;
+  border: 2px solid #e65100;
+  border-radius: 18px;
+  box-shadow:
+    0 0 0 5px rgb(230 81 0 / 6%),
+    0 18px 45px rgb(15 23 42 / 8%);
+}
+
+.card-formulario-desaparecimento header {
+  margin-bottom: 24px;
+}
+
+.card-formulario-desaparecimento h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.card-formulario-desaparecimento header > p:last-child {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.84rem;
+}
+
+.campo-desaparecimento {
+  margin-top: 17px;
+}
+
+.campo-desaparecimento:first-child {
+  margin-top: 0;
+}
+
+.campo-desaparecimento label {
+  margin-bottom: 7px;
+  display: block;
+  color: #334155;
+  font-size: 0.85rem;
+  font-weight: 780;
+}
+
+.campo-desaparecimento input,
+.campo-desaparecimento textarea {
+  box-sizing: border-box;
+  width: 100%;
+  color: #1e293b;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.9rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.campo-desaparecimento input {
+  height: 43px;
+  padding: 0 12px;
+}
+
+.campo-desaparecimento textarea {
+  min-height: 126px;
+  padding: 11px 12px;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.campo-desaparecimento input::placeholder,
+.campo-desaparecimento textarea::placeholder {
+  color: #94a3b8;
+}
+
+.campo-desaparecimento input:focus,
+.campo-desaparecimento textarea:focus {
+  outline: none;
+  border-color: #e65100;
+  box-shadow: 0 0 0 3px rgb(230 81 0 / 14%);
+}
+
+.coordenadas-opcionais {
+  margin-top: 20px;
+  padding: 14px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}
+
+.coordenadas-opcionais summary {
+  color: #1565c0;
+  cursor: pointer;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.coordenadas-opcionais > p {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.grid-coordenadas {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.erro-desaparecimento {
+  margin: 20px 0 0;
+  padding: 11px 12px;
+  color: #b42318;
+  background: #fef3f2;
+  border: 1px solid #fecdca;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+.acoes-desaparecimento {
+  margin-top: 26px;
+  padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.botao-cancelar-desaparecimento,
+.botao-publicar-desaparecimento {
+  min-height: 42px;
+  padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-cancelar-desaparecimento {
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.botao-cancelar-desaparecimento:hover {
+  color: #1e293b;
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.botao-publicar-desaparecimento {
+  color: #ffffff;
+  background: #e65100;
+  border: 1px solid #e65100;
+  box-shadow: 0 3px 8px rgb(230 81 0 / 18%);
+}
+
+.botao-publicar-desaparecimento:hover:not(:disabled) {
+  background: #c24100;
+  border-color: #c24100;
+  box-shadow: 0 5px 12px rgb(194 65 0 / 24%);
+  transform: translateY(-1px);
+}
+
+.botao-publicar-desaparecimento:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+@media (max-width: 900px) {
+  .conteudo-registrar-desaparecimento {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 620px) {
+  .pagina-registrar-desaparecimento {
+    padding: 20px 18px 40px;
+  }
+
+  .cabecalho-registrar-desaparecimento {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .conteudo-registrar-desaparecimento {
+    margin-top: 42px;
+  }
+
+  .card-formulario-desaparecimento {
+    padding: 22px 18px;
+  }
+
+  .grid-coordenadas {
+    grid-template-columns: 1fr;
+  }
+
+  .acoes-desaparecimento {
+    flex-direction: column-reverse;
+  }
+
+  .botao-cancelar-desaparecimento,
+  .botao-publicar-desaparecimento {
+    width: 100%;
+  }
+}

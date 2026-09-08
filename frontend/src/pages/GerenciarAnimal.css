@@ -461,3 +461,19 @@
     width: 100%;
   }
 }
+
+.botao-registrar-desaparecimento {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 1;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-registrar-desaparecimento:hover {
+  background: #c24100;
+  border-color: #c24100;
+  transform: translateY(-1px);
+}

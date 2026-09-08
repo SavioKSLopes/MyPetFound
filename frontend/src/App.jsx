@@ -10,6 +10,7 @@ import MeusAnimais from "./pages/MeusAnimais";
 import RotaProtegida from "./components/RotaProtegida";
 import CadastroAnimal from "./pages/CadastroAnimal";
 import GerenciarAnimal from "./pages/GerenciarAnimal";
+import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento";
 
 function Home() {
   const [animais, setAnimais] = useState([]);
@@ -286,6 +287,10 @@ function App() {
         <Route
           path="/meus-animais/:id"
           element={<GerenciarAnimal />}
+        />
+        <Route
+          path="/meus-animais/:id/desaparecimento"
+          element={<RegistrarDesaparecimento />}
         />
       </Route>
 

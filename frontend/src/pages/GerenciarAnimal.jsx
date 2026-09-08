@@ -267,14 +267,12 @@ function GerenciarAnimal() {
             </p>
           </div>
 
-          <button
+          <Link
             className="botao-registrar-desaparecimento"
-            type="button"
-            disabled
-            title="O formulário de desaparecimento será implementado na próxima etapa."
+            to={`/meus-animais/${animal.id}/desaparecimento`}
           >
             Registrar desaparecimento
-          </button>
+          </Link>
         </article>
       </section>
 
