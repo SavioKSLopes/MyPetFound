@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
+import ReportarAvistamento from "./ReportarAvistamento";
 import { api } from "../services/api";
 import "./DetalhesAnimal.css";
 
@@ -11,6 +12,7 @@ function DetalhesAnimal() {
   const [animal, setAnimal] = useState(null);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const [formularioAberto, setFormularioAberto] = useState(false);
 
   useEffect(() => {
     async function carregarAnimal() {
@@ -44,12 +46,16 @@ function DetalhesAnimal() {
     );
   }
 
-  if (erro) {
+  if (erro || !animal) {
     return (
       <main className="pagina-detalhes">
         <section className="erro-detalhes">
           <h1>Não foi possível abrir o anúncio</h1>
-          <p>{erro}</p>
+
+          <p>
+            {erro ||
+              "Não foi possível encontrar este animal ou o anúncio não está mais ativo."}
+          </p>
 
           <Link className="botao-voltar" to="/">
             Voltar para a página inicial
@@ -74,6 +80,7 @@ function DetalhesAnimal() {
 
       <section className="banner-perdido">
         <span aria-hidden="true">⚠️</span>
+
         <p>
           Este pet está desaparecido. Viu ele? Qualquer informação ajuda.
         </p>
@@ -109,7 +116,7 @@ function DetalhesAnimal() {
             <dl>
               <div>
                 <dt>Espécie</dt>
-                <dd>{animal.especie_nome}</dd>
+                <dd>{animal.especie_nome || "Não informada"}</dd>
               </div>
 
               <div>
@@ -119,12 +126,12 @@ function DetalhesAnimal() {
 
               <div>
                 <dt>Porte</dt>
-                <dd>{animal.porte_nome}</dd>
+                <dd>{animal.porte_nome || "Não informado"}</dd>
               </div>
 
               <div>
                 <dt>Cor</dt>
-                <dd>{animal.cor}</dd>
+                <dd>{animal.cor || "Não informada"}</dd>
               </div>
             </dl>
           </section>
@@ -132,6 +139,7 @@ function DetalhesAnimal() {
           {animal.descricao && (
             <section className="card-detalhes">
               <h2>Informações adicionais</h2>
+
               <p>{animal.descricao}</p>
             </section>
           )}
@@ -144,7 +152,11 @@ function DetalhesAnimal() {
               este pet a voltar para casa.
             </p>
 
-            <button className="botao-avistamento">
+            <button
+              className="botao-avistamento"
+              type="button"
+              onClick={() => setFormularioAberto(true)}
+            >
               Reportar avistamento
             </button>
           </section>
@@ -155,6 +167,13 @@ function DetalhesAnimal() {
           </p>
         </div>
       </section>
+
+      {formularioAberto && (
+        <ReportarAvistamento
+          animal={animal}
+          aoFechar={() => setFormularioAberto(false)}
+        />
+      )}
     </main>
   );
 }

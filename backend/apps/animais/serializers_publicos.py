@@ -2,6 +2,8 @@ from rest_framework import serializers
 
 from .models import Animal
 
+from apps.ocorrencias.models import Ocorrencia
+
 
 class AnimalPublicoSerializer(serializers.ModelSerializer):
     especie_nome = serializers.CharField(
@@ -19,6 +21,20 @@ class AnimalPublicoSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    ocorrencia_id = serializers.SerializerMethodField()
+
+    def get_ocorrencia_id(self, animal):
+        ocorrencia = (
+            animal.ocorrencias.filter(
+                tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
+                status=Ocorrencia.Status.ATIVA,
+            )
+            .order_by("-criado_em")
+            .first()
+        )
+
+        return ocorrencia.id if ocorrencia else None
+
     class Meta:
         model = Animal
         fields = (
@@ -33,4 +49,5 @@ class AnimalPublicoSerializer(serializers.ModelSerializer):
             "descricao",
             "status",
             "status_nome",
+            "ocorrencia_id",
         )
