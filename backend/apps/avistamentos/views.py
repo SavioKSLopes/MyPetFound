@@ -6,21 +6,26 @@ from apps.ocorrencias.models import Ocorrencia
 from .models import Avistamento
 from .serializers import AvistamentoSerializer
 
+from rest_framework import serializers
 
 class AvistamentoViewSet(viewsets.ModelViewSet):
     serializer_class = AvistamentoSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return (
+        queryset = (
             Avistamento.objects
             .select_related("ocorrencia", "ocorrencia__animal")
-            .filter(
-                ocorrencia__animal__tutor=self.request.user,
-            )
-            .all()
+            .filter(ocorrencia__animal__tutor=self.request.user)
+            .order_by("-data_hora")
         )
 
+        animal_id = self.request.query_params.get("animal")
+
+        if animal_id:
+            queryset = queryset.filter(ocorrencia__animal_id=animal_id)
+
+        return queryset
 
 class RegistrarAvistamentoPublicoView(generics.CreateAPIView):
     serializer_class = AvistamentoSerializer
@@ -28,21 +33,37 @@ class RegistrarAvistamentoPublicoView(generics.CreateAPIView):
     parser_classes = [MultiPartParser, FormParser]
 
     def perform_create(self, serializer):
-        ocorrencia = serializer.validated_data["ocorrencia"]
+        animal_id = self.request.data.get("animal")
 
-        if (
-            ocorrencia.tipo != Ocorrencia.Tipo.DESAPARECIMENTO
-            or ocorrencia.status != Ocorrencia.Status.ATIVA
-        ):
-            from rest_framework.exceptions import ValidationError
-
-            raise ValidationError(
+        if not animal_id:
+            raise serializers.ValidationError(
                 {
-                    "ocorrencia": (
-                        "Você só pode registrar um avistamento "
-                        "para uma ocorrência de desaparecimento ativa."
+                    "animal": (
+                        "Informe o animal relacionado ao avistamento."
                     )
                 }
             )
 
+        ocorrencia = (
+            Ocorrencia.objects
+            .filter(
+                animal_id=animal_id,
+                tipo=Ocorrencia.Tipo.DESAPARECIMENTO,
+                status=Ocorrencia.Status.ATIVA,
+            )
+            .order_by("-data_hora")
+            .first()
+        )
+
+        if not ocorrencia:
+            raise serializers.ValidationError(
+                {
+                    "animal": (
+                        "Este animal não possui uma ocorrência de "
+                        "desaparecimento ativa."
+                    )
+                }
+            )
+
+        serializer.save(ocorrencia=ocorrencia)
         serializer.save()

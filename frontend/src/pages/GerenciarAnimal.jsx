@@ -4,7 +4,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { api } from "../services/api";
 import "./GerenciarAnimal.css";
 
-
 function GerenciarAnimal() {
   const { id } = useParams();
   const navegar = useNavigate();
@@ -13,14 +12,59 @@ function GerenciarAnimal() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
-  useEffect(() => {
-    async function carregarAnimal() {
-      try {
-        const response = await api.get(`/animais/${id}/`);
+  const [avistamentos, setAvistamentos] = useState([]);
+  const [carregandoAvistamentos, setCarregandoAvistamentos] =
+    useState(true);
+  const [erroAvistamentos, setErroAvistamentos] = useState("");
 
-        setAnimal(response.data);
+  const [ocorrencias, setOcorrencias] = useState([]);
+  const [marcandoReencontrado, setMarcandoReencontrado] =
+    useState(false);
+  const [mensagemSucesso, setMensagemSucesso] = useState("");
+  const [erroOcorrencia, setErroOcorrencia] = useState("");
+
+  useEffect(() => {
+    async function carregarDados() {
+      try {
+        setCarregando(true);
+        setCarregandoAvistamentos(true);
+        setErro("");
+        setErroAvistamentos("");
+        setErroOcorrencia("");
+
+        const [
+          respostaAnimal,
+          respostaAvistamentos,
+          respostaOcorrencias,
+        ] = await Promise.all([
+          api.get(`/animais/${id}/`),
+          api.get(`/avistamentos/?animal=${id}`),
+          api.get(`/ocorrencias/?animal=${id}`),
+        ]);
+
+        setAnimal(respostaAnimal.data);
+
+        const dadosAvistamentos = Array.isArray(
+          respostaAvistamentos.data,
+        )
+          ? respostaAvistamentos.data
+          : respostaAvistamentos.data.results || [];
+
+        setAvistamentos(dadosAvistamentos);
+
+        const dadosOcorrencias = Array.isArray(
+          respostaOcorrencias.data,
+        )
+          ? respostaOcorrencias.data
+          : respostaOcorrencias.data.results || [];
+
+        setOcorrencias(dadosOcorrencias);
       } catch (error) {
-        console.error("Erro ao carregar animal:", error);
+        console.error("Erro ao carregar dados do animal:", error);
+        console.error(
+          "Detalhes do erro:",
+          error.response?.data,
+        );
 
         if (error.response?.status === 401) {
           localStorage.removeItem("mypetfound_token");
@@ -40,16 +84,23 @@ function GerenciarAnimal() {
           return;
         }
 
-        setErro(
-          "Não foi possível carregar os dados do animal. " +
-          "Verifique se o backend está em execução.",
-        );
+        if (error.config?.url?.includes("/avistamentos/")) {
+          setErroAvistamentos(
+            "Não foi possível carregar os avistamentos deste animal.",
+          );
+        } else {
+          setErro(
+            "Não foi possível carregar os dados do animal. " +
+              "Verifique se o backend está em execução.",
+          );
+        }
       } finally {
         setCarregando(false);
+        setCarregandoAvistamentos(false);
       }
     }
 
-    carregarAnimal();
+    carregarDados();
   }, [id, navegar]);
 
   function sair() {
@@ -58,6 +109,99 @@ function GerenciarAnimal() {
     navegar("/", {
       replace: true,
     });
+  }
+
+  function formatarData(dataHora) {
+    if (!dataHora) {
+      return "Data não informada";
+    }
+
+    return new Date(dataHora).toLocaleString("pt-BR", {
+      dateStyle: "short",
+      timeStyle: "short",
+    });
+  }
+
+  function abrirMapa(avistamento) {
+    const latitude = avistamento.latitude;
+    const longitude = avistamento.longitude;
+
+    if (latitude === null || longitude === null) {
+      return null;
+    }
+
+    if (latitude === undefined || longitude === undefined) {
+      return null;
+    }
+
+    return `https://www.google.com/maps?q=${latitude},${longitude}`;
+  }
+
+  const ocorrenciaAtiva = ocorrencias.find(
+    (ocorrencia) =>
+      ocorrencia.tipo === "DESAPARECIMENTO" &&
+      ocorrencia.status === "ATIVA",
+  );
+
+  async function marcarComoReencontrado() {
+    if (!ocorrenciaAtiva || !animal) {
+      setErroOcorrencia(
+        "Não foi encontrada uma ocorrência ativa para este animal.",
+      );
+      return;
+    }
+
+    const confirmou = window.confirm(
+      `Você confirma que ${animal.nome} foi reencontrado?\n\n` +
+        "O anúncio deixará de aparecer publicamente e será " +
+        "removido do mapa de animais perdidos.",
+    );
+
+    if (!confirmou) {
+      return;
+    }
+
+    try {
+      setMarcandoReencontrado(true);
+      setErroOcorrencia("");
+      setMensagemSucesso("");
+
+      const resposta = await api.post(
+        `/ocorrencias/${ocorrenciaAtiva.id}/marcar-reencontrado/`,
+      );
+
+      setOcorrencias((ocorrenciasAtuais) =>
+        ocorrenciasAtuais.map((ocorrencia) =>
+          ocorrencia.id === ocorrenciaAtiva.id
+            ? resposta.data.ocorrencia
+            : ocorrencia,
+        ),
+      );
+
+      setAnimal((animalAtual) => ({
+        ...animalAtual,
+        status: "REENCONTRADO",
+        status_nome: "Reencontrado",
+      }));
+
+      setMensagemSucesso(
+        resposta.data.mensagem ||
+          `${animal.nome} foi marcado como reencontrado.`,
+      );
+    } catch (error) {
+      console.error(
+        "Erro ao marcar animal como reencontrado:",
+        error,
+      );
+
+      setErroOcorrencia(
+        error.response?.data?.detail ||
+          error.response?.data?.mensagem ||
+          "Não foi possível encerrar a ocorrência. Tente novamente.",
+      );
+    } finally {
+      setMarcandoReencontrado(false);
+    }
   }
 
   if (carregando) {
@@ -82,7 +226,7 @@ function GerenciarAnimal() {
 
           <p>
             {erro ||
-              "Não foi possível carregar os dados deste animal."}
+              "Não foi possível carregar os dados do animal."}
           </p>
 
           <Link
@@ -253,27 +397,228 @@ function GerenciarAnimal() {
           </div>
         </div>
 
-        <article className="card-ocorrencia-vazia">
-          <div className="icone-ocorrencia-vazia" aria-hidden="true">
-            🔎
-          </div>
+        {ocorrenciaAtiva ? (
+          <article className="card-ocorrencia-ativa">
+            <div className="icone-ocorrencia-ativa" aria-hidden="true">
+              ⚠️
+            </div>
 
+            <div className="conteudo-ocorrencia-ativa">
+              <p className="tag-ocorrencia-ativa">
+                Anúncio público ativo
+              </p>
+
+              <h3>{animal.nome} está desaparecido</h3>
+
+              <p>
+                Último local informado:{" "}
+                <strong>
+                  {ocorrenciaAtiva.localidade || "Não informado"}
+                </strong>
+              </p>
+
+              <p>
+                Data do desaparecimento:{" "}
+                <strong>
+                  {formatarData(ocorrenciaAtiva.data_hora)}
+                </strong>
+              </p>
+
+              {ocorrenciaAtiva.descricao && (
+                <p className="descricao-ocorrencia-ativa">
+                  {ocorrenciaAtiva.descricao}
+                </p>
+              )}
+            </div>
+
+            <button
+              className="botao-marcar-reencontrado"
+              type="button"
+              onClick={marcarComoReencontrado}
+              disabled={marcandoReencontrado}
+            >
+              {marcandoReencontrado
+                ? "Encerrando..."
+                : "Marcar como reencontrado"}
+            </button>
+          </article>
+        ) : (
+          <article className="card-ocorrencia-vazia">
+            <div className="icone-ocorrencia-vazia" aria-hidden="true">
+              🔎
+            </div>
+
+            <div>
+              <h3>Nenhuma ocorrência ativa</h3>
+
+              <p>
+                {animal.nome} não possui um anúncio de desaparecimento ativo
+                no momento.
+              </p>
+            </div>
+
+            <Link
+              className="botao-registrar-desaparecimento"
+              to={`/meus-animais/${animal.id}/desaparecimento`}
+            >
+              Registrar desaparecimento
+            </Link>
+          </article>
+        )}
+
+        {mensagemSucesso && (
+          <p className="mensagem-sucesso-ocorrencia" role="status">
+            ✓ {mensagemSucesso}
+          </p>
+        )}
+
+        {erroOcorrencia && (
+          <p className="mensagem-erro-ocorrencia" role="alert">
+            ⚠️ {erroOcorrencia}
+          </p>
+        )}
+      </section>
+
+      <section className="secao-avistamentos">
+        <div className="cabecalho-secao-avistamentos">
           <div>
-            <h3>Nenhuma ocorrência ativa</h3>
+            <p className="tag-gerenciar">
+              Informações da comunidade
+            </p>
+
+            <h2>Avistamentos recebidos</h2>
 
             <p>
-              {animal.nome} não possui um anúncio de desaparecimento ativo no
-              momento.
+              Veja as informações enviadas por pessoas que podem ter visto
+              {` ${animal.nome}`}.
             </p>
           </div>
 
-          <Link
-            className="botao-registrar-desaparecimento"
-            to={`/meus-animais/${animal.id}/desaparecimento`}
-          >
-            Registrar desaparecimento
-          </Link>
-        </article>
+          {!carregandoAvistamentos && (
+            <span
+              className="contador-avistamentos"
+              title="Quantidade de avistamentos recebidos"
+            >
+              {avistamentos.length}
+            </span>
+          )}
+        </div>
+
+        {carregandoAvistamentos && (
+          <div className="estado-avistamentos">
+            <span
+              className="carregador-gerenciar"
+              aria-hidden="true"
+            />
+
+            <p>Carregando avistamentos...</p>
+          </div>
+        )}
+
+        {!carregandoAvistamentos && erroAvistamentos && (
+          <div className="estado-avistamentos estado-erro-avistamentos">
+            <span aria-hidden="true">⚠️</span>
+
+            <p>{erroAvistamentos}</p>
+          </div>
+        )}
+
+        {!carregandoAvistamentos &&
+          !erroAvistamentos &&
+          avistamentos.length === 0 && (
+            <div className="estado-avistamentos">
+              <span aria-hidden="true">👀</span>
+
+              <div>
+                <h3>Nenhum avistamento recebido</h3>
+
+                <p>
+                  Quando alguém informar que viu {animal.nome}, os dados
+                  aparecerão nesta área.
+                </p>
+              </div>
+            </div>
+          )}
+
+        {!carregandoAvistamentos &&
+          !erroAvistamentos &&
+          avistamentos.length > 0 && (
+            <div className="lista-avistamentos">
+              {avistamentos.map((avistamento) => {
+                const linkMapa = abrirMapa(avistamento);
+
+                return (
+                  <article
+                    className="card-avistamento"
+                    key={avistamento.id}
+                  >
+                    {avistamento.foto ? (
+                      <img
+                        className="foto-avistamento"
+                        src={avistamento.foto}
+                        alt="Foto enviada no avistamento"
+                      />
+                    ) : (
+                      <div
+                        className="foto-avistamento-sem-imagem"
+                        aria-hidden="true"
+                      >
+                        👀
+                      </div>
+                    )}
+
+                    <div className="conteudo-avistamento">
+                      <div className="topo-avistamento">
+                        <div>
+                          <p className="tag-avistamento">
+                            Avistamento
+                          </p>
+
+                          <h3>
+                            {avistamento.localidade ||
+                              "Local não informado"}
+                          </h3>
+                        </div>
+
+                        <time dateTime={avistamento.data_hora}>
+                          {formatarData(avistamento.data_hora)}
+                        </time>
+                      </div>
+
+                      {avistamento.descricao && (
+                        <p className="descricao-avistamento">
+                          {avistamento.descricao}
+                        </p>
+                      )}
+
+                      {(avistamento.nome_contato ||
+                        avistamento.telefone_contato) && (
+                        <div className="contato-avistamento">
+                          <strong>Contato:</strong>{" "}
+                          {avistamento.nome_contato ||
+                            "Não informado"}
+
+                          {avistamento.telefone_contato &&
+                            ` · ${avistamento.telefone_contato}`}
+                        </div>
+                      )}
+
+                      {linkMapa && (
+                        <a
+                          className="link-mapa-avistamento"
+                          href={linkMapa}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          Abrir localização no mapa →
+                        </a>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
       </section>
 
       <section className="aviso-privacidade-gerenciar">

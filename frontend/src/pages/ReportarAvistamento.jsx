@@ -3,7 +3,6 @@ import { useState } from "react";
 import { api } from "../services/api";
 import "./ReportarAvistamento.css";
 
-
 function ReportarAvistamento({ animal, aoFechar }) {
   const [localidade, setLocalidade] = useState("");
   const [dataHora, setDataHora] = useState("");
@@ -20,9 +19,9 @@ function ReportarAvistamento({ animal, aoFechar }) {
     event.preventDefault();
     setErro("");
 
-    if (!animal.ocorrencia_id) {
+    if (!animal?.id) {
       setErro(
-        "Não foi possível identificar a ocorrência ativa deste animal.",
+        "Não foi possível identificar o animal deste avistamento.",
       );
       return;
     }
@@ -31,7 +30,7 @@ function ReportarAvistamento({ animal, aoFechar }) {
 
     const dados = new FormData();
 
-    dados.append("ocorrencia", animal.ocorrencia_id);
+    dados.append("animal", String(animal.id));
     dados.append("localidade", localidade);
     dados.append("data_hora", dataHora);
     dados.append("descricao", descricao);
@@ -56,22 +55,34 @@ function ReportarAvistamento({ animal, aoFechar }) {
       setEnviado(true);
     } catch (error) {
       console.error("Erro ao enviar avistamento:", error);
+      console.error(
+        "Resposta da API:",
+        error.response?.data,
+      );
 
       const errosDaApi = error.response?.data;
 
-      if (errosDaApi) {
-        const primeiroCampo = Object.keys(errosDaApi)[0];
-        const mensagem = errosDaApi[primeiroCampo];
+      if (errosDaApi && typeof errosDaApi === "object") {
+        const mensagens = Object.entries(errosDaApi)
+          .flatMap(([campo, valor]) => {
+            const valores = Array.isArray(valor)
+              ? valor
+              : [valor];
+
+            return valores.map(
+              (mensagem) => `${campo}: ${mensagem}`,
+            );
+          })
+          .join(" ");
 
         setErro(
-          Array.isArray(mensagem)
-            ? mensagem[0]
-            : "Verifique os dados e tente novamente.",
+          mensagens ||
+            "Verifique os dados e tente novamente.",
         );
       } else {
         setErro(
           "Não foi possível enviar o avistamento. " +
-          "Tente novamente em alguns instantes.",
+            "Tente novamente em alguns instantes.",
         );
       }
     } finally {

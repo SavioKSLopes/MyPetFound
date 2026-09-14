@@ -28,4 +28,5 @@ class AvistamentoSerializer(serializers.ModelSerializer):
         read_only_fields = (
             "id",
             "criado_em",
+            "ocorrencia",
         )

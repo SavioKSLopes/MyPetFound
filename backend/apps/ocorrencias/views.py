@@ -1,5 +1,7 @@
 from django.db import transaction
+
 from rest_framework import decorators, permissions, response, status, viewsets
+from rest_framework.exceptions import ValidationError
 
 from apps.animais.models import Animal
 
@@ -23,17 +25,9 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
 
         return queryset
 
-
-    def perform_create(self, serializer):
-        ocorrencia = serializer.save()
-
-        if ocorrencia.tipo == Ocorrencia.Tipo.DESAPARECIMENTO:
-            Animal.objects.filter(pk=ocorrencia.animal_id).update(
-                status=Animal.Status.PERDIDO,
-            )
-
     def perform_create(self, serializer):
         animal = serializer.validated_data["animal"]
+
         tipo = serializer.validated_data.get(
             "tipo",
             Ocorrencia.Tipo.DESAPARECIMENTO,
@@ -47,8 +41,6 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
             ).exists()
 
             if ja_existe_ocorrencia_ativa:
-                from rest_framework.exceptions import ValidationError
-
                 raise ValidationError(
                     {
                         "animal": (
@@ -58,7 +50,13 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
                     },
                 )
 
-        serializer.save()
+        with transaction.atomic():
+            ocorrencia = serializer.save()
+
+            if ocorrencia.tipo == Ocorrencia.Tipo.DESAPARECIMENTO:
+                Animal.objects.filter(pk=ocorrencia.animal_id).update(
+                    status=Animal.Status.PERDIDO,
+                )
 
     @decorators.action(
         detail=True,

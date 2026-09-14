@@ -1,6 +1,6 @@
 .pagina-gerenciar-animal {
   min-height: 100vh;
-  padding: 30px 7% 60px;
+  padding: 30px max(18px, 7vw) 60px;
   color: #1e293b;
   background: #f8fafc;
 }
@@ -9,8 +9,10 @@
 .titulo-gerenciar,
 .grid-gerenciar-animal,
 .secao-ocorrencias-gerenciar,
+.secao-avistamentos,
 .aviso-privacidade-gerenciar,
 .estado-gerenciar {
+  width: 100%;
   max-width: 1180px;
   margin-right: auto;
   margin-left: auto;
@@ -70,15 +72,16 @@
 }
 
 .titulo-gerenciar {
-  margin-top: 52px;
   display: flex;
   align-items: end;
   justify-content: space-between;
   gap: 22px;
+  margin-top: 52px;
 }
 
 .tag-gerenciar {
   width: fit-content;
+  max-width: 100%;
   margin: 0 0 10px;
   padding: 5px 10px;
   color: #0755a5;
@@ -96,6 +99,7 @@
   color: #0f172a;
   font-size: clamp(2rem, 5vw, 2.8rem);
   line-height: 1.1;
+  overflow-wrap: anywhere;
 }
 
 .titulo-gerenciar p:last-child {
@@ -107,13 +111,16 @@
 
 .status-gerenciar {
   width: fit-content;
+  max-width: 100%;
   padding: 7px 11px;
   display: inline-flex;
+  flex-shrink: 0;
   color: #475569;
   background: #f1f5f9;
   border-radius: 999px;
   font-size: 0.78rem;
   font-weight: 850;
+  overflow-wrap: anywhere;
 }
 
 .status-gerenciar.status-perdido,
@@ -129,16 +136,18 @@
 }
 
 .grid-gerenciar-animal {
-  margin-top: 34px;
   display: grid;
-  grid-template-columns: minmax(300px, 0.85fr) minmax(420px, 1.15fr);
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
   gap: 22px;
   align-items: start;
+  margin-top: 34px;
 }
 
 .card-perfil-animal,
 .card-caracteristicas,
-.card-ocorrencia-vazia {
+.card-ocorrencia-vazia,
+.card-avistamento {
+  min-width: 0;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
@@ -150,7 +159,7 @@
 }
 
 .foto-perfil-animal {
-  height: 290px;
+  height: clamp(220px, 28vw, 290px);
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -167,6 +176,7 @@
 }
 
 .dados-perfil-animal {
+  min-width: 0;
   padding: 22px;
 }
 
@@ -174,11 +184,13 @@
   margin: 0;
   color: #0f172a;
   font-size: 1.65rem;
+  overflow-wrap: anywhere;
 }
 
 .dados-perfil-animal p {
   margin: 7px 0 0;
   color: #64748b;
+  overflow-wrap: anywhere;
 }
 
 .botao-editar-animal {
@@ -197,6 +209,7 @@
 }
 
 .card-caracteristicas {
+  min-width: 0;
   padding: 26px;
 }
 
@@ -208,6 +221,7 @@
 }
 
 .titulo-card-gerenciar > span {
+  flex-shrink: 0;
   font-size: 1.5rem;
 }
 
@@ -227,13 +241,14 @@
 }
 
 .lista-caracteristicas {
-  margin: 24px 0 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+  margin: 24px 0 0;
 }
 
 .lista-caracteristicas div {
+  min-width: 0;
   padding-bottom: 14px;
   border-bottom: 1px solid #e2e8f0;
 }
@@ -251,6 +266,7 @@
   color: #1e293b;
   font-size: 0.95rem;
   font-weight: 750;
+  overflow-wrap: anywhere;
 }
 
 .descricao-gerenciar-animal {
@@ -269,19 +285,22 @@
   margin: 8px 0 0;
   color: #64748b;
   line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 
 .secao-ocorrencias-gerenciar {
   margin-top: 48px;
 }
 
-.cabecalho-secao-gerenciar h2 {
+.cabecalho-secao-gerenciar h2,
+.cabecalho-secao-avistamentos h2 {
   margin: 0;
   color: #0f172a;
   font-size: clamp(1.55rem, 3vw, 2rem);
 }
 
-.cabecalho-secao-gerenciar p:last-child {
+.cabecalho-secao-gerenciar p:last-child,
+.cabecalho-secao-avistamentos p:last-child {
   max-width: 720px;
   margin: 10px 0 0;
   color: #64748b;
@@ -289,12 +308,12 @@
 }
 
 .card-ocorrencia-vazia {
-  margin-top: 22px;
-  padding: 24px;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 18px;
+  margin-top: 22px;
+  padding: 24px;
 }
 
 .icone-ocorrencia-vazia {
@@ -302,6 +321,7 @@
   height: 48px;
   display: grid;
   place-items: center;
+  flex-shrink: 0;
   background: #eff6ff;
   border-radius: 12px;
   font-size: 1.4rem;
@@ -323,15 +343,181 @@
 .botao-registrar-desaparecimento {
   min-height: 42px;
   padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #ffffff;
   background: #e65100;
   border: 1px solid #e65100;
   border-radius: 8px;
-  cursor: not-allowed;
+  cursor: pointer;
   font: inherit;
   font-size: 0.84rem;
   font-weight: 800;
-  opacity: 0.68;
+  text-align: center;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-registrar-desaparecimento:hover {
+  background: #c24100;
+  border-color: #c24100;
+  transform: translateY(-1px);
+}
+
+.secao-avistamentos {
+  margin-top: 32px;
+  padding-top: 32px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cabecalho-secao-avistamentos {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.contador-avistamentos {
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 850;
+}
+
+.estado-avistamentos {
+  min-height: 118px;
+  margin-top: 22px;
+  padding: 22px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #64748b;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.estado-avistamentos > span {
+  font-size: 1.7rem;
+}
+
+.estado-avistamentos h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.estado-avistamentos p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+.estado-erro-avistamentos {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.lista-avistamentos {
+  display: grid;
+  gap: 16px;
+  margin-top: 22px;
+}
+
+.card-avistamento {
+  display: flex;
+  gap: 18px;
+  padding: 18px;
+}
+
+.foto-avistamento,
+.foto-avistamento-sem-imagem {
+  width: 128px;
+  height: 128px;
+  display: block;
+  flex-shrink: 0;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.foto-avistamento-sem-imagem {
+  display: grid;
+  place-items: center;
+  color: #1565c0;
+  background: #dce8f6;
+  font-size: 2.6rem;
+}
+
+.conteudo-avistamento {
+  min-width: 0;
+  flex: 1;
+}
+
+.topo-avistamento {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.tag-avistamento {
+  margin: 0 0 5px;
+  color: #166534;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.topo-avistamento h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.08rem;
+  overflow-wrap: anywhere;
+}
+
+.topo-avistamento time {
+  flex-shrink: 0;
+  color: #64748b;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.descricao-avistamento {
+  margin: 12px 0 0;
+  color: #475569;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+.contato-avistamento {
+  margin-top: 14px;
+  color: #334155;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.link-mapa-avistamento {
+  margin-top: 14px;
+  display: inline-flex;
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.link-mapa-avistamento:hover {
+  text-decoration: underline;
 }
 
 .aviso-privacidade-gerenciar {
@@ -347,6 +533,7 @@
 }
 
 .aviso-privacidade-gerenciar span {
+  flex-shrink: 0;
   font-size: 1.1rem;
 }
 
@@ -394,6 +581,7 @@
 .carregador-gerenciar {
   width: 34px;
   height: 34px;
+  flex-shrink: 0;
   border: 3px solid #dbeafe;
   border-top-color: #1565c0;
   border-radius: 50%;
@@ -424,6 +612,10 @@
   .grid-gerenciar-animal {
     grid-template-columns: 1fr;
   }
+
+  .foto-perfil-animal {
+    height: min(400px, 55vw);
+  }
 }
 
 @media (max-width: 680px) {
@@ -443,9 +635,9 @@
   }
 
   .titulo-gerenciar {
-    margin-top: 40px;
     align-items: flex-start;
     flex-direction: column;
+    margin-top: 40px;
   }
 
   .lista-caracteristicas {
@@ -460,20 +652,176 @@
   .botao-registrar-desaparecimento {
     width: 100%;
   }
+
+  .cabecalho-secao-avistamentos {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .contador-avistamentos {
+    align-self: flex-start;
+  }
+
+  .card-avistamento,
+  .topo-avistamento {
+    flex-direction: column;
+  }
+
+  .foto-avistamento,
+  .foto-avistamento-sem-imagem {
+    width: 100%;
+    height: 210px;
+  }
+
+  .topo-avistamento time {
+    text-align: left;
+  }
 }
 
-.botao-registrar-desaparecimento {
+@media (max-width: 420px) {
+  .acoes-cabecalho-gerenciar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .botao-sair-gerenciar {
+    width: 100%;
+  }
+
+  .card-caracteristicas,
+  .dados-perfil-animal,
+  .card-ocorrencia-vazia,
+  .card-avistamento {
+    padding: 18px;
+  }
+
+  .estado-gerenciar {
+    min-height: 300px;
+    margin-top: 48px;
+    padding: 24px 18px;
+  }
+
+  .estado-avistamentos {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.card-ocorrencia-ativa {
+  margin-top: 22px;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 16px;
+  box-shadow: 0 5px 16px rgb(15 23 42 / 6%);
+}
+
+.icone-ocorrencia-ativa {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: #ffedd5;
+  border-radius: 12px;
+  font-size: 1.4rem;
+}
+
+.conteudo-ocorrencia-ativa {
+  min-width: 0;
+}
+
+.tag-ocorrencia-ativa {
+  margin: 0 0 6px;
+  color: #c2410c;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.conteudo-ocorrencia-ativa h3 {
+  margin: 0;
+  color: #9a3412;
+  font-size: 1.08rem;
+}
+
+.conteudo-ocorrencia-ativa p {
+  margin: 7px 0 0;
+  color: #7c2d12;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.descricao-ocorrencia-ativa {
+  max-width: 650px;
+  margin-top: 12px !important;
+}
+
+.botao-marcar-reencontrado {
+  min-height: 42px;
+  padding: 0 15px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: #ffffff;
+  background: #15803d;
+  border: 1px solid #15803d;
+  border-radius: 8px;
   cursor: pointer;
-  opacity: 1;
-  text-decoration: none;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
   transition: 160ms ease;
 }
 
-.botao-registrar-desaparecimento:hover {
-  background: #c24100;
-  border-color: #c24100;
+.botao-marcar-reencontrado:hover:not(:disabled) {
+  background: #166534;
+  border-color: #166534;
   transform: translateY(-1px);
+}
+
+.botao-marcar-reencontrado:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.mensagem-sucesso-ocorrencia,
+.mensagem-erro-ocorrencia {
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.mensagem-sucesso-ocorrencia {
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+}
+
+.mensagem-erro-ocorrencia {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+}
+
+@media (max-width: 680px) {
+  .card-ocorrencia-ativa {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .botao-marcar-reencontrado {
+    width: 100%;
+    white-space: normal;
+  }
 }
