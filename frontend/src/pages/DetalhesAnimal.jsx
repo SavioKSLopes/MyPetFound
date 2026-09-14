@@ -5,7 +5,6 @@ import ReportarAvistamento from "./ReportarAvistamento";
 import { api } from "../services/api";
 import "./DetalhesAnimal.css";
 
-
 function DetalhesAnimal() {
   const { id } = useParams();
 
@@ -145,12 +144,14 @@ function DetalhesAnimal() {
           )}
 
           <section className="card-avistamento">
-            <h2>Você viu este pet?</h2>
+            <div className="conteudo-avistamento-publico">
+              <h2>Você viu este pet?</h2>
 
-            <p>
-              Informe onde e quando viu o animal. Sua colaboração pode ajudar
-              este pet a voltar para casa.
-            </p>
+              <p>
+                Informe onde e quando viu o animal. Sua colaboração pode ajudar
+                este pet a voltar para casa.
+              </p>
+            </div>
 
             <button
               className="botao-avistamento"
