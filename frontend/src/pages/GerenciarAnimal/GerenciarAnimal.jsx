@@ -95,7 +95,7 @@ function GerenciarAnimal() {
         } else {
           setErro(
             "Não foi possível carregar os dados do animal. " +
-              "Verifique se o backend está em execução.",
+            "Verifique se o backend está em execução.",
           );
         }
       } finally {
@@ -204,8 +204,8 @@ function GerenciarAnimal() {
 
     const confirmou = window.confirm(
       `Você confirma que ${animal.nome} foi reencontrado?\n\n` +
-        "O anúncio deixará de aparecer publicamente e será " +
-        "removido do mapa de animais perdidos.",
+      "O anúncio deixará de aparecer publicamente e será " +
+      "removido do mapa de animais perdidos.",
     );
 
     if (!confirmou) {
@@ -237,7 +237,7 @@ function GerenciarAnimal() {
 
       setMensagemSucesso(
         resposta.data.mensagem ||
-          `${animal.nome} foi marcado como reencontrado.`,
+        `${animal.nome} foi marcado como reencontrado.`,
       );
     } catch (error) {
       console.error(
@@ -247,8 +247,8 @@ function GerenciarAnimal() {
 
       setErroOcorrencia(
         error.response?.data?.detail ||
-          error.response?.data?.mensagem ||
-          "Não foi possível encerrar a ocorrência. Tente novamente.",
+        error.response?.data?.mensagem ||
+        "Não foi possível encerrar a ocorrência. Tente novamente.",
       );
     } finally {
       setMarcandoReencontrado(false);
@@ -369,14 +369,12 @@ function GerenciarAnimal() {
               {animal.porte_nome || animal.porte}
             </p>
 
-            <button
+            <Link
               className="botao-editar-animal"
-              type="button"
-              disabled
-              title="A edição de dados será implementada em breve."
+              to={`/meus-animais/${animal.id}/editar`}
             >
               Editar dados do animal
-            </button>
+            </Link>
           </div>
         </article>
 

@@ -1,0 +1,373 @@
+.pagina-editar-animal {
+  min-height: 100vh;
+  padding: 30px max(18px, 7vw) 56px;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+.cabecalho-editar-animal,
+.cabecalho-formulario-editar,
+.formulario-editar-animal,
+.estado-editar-animal {
+  width: 100%;
+  max-width: 980px;
+  margin-inline: auto;
+}
+
+.cabecalho-editar-animal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-editar-animal {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1565c0;
+  font-size: 1.2rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.link-voltar-editar {
+  color: #1565c0;
+  font-size: 0.9rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.link-voltar-editar:hover {
+  text-decoration: underline;
+}
+
+.cabecalho-formulario-editar {
+  margin-top: 54px;
+}
+
+.tag-editar-animal,
+.subtitulo-editar-animal {
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  color: #0755a5;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.cabecalho-formulario-editar h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+}
+
+.cabecalho-formulario-editar > p:last-child {
+  max-width: 640px;
+  margin: 12px 0 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.formulario-editar-animal {
+  display: grid;
+  gap: 22px;
+  margin-top: 34px;
+}
+
+.card-editar-animal {
+  padding: 24px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 5px 16px rgb(15 23 42 / 5%);
+}
+
+.card-foto-editar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.card-editar-animal h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+}
+
+.card-editar-animal p {
+  margin: 8px 0 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.area-foto-editar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-shrink: 0;
+}
+
+.preview-foto-editar {
+  width: 94px;
+  height: 94px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #1565c0;
+  background: #dce8f6;
+  border-radius: 12px;
+  font-size: 2.2rem;
+}
+
+.preview-foto-editar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.botao-selecionar-foto,
+.botao-cancelar-editar,
+.botao-salvar-editar,
+.botao-voltar-editar {
+  min-height: 42px;
+  padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-selecionar-foto {
+  color: #1565c0;
+  background: #ffffff;
+  border: 1px solid #1565c0;
+}
+
+.botao-selecionar-foto:hover {
+  color: #ffffff;
+  background: #1565c0;
+}
+
+.botao-selecionar-foto input {
+  display: none;
+}
+
+.cabecalho-card-editar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cabecalho-card-editar > span {
+  font-size: 1.7rem;
+}
+
+.campos-editar-animal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 22px;
+}
+
+.campos-editar-animal label {
+  display: grid;
+  gap: 7px;
+  color: #334155;
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.campos-editar-animal input,
+.campos-editar-animal select,
+.campos-editar-animal textarea {
+  width: 100%;
+  padding: 11px 12px;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: 160ms ease;
+}
+
+.campos-editar-animal textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.campos-editar-animal input:focus,
+.campos-editar-animal select:focus,
+.campos-editar-animal textarea:focus {
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgb(21 101 192 / 12%);
+}
+
+.campo-largo-editar {
+  grid-column: 1 / -1;
+}
+
+.mensagem-erro-editar {
+  margin: 0;
+  padding: 12px 14px;
+  color: #b42318;
+  background: #fff1f0;
+  border: 1px solid #fecdca;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.acoes-editar-animal {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.botao-cancelar-editar {
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.botao-cancelar-editar:hover {
+  background: #f1f5f9;
+}
+
+.botao-salvar-editar {
+  color: #ffffff;
+  background: #1565c0;
+  border: 1px solid #1565c0;
+}
+
+.botao-salvar-editar:hover {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+}
+
+.botao-salvar-editar:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.estado-editar-animal {
+  min-height: 320px;
+  margin-top: 30px;
+  padding: 34px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+}
+
+.estado-editar-animal > span {
+  margin-bottom: 12px;
+  font-size: 2.5rem;
+}
+
+.estado-editar-animal h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.estado-editar-animal p {
+  max-width: 540px;
+  margin: 10px 0 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.estado-erro-editar {
+  border-color: #fecdca;
+}
+
+.carregador-editar {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 14px;
+  border: 3px solid #dbeafe;
+  border-top-color: #1565c0;
+  border-radius: 50%;
+  animation: girar-editar 700ms linear infinite;
+}
+
+@keyframes girar-editar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 700px) {
+  .card-foto-editar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .campos-editar-animal {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-largo-editar {
+    grid-column: auto;
+  }
+}
+
+@media (max-width: 560px) {
+  .pagina-editar-animal {
+    padding: 20px 18px 40px;
+  }
+
+  .cabecalho-editar-animal {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .cabecalho-formulario-editar {
+    margin-top: 40px;
+  }
+
+  .area-foto-editar {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .acoes-editar-animal {
+    flex-direction: column-reverse;
+  }
+
+  .botao-cancelar-editar,
+  .botao-salvar-editar {
+    width: 100%;
+  }
+}
+.cabecalho-card-editar > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.cabecalho-card-editar .subtitulo-editar-animal {
+  margin: 0 0 18px;
+}
+
+.cabecalho-card-editar .titulo-card-editar-animal {
+  margin: 0;
+}

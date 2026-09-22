@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
 import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
-import { api } from "./services/api";
-import "./App.css";
-
 import Login from "./pages/Login/Login.jsx";
 import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
-import RotaProtegida from "./components/RotaProtegida";
 import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
 import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
+import EditarAnimal from "./pages/EditarAnimal/EditarAnimal.jsx";
 import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
 import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos.jsx";
+
+import RotaProtegida from "./components/RotaProtegida";
+import { api } from "./services/api";
+import "./App.css";
 
 function Home() {
   const [animais, setAnimais] = useState([]);
@@ -124,6 +125,7 @@ function Home() {
           <div className="secao-cabecalho">
             <div>
               <p className="tag">Ajude a comunidade</p>
+
               <h2>Animais perdidos em Guanambi</h2>
             </div>
 
@@ -297,6 +299,11 @@ function App() {
         <Route
           path="/meus-animais/:id"
           element={<GerenciarAnimal />}
+        />
+
+        <Route
+          path="/meus-animais/:id/editar"
+          element={<EditarAnimal />}
         />
 
         <Route
