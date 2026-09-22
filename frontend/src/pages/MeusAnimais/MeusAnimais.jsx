@@ -11,9 +11,13 @@ function MeusAnimais() {
   const [animais, setAnimais] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
+  const [recarregar, setRecarregar] = useState(0);
 
   useEffect(() => {
     async function carregarAnimais() {
+      setCarregando(true);
+      setErro("");
+
       try {
         const response = await api.get("/animais/");
 
@@ -33,7 +37,7 @@ function MeusAnimais() {
 
         setErro(
           "Não foi possível carregar seus animais. " +
-          "Verifique se o backend está em execução.",
+          "Tente novamente em alguns instantes.",
         );
       } finally {
         setCarregando(false);
@@ -41,7 +45,7 @@ function MeusAnimais() {
     }
 
     carregarAnimais();
-  }, [navegar]);
+  }, [navegar, recarregar]);
 
   function sair() {
     localStorage.removeItem("mypetfound_token");
@@ -49,6 +53,16 @@ function MeusAnimais() {
     navegar("/", {
       replace: true,
     });
+  }
+
+  function animalEstaDesaparecido(animal) {
+    const status = String(animal.status || "").toUpperCase();
+
+    return (
+      animal.desaparecido === true ||
+      status === "PERDIDO" ||
+      status === "DESAPARECIDO"
+    );
   }
 
   return (
@@ -116,7 +130,7 @@ function MeusAnimais() {
           <button
             className="botao-tentar-novamente"
             type="button"
-            onClick={() => window.location.reload()}
+            onClick={() => setRecarregar((valor) => valor + 1)}
           >
             Tentar novamente
           </button>
@@ -135,61 +149,90 @@ function MeusAnimais() {
           </p>
 
           <Link
-           className="botao-cadastrar-vazio"
-           to="/meus-animais/novo"
+            className="botao-cadastrar-vazio"
+            to="/meus-animais/novo"
           >
-           Cadastrar meu primeiro animal
+            Cadastrar meu primeiro animal
           </Link>
         </section>
       )}
 
       {!carregando && !erro && animais.length > 0 && (
         <section className="grid-meus-animais">
-          {animais.map((animal) => (
-            <article className="card-meu-animal" key={animal.id}>
-              <div className="foto-meu-animal">
-                {animal.foto ? (
-                  <img
-                    src={animal.foto}
-                    alt={`Foto de ${animal.nome}`}
-                  />
-                ) : (
-                  <span aria-hidden="true">🐾</span>
-                )}
-              </div>
+          {animais.map((animal) => {
+            const desaparecido = animalEstaDesaparecido(animal);
 
-              <div className="conteudo-meu-animal">
-                <div className="cabecalho-card-animal">
-                  <span
-                    className={`status-painel status-${(
-                      animal.status || "CADASTRADO"
-                    ).toLowerCase()}`}
-                  >
-                    {animal.status_nome || animal.status || "Cadastrado"}
-                  </span>
+            return (
+              <article
+                className={`card-meu-animal${
+                  desaparecido ? " card-meu-animal-perdido" : ""
+                }`}
+                key={animal.id}
+              >
+                <div className="foto-meu-animal">
+                  {animal.foto ? (
+                    <img
+                      src={animal.foto}
+                      alt={`Foto de ${animal.nome}`}
+                    />
+                  ) : (
+                    <span aria-hidden="true">🐾</span>
+                  )}
                 </div>
 
-                <h2>{animal.nome}</h2>
+                <div className="conteudo-meu-animal">
+                  <div className="cabecalho-card-animal">
+                    <span
+                      className={`status-painel status-${(
+                        animal.status || "CADASTRADO"
+                      ).toLowerCase()}`}
+                    >
+                      {animal.status_nome || animal.status || "Cadastrado"}
+                    </span>
+                  </div>
 
-                <p className="tipo-meu-animal">
-                  {animal.especie_nome || animal.especie} ·{" "}
-                  {animal.porte_nome || animal.porte}
-                </p>
+                  <h2>{animal.nome}</h2>
 
-                <p className="detalhes-meu-animal">
-                  {animal.raca || "Raça não informada"}
-                  {animal.cor ? ` · ${animal.cor}` : ""}
-                </p>
+                  <p className="tipo-meu-animal">
+                    {animal.especie_nome || animal.especie} ·{" "}
+                    {animal.porte_nome || animal.porte}
+                  </p>
 
-                <Link
-                  className="botao-gerenciar-animal"
-                  to={`/meus-animais/${animal.id}`}
-                >
-                  Gerenciar animal
-                </Link>
-              </div>
-            </article>
-          ))}
+                  <p className="detalhes-meu-animal">
+                    {animal.raca || "Raça não informada"}
+                    {animal.cor ? ` · ${animal.cor}` : ""}
+                  </p>
+
+                  {desaparecido && (
+                    <Link
+                      className="link-anuncio-publico"
+                      to={`/animais/${animal.id}`}
+                    >
+                      Ver anúncio público
+                    </Link>
+                  )}
+
+                  <div className="acoes-card-animal">
+                    {!desaparecido && (
+                      <Link
+                        className="botao-registrar-desaparecimento"
+                        to={`/meus-animais/${animal.id}/desaparecimento`}
+                      >
+                        Registrar desaparecimento
+                      </Link>
+                    )}
+
+                    <Link
+                      className="botao-gerenciar-animal"
+                      to={`/meus-animais/${animal.id}`}
+                    >
+                      Gerenciar animal
+                    </Link>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </section>
       )}
     </main>

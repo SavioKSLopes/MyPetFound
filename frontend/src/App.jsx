@@ -51,16 +51,19 @@ function Home() {
           <a href="#animais-perdidos">Buscar pets</a>
           <a href="#como-funciona">Como funciona</a>
 
-        <Link
-          className="botao botao-secundario"
-          to="/entrar"
-        >
-          Entrar
-        </Link>
+          <Link
+            className="botao botao-secundario"
+            to="/entrar"
+          >
+            Entrar
+          </Link>
 
-          <button className="botao botao-urgencia">
+          <Link
+            className="botao botao-urgencia"
+            to="/meus-animais"
+          >
             Meu pet desapareceu
-          </button>
+          </Link>
         </nav>
       </header>
 
@@ -82,7 +85,10 @@ function Home() {
           </p>
 
           <div className="hero-acoes">
-            <button className="card-acao card-perdido">
+            <Link
+              className="card-acao card-perdido"
+              to="/meus-animais"
+            >
               <span className="icone-acao" aria-hidden="true">
                 🔎
               </span>
@@ -92,9 +98,12 @@ function Home() {
               <span>
                 Registrar um desaparecimento
               </span>
-            </button>
+            </Link>
 
-            <button className="card-acao card-encontrado">
+            <a
+              className="card-acao card-encontrado"
+              href="#animais-perdidos"
+            >
               <span className="icone-acao" aria-hidden="true">
                 🤝
               </span>
@@ -104,7 +113,7 @@ function Home() {
               <span>
                 Ajudar a devolver ao tutor
               </span>
-            </button>
+            </a>
           </div>
         </section>
 
@@ -253,15 +262,14 @@ function Home() {
         </p>
 
         <nav aria-label="Links do rodapé">
-          <a href="#sobre">Sobre</a>
-          <a href="#privacidade">Privacidade</a>
-          <a href="#contato">Contato</a>
+          <a href="#como-funciona">Como funciona</a>
+          <Link to="/mapa">Mapa</Link>
+          <Link to="/entrar">Entrar</Link>
         </nav>
       </footer>
     </div>
   );
 }
-
 
 function App() {
   return (
@@ -285,20 +293,22 @@ function App() {
           path="/meus-animais/novo"
           element={<CadastroAnimal />}
         />
+
         <Route
           path="/meus-animais/:id"
           element={<GerenciarAnimal />}
         />
+
         <Route
           path="/meus-animais/:id/desaparecimento"
           element={<RegistrarDesaparecimento />}
         />
+
         <Route
           path="/mapa"
           element={<MapaAnimaisPerdidos />}
         />
       </Route>
-
     </Routes>
   );
 }

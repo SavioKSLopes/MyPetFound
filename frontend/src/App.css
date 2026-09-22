@@ -482,3 +482,8 @@ a:focus-visible {
   color: #1565c0;
   text-decoration: none;
 }
+
+.botao-urgencia,
+.card-acao {
+  text-decoration: none;
+}
