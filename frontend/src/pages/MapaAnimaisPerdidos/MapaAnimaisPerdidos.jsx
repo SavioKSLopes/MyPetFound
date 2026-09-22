@@ -9,7 +9,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 
-import { api } from "../services/api";
+import { api } from "../../services/api.js";
 import "leaflet/dist/leaflet.css";
 import "./MapaAnimaisPerdidos.css";
 

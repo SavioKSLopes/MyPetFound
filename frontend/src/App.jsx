@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import DetalhesAnimal from "./pages/DetalhesAnimal";
+import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
 import { api } from "./services/api";
 import "./App.css";
 
-import Login from "./pages/Login";
-import MeusAnimais from "./pages/MeusAnimais";
+import Login from "./pages/Login/Login.jsx";
+import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
 import RotaProtegida from "./components/RotaProtegida";
-import CadastroAnimal from "./pages/CadastroAnimal";
-import GerenciarAnimal from "./pages/GerenciarAnimal";
-import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento";
-import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos";
+import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
+import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
+import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
+import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos.jsx";
 
 function Home() {
   const [animais, setAnimais] = useState([]);

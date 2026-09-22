@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { api } from "../services/api";
+import { api } from "../../services/api.js";
 import "./GerenciarAnimal.css";
 
 function GerenciarAnimal() {

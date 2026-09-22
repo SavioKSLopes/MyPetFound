@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
-import ReportarAvistamento from "./ReportarAvistamento";
-import { api } from "../services/api";
+import ReportarAvistamento from "../ReportarAvistamento/ReportarAvistamento.jsx";
+import { api } from "../../services/api.js";
 import "./DetalhesAnimal.css";
 
 function DetalhesAnimal() {
