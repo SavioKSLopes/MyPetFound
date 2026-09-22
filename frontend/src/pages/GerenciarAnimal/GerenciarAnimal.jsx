@@ -23,6 +23,10 @@ function GerenciarAnimal() {
   const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [erroOcorrencia, setErroOcorrencia] = useState("");
 
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [carregandoQrCode, setCarregandoQrCode] = useState(false);
+  const [erroQrCode, setErroQrCode] = useState("");
+
   useEffect(() => {
     async function carregarDados() {
       try {
@@ -101,6 +105,16 @@ function GerenciarAnimal() {
     }
 
     carregarDados();
+
+    return () => {
+      setQrCodeUrl((urlAtual) => {
+        if (urlAtual) {
+          URL.revokeObjectURL(urlAtual);
+        }
+
+        return "";
+      });
+    };
   }, [id, navegar]);
 
   function sair() {
@@ -123,18 +137,54 @@ function GerenciarAnimal() {
   }
 
   function abrirMapa(avistamento) {
-    const latitude = avistamento.latitude;
-    const longitude = avistamento.longitude;
+    const { latitude, longitude } = avistamento;
 
-    if (latitude === null || longitude === null) {
-      return null;
-    }
-
-    if (latitude === undefined || longitude === undefined) {
+    if (
+      latitude === null ||
+      latitude === undefined ||
+      longitude === null ||
+      longitude === undefined
+    ) {
       return null;
     }
 
     return `https://www.google.com/maps?q=${latitude},${longitude}`;
+  }
+
+  async function gerarQrCode() {
+    if (!animal) {
+      return;
+    }
+
+    setCarregandoQrCode(true);
+    setErroQrCode("");
+
+    try {
+      const resposta = await api.get(
+        `/animais/${animal.id}/qrcode/`,
+        {
+          responseType: "blob",
+        },
+      );
+
+      const novaUrl = URL.createObjectURL(resposta.data);
+
+      setQrCodeUrl((urlAnterior) => {
+        if (urlAnterior) {
+          URL.revokeObjectURL(urlAnterior);
+        }
+
+        return novaUrl;
+      });
+    } catch (error) {
+      console.error("Erro ao gerar QR Code:", error);
+
+      setErroQrCode(
+        "Não foi possível gerar o QR Code. Tente novamente.",
+      );
+    } finally {
+      setCarregandoQrCode(false);
+    }
   }
 
   const ocorrenciaAtiva = ocorrencias.find(
@@ -148,6 +198,7 @@ function GerenciarAnimal() {
       setErroOcorrencia(
         "Não foi encontrada uma ocorrência ativa para este animal.",
       );
+
       return;
     }
 
@@ -243,6 +294,12 @@ function GerenciarAnimal() {
   const statusClasse = (
     animal.status || "CADASTRADO"
   ).toLowerCase();
+
+  const nomeArquivoQrCode = `qrcode-${animal.nome
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replaceAll(" ", "-")}.png`;
 
   return (
     <main className="pagina-gerenciar-animal">
@@ -378,6 +435,84 @@ function GerenciarAnimal() {
             </div>
           )}
         </article>
+      </section>
+
+      <section className="secao-qrcode-gerenciar">
+        <div className="cabecalho-secao-qrcode">
+          <div>
+            <p className="tag-gerenciar">
+              Identificação rápida
+            </p>
+
+            <h2>QR Code de {animal.nome}</h2>
+
+            <p>
+              Gere um QR Code para imprimir e colocar na coleira do pet.
+              Quem escanear será direcionado para a página pública do
+              animal.
+            </p>
+          </div>
+        </div>
+
+        <div className="card-qrcode-gerenciar">
+          <div className="conteudo-qrcode-gerenciar">
+            <span className="icone-qrcode" aria-hidden="true">
+              ▦
+            </span>
+
+            <div>
+              <h3>Identificação digital do pet</h3>
+
+              <p>
+                O QR Code ajuda alguém a localizar o anúncio rapidamente
+                caso encontre {animal.nome}.
+              </p>
+            </div>
+          </div>
+
+          <button
+            className="botao-gerar-qrcode"
+            type="button"
+            onClick={gerarQrCode}
+            disabled={carregandoQrCode}
+          >
+            {carregandoQrCode
+              ? "Gerando QR Code..."
+              : "Gerar QR Code"}
+          </button>
+        </div>
+
+        {erroQrCode && (
+          <p className="mensagem-erro-qrcode" role="alert">
+            ⚠️ {erroQrCode}
+          </p>
+        )}
+
+        {qrCodeUrl && (
+          <div className="resultado-qrcode">
+            <img
+              src={qrCodeUrl}
+              alt={`QR Code de ${animal.nome}`}
+            />
+
+            <div>
+              <h3>QR Code pronto</h3>
+
+              <p>
+                Baixe a imagem e imprima para colocar na coleira ou na
+                identificação de {animal.nome}.
+              </p>
+
+              <a
+                className="botao-baixar-qrcode"
+                href={qrCodeUrl}
+                download={nomeArquivoQrCode}
+              >
+                Baixar QR Code
+              </a>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="secao-ocorrencias-gerenciar">

@@ -3,10 +3,10 @@ from rest_framework.routers import DefaultRouter
 
 from .views import (
     AnimalPerdidoPublicoDetalheView,
+    AnimalQRCodeView,
     AnimalViewSet,
     AnimaisPerdidosPublicosView,
 )
-
 
 router = DefaultRouter()
 
@@ -16,7 +16,6 @@ router.register(
     basename="animal",
 )
 
-
 urlpatterns = [
     path(
         "publico/animais-perdidos/",
@@ -24,9 +23,14 @@ urlpatterns = [
         name="animais-perdidos-publicos",
     ),
     path(
-    "publico/animais-perdidos/<int:pk>/",
-    AnimalPerdidoPublicoDetalheView.as_view(),
-    name="animal-perdido-publico-detalhe",
+        "publico/animais-perdidos/<int:pk>/",
+        AnimalPerdidoPublicoDetalheView.as_view(),
+        name="animal-perdido-publico-detalhe",
+    ),
+    path(
+        "animais/<int:pk>/qrcode/",
+        AnimalQRCodeView.as_view(),
+        name="animal-qrcode",
     ),
 ]
 
