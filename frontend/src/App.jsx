@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
-import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
-import Login from "./pages/Login/Login.jsx";
-import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
+import BuscarAnimais from "./pages/BuscarAnimais/BuscarAnimais.jsx";
 import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
-import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
+import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
 import EditarAnimal from "./pages/EditarAnimal/EditarAnimal.jsx";
-import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
+import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
+import Login from "./pages/Login/Login.jsx";
 import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos.jsx";
+import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
+import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
 
 import RotaProtegida from "./components/RotaProtegida";
 import { api } from "./services/api";
@@ -22,15 +23,21 @@ function Home() {
   useEffect(() => {
     async function carregarAnimaisPerdidos() {
       try {
-        const response = await api.get("/publico/animais-perdidos/");
+        const response = await api.get(
+          "/publico/animais-perdidos/",
+        );
 
-        setAnimais(response.data);
+        const dados = Array.isArray(response.data)
+          ? response.data
+          : response.data.results || [];
+
+        setAnimais(dados);
       } catch (error) {
         console.error("Erro ao carregar animais perdidos:", error);
 
         setErro(
           "Não foi possível carregar os animais perdidos. " +
-          "Verifique se o backend está em execução.",
+            "Verifique se o backend está em execução.",
         );
       } finally {
         setCarregando(false);
@@ -49,7 +56,8 @@ function Home() {
         </Link>
 
         <nav className="navegacao" aria-label="Navegação principal">
-          <a href="#animais-perdidos">Buscar pets</a>
+          <Link to="/buscar">Buscar pets</Link>
+
           <a href="#como-funciona">Como funciona</a>
 
           <Link
@@ -101,9 +109,9 @@ function Home() {
               </span>
             </Link>
 
-            <a
+            <Link
               className="card-acao card-encontrado"
-              href="#animais-perdidos"
+              to="/buscar"
             >
               <span className="icone-acao" aria-hidden="true">
                 🤝
@@ -114,7 +122,7 @@ function Home() {
               <span>
                 Ajudar a devolver ao tutor
               </span>
-            </a>
+            </Link>
           </div>
         </section>
 
@@ -129,9 +137,23 @@ function Home() {
               <h2>Animais perdidos em Guanambi</h2>
             </div>
 
-            <Link className="link-botao" to="/mapa">
-              Ver todos no mapa →
-            </Link>
+            <div className="acoes-lista-animais">
+              <Link className="link-botao" to="/buscar">
+                <span className="icone-link-acao" aria-hidden="true">
+                  🔎
+                </span>
+
+                Buscar com filtros
+              </Link>
+
+              <Link className="link-botao" to="/mapa">
+                <span className="icone-link-acao" aria-hidden="true">
+                  📍
+                </span>
+
+                Ver todos no mapa
+              </Link>
+            </div>
           </div>
 
           {carregando && (
@@ -183,11 +205,12 @@ function Home() {
                     <h3>{animal.nome}</h3>
 
                     <p>
-                      {animal.especie_nome} · {animal.porte_nome}
+                      {animal.especie_nome || animal.especie} ·{" "}
+                      {animal.porte_nome || animal.porte}
                     </p>
 
                     <p className="texto-secundario">
-                      {animal.cor}
+                      {animal.cor || "Cor não informada"}
                       {animal.raca ? ` · ${animal.raca}` : ""}
                     </p>
 
@@ -265,7 +288,11 @@ function Home() {
 
         <nav aria-label="Links do rodapé">
           <a href="#como-funciona">Como funciona</a>
+
+          <Link to="/buscar">Buscar pets</Link>
+
           <Link to="/mapa">Mapa</Link>
+
           <Link to="/entrar">Entrar</Link>
         </nav>
       </footer>
@@ -279,8 +306,18 @@ function App() {
       <Route path="/" element={<Home />} />
 
       <Route
+        path="/buscar"
+        element={<BuscarAnimais />}
+      />
+
+      <Route
         path="/animais/:id"
         element={<DetalhesAnimal />}
+      />
+
+      <Route
+        path="/mapa"
+        element={<MapaAnimaisPerdidos />}
       />
 
       <Route path="/entrar" element={<Login />} />
@@ -309,11 +346,6 @@ function App() {
         <Route
           path="/meus-animais/:id/desaparecimento"
           element={<RegistrarDesaparecimento />}
-        />
-
-        <Route
-          path="/mapa"
-          element={<MapaAnimaisPerdidos />}
         />
       </Route>
     </Routes>

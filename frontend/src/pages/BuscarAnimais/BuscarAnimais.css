@@ -1,0 +1,524 @@
+.pagina-buscar-animais {
+  min-height: 100vh;
+  padding: 30px max(18px, 7vw) 60px;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+.cabecalho-buscar-animais,
+.introducao-buscar-animais,
+.card-filtros-animais,
+.resultados-busca-animais,
+.aviso-buscar-animais {
+  width: 100%;
+  max-width: 1180px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.cabecalho-buscar-animais {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo-buscar-animais {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1565c0;
+  font-size: 1.2rem;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.navegacao-buscar-animais {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.navegacao-buscar-animais a {
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.navegacao-buscar-animais a:hover {
+  text-decoration: underline;
+}
+
+.introducao-buscar-animais {
+  margin-top: 52px;
+}
+
+.tag-buscar-animais {
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  color: #0755a5;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.introducao-buscar-animais h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  line-height: 1.1;
+}
+
+.introducao-buscar-animais > p:last-child {
+  max-width: 680px;
+  margin: 12px 0 0;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.card-filtros-animais {
+  margin-top: 32px;
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 5px 16px rgb(15 23 42 / 5%);
+}
+
+.cabecalho-filtros-animais {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.cabecalho-filtros-animais h2,
+.cabecalho-resultados-animais h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.35rem, 3vw, 1.8rem);
+}
+
+.cabecalho-filtros-animais p {
+  max-width: 620px;
+  margin: 8px 0 0;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+.cabecalho-filtros-animais > span {
+  flex-shrink: 0;
+  font-size: 1.8rem;
+}
+
+.formulario-filtros-animais {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.formulario-filtros-animais label {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.formulario-filtros-animais input,
+.formulario-filtros-animais select {
+  width: 100%;
+  min-height: 43px;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.92rem;
+  outline: none;
+  transition: 160ms ease;
+}
+
+.formulario-filtros-animais input:focus,
+.formulario-filtros-animais select:focus {
+  border-color: #1565c0;
+  box-shadow: 0 0 0 3px rgb(21 101 192 / 12%);
+}
+
+.campo-busca-largo {
+  grid-column: span 2;
+}
+
+.acoes-filtros-animais {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 4px;
+}
+
+.botao-limpar-filtros,
+.botao-buscar-animais,
+.botao-tentar-novamente,
+.botao-ver-detalhes-animal {
+  min-height: 42px;
+  padding: 0 15px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.botao-limpar-filtros {
+  color: #475569;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+}
+
+.botao-limpar-filtros:hover {
+  background: #f1f5f9;
+}
+
+.botao-buscar-animais,
+.botao-tentar-novamente,
+.botao-ver-detalhes-animal {
+  color: #ffffff;
+  background: #1565c0;
+  border: 1px solid #1565c0;
+}
+
+.botao-buscar-animais:hover,
+.botao-tentar-novamente:hover,
+.botao-ver-detalhes-animal:hover {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+  transform: translateY(-1px);
+}
+
+.resultados-busca-animais {
+  margin-top: 46px;
+}
+
+.cabecalho-resultados-animais {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.status-filtro-aplicado {
+  width: fit-content;
+  padding: 7px 11px;
+  color: #166534;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.grid-resultados-animais {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-top: 22px;
+}
+
+.card-resultado-animal {
+  min-width: 0;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 5px 16px rgb(15 23 42 / 6%);
+}
+
+.foto-resultado-animal {
+  position: relative;
+  height: 195px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #1565c0;
+  background: #dce8f6;
+  font-size: 3.6rem;
+}
+
+.foto-resultado-animal img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.selo-perdido-animal {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 9px;
+  color: #9a3412;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 850;
+}
+
+.conteudo-resultado-animal {
+  padding: 20px;
+}
+
+.topo-resultado-animal {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.topo-resultado-animal h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.topo-resultado-animal p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.topo-resultado-animal > span {
+  flex-shrink: 0;
+  font-size: 1.2rem;
+}
+
+.dados-resultado-animal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 13px;
+  margin: 20px 0 0;
+}
+
+.dados-resultado-animal div {
+  min-width: 0;
+}
+
+.dados-resultado-animal dt {
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.dados-resultado-animal dd {
+  margin: 5px 0 0;
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.dado-localidade-animal {
+  grid-column: 1 / -1;
+  padding-top: 13px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.data-desaparecimento-animal {
+  margin: 18px 0 0;
+  color: #64748b;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.botao-ver-detalhes-animal {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 18px;
+}
+
+.estado-busca-animais {
+  min-height: 148px;
+  margin-top: 22px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #64748b;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+}
+
+.estado-busca-animais > span {
+  flex-shrink: 0;
+  font-size: 2rem;
+}
+
+.estado-busca-animais h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.estado-busca-animais p {
+  margin: 6px 0 0;
+  line-height: 1.5;
+}
+
+.estado-busca-animais .botao-tentar-novamente {
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.estado-erro-busca {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.estado-erro-busca h3 {
+  color: #991b1b;
+}
+
+.carregador-buscar-animais {
+  width: 34px;
+  height: 34px;
+  border: 3px solid #dbeafe;
+  border-top-color: #1565c0;
+  border-radius: 50%;
+  animation: girar-buscar-animais 700ms linear infinite;
+}
+
+@keyframes girar-buscar-animais {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.aviso-buscar-animais {
+  margin-top: 28px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #475569;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+}
+
+.aviso-buscar-animais span {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+}
+
+.aviso-buscar-animais p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 980px) {
+  .formulario-filtros-animais {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-resultados-animais {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .pagina-buscar-animais {
+    padding: 20px 18px 42px;
+  }
+
+  .cabecalho-buscar-animais {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .navegacao-buscar-animais {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .introducao-buscar-animais {
+    margin-top: 40px;
+  }
+
+  .card-filtros-animais {
+    padding: 20px;
+  }
+
+  .formulario-filtros-animais {
+    grid-template-columns: 1fr;
+  }
+
+  .campo-busca-largo {
+    grid-column: auto;
+  }
+
+  .acoes-filtros-animais {
+    grid-column: auto;
+    flex-direction: column-reverse;
+  }
+
+  .botao-limpar-filtros,
+  .botao-buscar-animais {
+    width: 100%;
+  }
+
+  .grid-resultados-animais {
+    grid-template-columns: 1fr;
+  }
+
+  .estado-busca-animais {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .estado-busca-animais .botao-tentar-novamente {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 420px) {
+  .cabecalho-filtros-animais,
+  .cabecalho-resultados-animais {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .dados-resultado-animal {
+    grid-template-columns: 1fr;
+  }
+
+  .dado-localidade-animal {
+    grid-column: auto;
+  }
+}

@@ -76,15 +76,23 @@ a {
 .botao {
   min-height: 44px;
   padding: 10px 16px;
-  border-radius: 8px;
   border: 1px solid transparent;
+  border-radius: 8px;
   font-weight: 700;
 }
 
 .botao-secundario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #1565c0;
   background: #ffffff;
   border-color: #1565c0;
+}
+
+.botao-secundario:hover {
+  color: #ffffff;
+  background: #1565c0;
 }
 
 .botao-urgencia {
@@ -108,8 +116,8 @@ a {
   color: #1565c0;
   font-size: 0.875rem;
   font-weight: 800;
-  text-transform: uppercase;
   letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .hero h1,
@@ -134,11 +142,11 @@ a {
 }
 
 .hero-acoes {
+  max-width: 720px;
+  margin: 44px auto 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 20px;
-  max-width: 720px;
-  margin: 44px auto 0;
 }
 
 .card-acao {
@@ -150,6 +158,7 @@ a {
   justify-content: center;
   border-radius: 16px;
   text-align: center;
+  text-decoration: none;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -196,7 +205,7 @@ a {
   max-width: 1280px;
   margin: 0 auto 32px;
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 24px;
 }
@@ -206,12 +215,50 @@ a {
   font-size: clamp(1.7rem, 3vw, 2.25rem);
 }
 
-.link-botao {
-  min-height: 44px;
+.acoes-lista-animais {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.acoes-lista-animais .link-botao {
+  min-height: 40px;
+  padding: 0 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: #1565c0;
-  background: transparent;
-  border: 0;
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 0.86rem;
   font-weight: 800;
+  line-height: 1.2;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: 160ms ease;
+}
+
+.acoes-lista-animais .link-botao:hover {
+  color: #ffffff;
+  background: #1565c0;
+  border-color: #1565c0;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+.icone-link-acao {
+  width: 18px;
+  height: 18px;
+  margin-right: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .grid-animais {
@@ -234,8 +281,16 @@ a {
   min-height: 180px;
   display: grid;
   place-items: center;
+  overflow: hidden;
   font-size: 4rem;
   background: #dce8f6;
+}
+
+.foto-placeholder img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .conteudo-card {
@@ -278,11 +333,15 @@ a {
   width: 100%;
   min-height: 44px;
   margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #1565c0;
   background: #ffffff;
   border: 1px solid #1565c0;
   border-radius: 8px;
   font-weight: 800;
+  text-decoration: none;
 }
 
 .botao-detalhes:hover {
@@ -295,8 +354,8 @@ a {
   max-width: 1280px;
   margin: 0 auto;
   padding: 32px;
-  text-align: center;
   color: #5f6368;
+  text-align: center;
   background: #ffffff;
   border-radius: 16px;
 }
@@ -426,6 +485,19 @@ a:focus-visible {
   }
 }
 
+@media (max-width: 760px) {
+  .secao-cabecalho {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .acoes-lista-animais {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
 @media (max-width: 600px) {
   .hero {
     padding: 64px 20px 48px;
@@ -462,28 +534,18 @@ a:focus-visible {
   }
 }
 
-.botao-detalhes {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
+@media (max-width: 480px) {
+  .acoes-lista-animais {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.botao-secundario {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-}
+  .acoes-lista-animais .link-botao {
+    width: 100%;
+  }
 
-.link-botao {
-  display: inline-flex;
-  align-items: center;
-  color: #1565c0;
-  text-decoration: none;
-}
-
-.botao-urgencia,
-.card-acao {
-  text-decoration: none;
+  .rodape nav {
+    flex-wrap: wrap;
+  }
 }
