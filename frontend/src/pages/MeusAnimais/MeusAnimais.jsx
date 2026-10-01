@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import CabecalhoTutor from "../../components/CabecalhoTutor/CabecalhoTutor";
 import { api } from "../../services/api.js";
 import "./MeusAnimais.css";
-
 
 function MeusAnimais() {
   const navegar = useNavigate();
@@ -37,7 +37,7 @@ function MeusAnimais() {
 
         setErro(
           "Não foi possível carregar seus animais. " +
-          "Tente novamente em alguns instantes.",
+            "Tente novamente em alguns instantes.",
         );
       } finally {
         setCarregando(false);
@@ -46,14 +46,6 @@ function MeusAnimais() {
 
     carregarAnimais();
   }, [navegar, recarregar]);
-
-  function sair() {
-    localStorage.removeItem("mypetfound_token");
-
-    navegar("/", {
-      replace: true,
-    });
-  }
 
   function animalEstaDesaparecido(animal) {
     const status = String(animal.status || "").toUpperCase();
@@ -67,32 +59,11 @@ function MeusAnimais() {
 
   return (
     <main className="pagina-meus-animais">
-      <header className="cabecalho-painel">
-        <Link className="logo-painel" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <div className="acoes-cabecalho-painel">
-          <Link className="link-pagina-publica" to="/">
-            Ver animais perdidos
-          </Link>
-
-          <button
-            className="botao-sair"
-            type="button"
-            onClick={sair}
-          >
-            Sair
-          </button>
-        </div>
-      </header>
+      <CabecalhoTutor />
 
       <section className="intro-painel">
-        <div>
-          <p className="tag-painel">
-            Área do tutor
-          </p>
+        <div className="conteudo-intro-painel">
+          <p className="tag-painel">Área do tutor</p>
 
           <h1>Meus animais</h1>
 

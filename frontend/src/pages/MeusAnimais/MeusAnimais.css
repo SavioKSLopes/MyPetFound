@@ -5,7 +5,6 @@
   background: #f8fafc;
 }
 
-.cabecalho-painel,
 .intro-painel,
 .grid-meus-animais,
 .estado-painel {
@@ -14,112 +13,20 @@
   margin-inline: auto;
 }
 
-.cabecalho-painel,
-.acoes-cabecalho-painel,
 .intro-painel,
 .acoes-card-animal {
   display: flex;
   align-items: center;
 }
 
-.cabecalho-painel,
-.intro-painel {
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.logo-painel,
-.link-pagina-publica,
-.link-anuncio-publico {
-  color: #1565c0;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.logo-painel {
-  display: inline-flex;
-  gap: 8px;
-  font-size: 1.2rem;
-}
-
-.acoes-cabecalho-painel {
-  gap: 16px;
-}
-
-.link-pagina-publica,
-.link-anuncio-publico {
-  font-size: 0.88rem;
-}
-
-.link-pagina-publica:hover,
-.link-anuncio-publico:hover {
-  text-decoration: underline;
-}
-
-.botao-sair,
-.botao-cadastrar-animal,
-.botao-cadastrar-vazio,
-.botao-tentar-novamente,
-.botao-gerenciar-animal,
-.botao-registrar-desaparecimento {
-  min-height: 40px;
-  padding: 0 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid #1565c0;
-  border-radius: 8px;
-  cursor: pointer;
-  font: inherit;
-  font-size: 0.86rem;
-  font-weight: 800;
-  text-align: center;
-  text-decoration: none;
-  transition: 160ms ease;
-}
-
-.botao-sair,
-.botao-gerenciar-animal {
-  color: #1565c0;
-  background: #ffffff;
-}
-
-.botao-sair:hover,
-.botao-gerenciar-animal:hover {
-  color: #ffffff;
-  background: #1565c0;
-}
-
-.botao-cadastrar-animal,
-.botao-cadastrar-vazio,
-.botao-tentar-novamente {
-  gap: 8px;
-  color: #ffffff;
-  background: #1565c0;
-}
-
-.botao-cadastrar-animal:hover,
-.botao-cadastrar-vazio:hover,
-.botao-tentar-novamente:hover {
-  background: #0d4f9b;
-  border-color: #0d4f9b;
-}
-
-.botao-registrar-desaparecimento {
-  color: #ffffff;
-  background: #ea580c;
-  border-color: #ea580c;
-}
-
-.botao-registrar-desaparecimento:hover {
-  background: #c2410c;
-  border-color: #c2410c;
-}
-
 .intro-painel {
   align-items: end;
-  margin-top: 54px;
+  justify-content: space-between;
   gap: 28px;
+}
+
+.conteudo-intro-painel {
+  max-width: 640px;
 }
 
 .tag-painel {
@@ -143,11 +50,97 @@
   line-height: 1.1;
 }
 
-.intro-painel p:last-child {
+.intro-painel p:not(.tag-painel) {
   max-width: 640px;
   margin: 12px 0 0;
   color: #64748b;
   line-height: 1.6;
+}
+
+.botao-cadastrar-animal,
+.botao-cadastrar-vazio,
+.botao-tentar-novamente,
+.botao-gerenciar-animal,
+.botao-registrar-desaparecimento {
+  min-height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.botao-cadastrar-animal {
+  gap: 8px;
+  color: #ffffff;
+  background: #1565c0;
+  box-shadow: 0 8px 18px rgb(21 101 192 / 18%);
+}
+
+.botao-cadastrar-animal:hover {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+  transform: translateY(-2px);
+}
+
+.botao-cadastrar-animal span {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.botao-cadastrar-vazio,
+.botao-tentar-novamente {
+  gap: 8px;
+  color: #ffffff;
+  background: #1565c0;
+}
+
+.botao-cadastrar-vazio:hover,
+.botao-tentar-novamente:hover {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+}
+
+.botao-gerenciar-animal {
+  color: #1565c0;
+  background: #ffffff;
+}
+
+.botao-gerenciar-animal:hover {
+  color: #ffffff;
+  background: #1565c0;
+}
+
+.botao-registrar-desaparecimento {
+  color: #ffffff;
+  background: #ea580c;
+  border-color: #ea580c;
+}
+
+.botao-registrar-desaparecimento:hover {
+  background: #c2410c;
+  border-color: #c2410c;
+}
+
+.botao-cadastrar-animal:focus-visible,
+.botao-cadastrar-vazio:focus-visible,
+.botao-tentar-novamente:focus-visible,
+.botao-gerenciar-animal:focus-visible,
+.botao-registrar-desaparecimento:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 28%);
+  outline-offset: 4px;
 }
 
 .grid-meus-animais {
@@ -166,6 +159,11 @@
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   box-shadow: 0 5px 16px rgb(15 23 42 / 6%);
+}
+
+.card-meu-animal-perdido {
+  border-color: #fed7aa;
+  box-shadow: 0 5px 18px rgb(234 88 12 / 10%);
 }
 
 .foto-meu-animal {
@@ -244,6 +242,20 @@
 
 .link-anuncio-publico {
   margin-top: 8px;
+  color: #1565c0;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.link-anuncio-publico:hover {
+  text-decoration: underline;
+}
+
+.link-anuncio-publico:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 28%);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .acoes-card-animal {
@@ -322,21 +334,6 @@
 @media (max-width: 640px) {
   .pagina-meus-animais {
     padding: 20px 18px 40px;
-  }
-
-  .cabecalho-painel {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .acoes-cabecalho-painel {
-    width: 100%;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .intro-painel {
-    margin-top: 40px;
   }
 
   .grid-meus-animais {
