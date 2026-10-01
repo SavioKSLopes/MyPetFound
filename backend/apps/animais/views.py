@@ -2,10 +2,12 @@ from io import BytesIO
 
 import qrcode
 from django.conf import settings
+from django.core import signing
 from django.db.models import Exists, OuterRef, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, viewsets, views
+from rest_framework.response import Response
 
 from apps.ocorrencias.models import Ocorrencia
 
@@ -108,6 +110,42 @@ class AnimalPerdidoPublicoDetalheView(generics.RetrieveAPIView):
         )
 
 
+class AnimalIdentificacaoPublicaView(views.APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, codigo):
+        try:
+            animal_id = signing.loads(
+                codigo,
+                salt="identificacao-animal-v1",
+            )
+        except signing.BadSignature:
+            return Response(
+                {
+                    "detail": (
+                        "Código de identificação inválido ou alterado."
+                    ),
+                },
+                status=404,
+            )
+
+        animal = get_object_or_404(
+            Animal,
+            pk=animal_id,
+        )
+
+        return Response(
+            {
+                "nome": animal.nome,
+                "especie": animal.get_especie_display(),
+                "raca": animal.raca,
+                "porte": animal.get_porte_display(),
+                "cor": animal.cor,
+                "foto": None,
+            }
+        )
+
+
 class AnimalQRCodeView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -124,7 +162,14 @@ class AnimalQRCodeView(views.APIView):
             "http://localhost:5173",
         ).rstrip("/")
 
-        url_publica = f"{frontend_url}/animais/{animal.id}"
+        codigo = signing.dumps(
+            animal.id,
+            salt="identificacao-animal-v1",
+        )
+
+        url_publica = (
+            f"{frontend_url}/identificacao/{codigo}"
+        )
 
         imagem = qrcode.make(url_publica)
 

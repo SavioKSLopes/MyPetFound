@@ -10,6 +10,7 @@ import Login from "./pages/Login/Login.jsx";
 import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos.jsx";
 import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
 import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
+import IdentificacaoAnimal from "./pages/IdentificacaoAnimal/IdentificacaoAnimal.jsx";
 
 import RotaProtegida from "./components/RotaProtegida";
 import { api } from "./services/api";
@@ -321,6 +322,11 @@ function App() {
       />
 
       <Route path="/entrar" element={<Login />} />
+
+      <Route
+        path="/identificacao/:codigo"
+        element={<IdentificacaoAnimal />}
+      />
 
       <Route element={<RotaProtegida />}>
         <Route

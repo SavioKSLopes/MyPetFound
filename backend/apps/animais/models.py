@@ -1,5 +1,6 @@
-from django.db import models
 from django.conf import settings
+from django.db import models
+
 
 class Animal(models.Model):
     tutor = models.ForeignKey(
@@ -8,6 +9,7 @@ class Animal(models.Model):
         related_name="animais",
         verbose_name="Tutor",
     )
+
     class Especie(models.TextChoices):
         CACHORRO = "CACHORRO", "Cachorro"
         GATO = "GATO", "Gato"
@@ -54,7 +56,10 @@ class Animal(models.Model):
     descricao = models.TextField(
         blank=True,
         verbose_name="Características e observações",
-        help_text="Ex.: mancha branca no peito, usa coleira azul, manca da pata traseira.",
+        help_text=(
+            "Ex.: mancha branca no peito, usa coleira azul, "
+            "manca da pata traseira."
+        ),
     )
 
     status = models.CharField(

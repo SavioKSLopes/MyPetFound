@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "apps.ocorrencias",
     "apps.avistamentos",
     "apps.usuarios",
+    "apps.comunicacoes",
 ]
 
 MIDDLEWARE = [
