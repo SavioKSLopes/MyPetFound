@@ -11,6 +11,12 @@ function IdentificacaoAnimal() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
 
+  const [mensagem, setMensagem] = useState("");
+  const [localizacaoTexto, setLocalizacaoTexto] = useState("");
+  const [enviandoMensagem, setEnviandoMensagem] = useState(false);
+  const [mensagemEnviada, setMensagemEnviada] = useState(false);
+  const [erroMensagem, setErroMensagem] = useState("");
+
   useEffect(() => {
     let ativo = true;
 
@@ -49,6 +55,55 @@ function IdentificacaoAnimal() {
       ativo = false;
     };
   }, [codigo]);
+
+  async function enviarMensagemAoTutor(event) {
+    event.preventDefault();
+
+    const textoMensagem = mensagem.trim();
+    const textoLocalizacao = localizacaoTexto.trim();
+
+    if (!textoMensagem) {
+      setErroMensagem("Escreva uma mensagem para o tutor.");
+      return;
+    }
+
+    if (!animal?.id) {
+      setErroMensagem(
+        "Não foi possível identificar o animal para enviar o aviso.",
+      );
+      return;
+    }
+
+    try {
+      setEnviandoMensagem(true);
+      setErroMensagem("");
+      setMensagemEnviada(false);
+
+      await api.post(
+        `/animais/${animal.id}/mensagens/`,
+        {
+          mensagem: textoMensagem,
+          localizacao_texto: textoLocalizacao,
+        },
+      );
+
+      setMensagem("");
+      setLocalizacaoTexto("");
+      setMensagemEnviada(true);
+    } catch (error) {
+      console.error("Erro ao enviar aviso:", error);
+
+      const dadosErro = error.response?.data;
+
+      setErroMensagem(
+        dadosErro?.mensagem?.[0] ||
+          dadosErro?.detalhe ||
+          "Não foi possível enviar o aviso. Tente novamente.",
+      );
+    } finally {
+      setEnviandoMensagem(false);
+    }
+  }
 
   return (
     <main className="pagina-identificacao-animal">
@@ -107,10 +162,62 @@ function IdentificacaoAnimal() {
                 </div>
               </dl>
 
-              <p className="aviso-identificacao-animal">
-                Esta página identifica o animal. Um meio seguro de
-                avisar o tutor será acrescentado em breve.
-              </p>
+              <section className="contato-tutor">
+                <h2>Você encontrou este animal?</h2>
+
+                <p>
+                  Envie um aviso ao tutor informando onde o animal foi visto
+                  ou encontrado.
+                </p>
+
+                <form onSubmit={enviarMensagemAoTutor}>
+                  <label htmlFor="mensagem">
+                    Mensagem
+                  </label>
+
+                  <textarea
+                    id="mensagem"
+                    value={mensagem}
+                    onChange={(event) => setMensagem(event.target.value)}
+                    placeholder="Ex.: Vi este animal perto da praça e ele parecia estar bem."
+                    maxLength={1000}
+                    required
+                  />
+
+                  <label htmlFor="localizacao">
+                    Local onde o animal foi visto
+                  </label>
+
+                  <input
+                    id="localizacao"
+                    type="text"
+                    value={localizacaoTexto}
+                    onChange={(event) => {
+                      setLocalizacaoTexto(event.target.value);
+                    }}
+                    placeholder="Ex.: Praça do Mercado, Guanambi - BA"
+                    maxLength={255}
+                  />
+
+                  {erroMensagem && (
+                    <p className="mensagem-erro" role="alert">
+                      {erroMensagem}
+                    </p>
+                  )}
+
+                  {mensagemEnviada && (
+                    <p className="mensagem-sucesso" role="status">
+                      Aviso enviado ao tutor com sucesso. Obrigado por ajudar!
+                    </p>
+                  )}
+
+                  <button type="submit" disabled={enviandoMensagem}>
+                    {enviandoMensagem
+                      ? "Enviando..."
+                      : "Enviar aviso ao tutor"}
+                  </button>
+                </form>
+              </section>
             </div>
           </>
         )}

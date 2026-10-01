@@ -9,8 +9,7 @@
 .card-identificacao-animal {
   width: 100%;
   max-width: 860px;
-  margin-right: auto;
-  margin-left: auto;
+  margin: 0 auto;
 }
 
 .logo-identificacao-animal {
@@ -24,30 +23,30 @@
 }
 
 .card-identificacao-animal {
-  margin-top: 50px;
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  grid-template-columns: 0.9fr 1.1fr;
+  margin-top: 50px;
   overflow: hidden;
-  background: #ffffff;
+  background: #fff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   box-shadow: 0 5px 16px rgb(15 23 42 / 6%);
 }
 
 .foto-identificacao-animal {
-  min-height: 340px;
   display: grid;
-  place-items: center;
+  min-height: 340px;
   overflow: hidden;
+  place-items: center;
   color: #1565c0;
   background: #dce8f6;
   font-size: 5rem;
 }
 
 .foto-identificacao-animal img {
+  display: block;
   width: 100%;
   height: 100%;
-  display: block;
   object-fit: cover;
 }
 
@@ -99,20 +98,109 @@
   overflow-wrap: anywhere;
 }
 
-.aviso-identificacao-animal {
-  padding: 14px;
+.contato-tutor {
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.contato-tutor h2 {
+  margin: 0 0 8px;
+  color: #0f172a;
+  font-size: 1.35rem;
+}
+
+.contato-tutor > p {
+  margin: 0 0 18px;
   color: #475569;
-  background: #eff6ff;
-  border-radius: 10px;
+  line-height: 1.5;
+}
+
+.contato-tutor form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contato-tutor label {
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.contato-tutor input,
+.contato-tutor textarea {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 11px 12px;
+  color: #1e293b;
+  background: #fff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font: inherit;
+  line-height: 1.4;
+}
+
+.contato-tutor textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.contato-tutor input:focus,
+.contato-tutor textarea:focus {
+  outline: 2px solid #93c5fd;
+  border-color: #1565c0;
+}
+
+.contato-tutor button {
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px 16px;
+  color: #fff;
+  background: #1565c0;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.contato-tutor button:hover {
+  background: #0d47a1;
+}
+
+.contato-tutor button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.mensagem-erro,
+.mensagem-sucesso {
+  margin: 8px 0 0;
+  line-height: 1.4;
+}
+
+.mensagem-erro {
+  color: #b91c1c;
+}
+
+.mensagem-sucesso {
+  color: #15803d;
+  font-weight: 700;
 }
 
 @media (max-width: 680px) {
+  .pagina-identificacao-animal {
+    padding: 20px 14px 40px;
+  }
+
   .card-identificacao-animal {
     grid-template-columns: 1fr;
+    margin-top: 32px;
   }
 
   .foto-identificacao-animal {
-    min-height: 250px;
+    min-height: 240px;
   }
 
   .dados-identificacao-animal {
