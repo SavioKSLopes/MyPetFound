@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import LayoutPublico from "../../components/layout/LayoutPublico";
 import { api } from "../../services/api.js";
 import "./Login.css";
 
@@ -51,13 +52,8 @@ function Login() {
   }
 
   return (
-    <main className="pagina-login">
+    <LayoutPublico className="pagina-login" mostrarEntrar={false}>
       <section className="painel-login">
-        <Link className="logo-login" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
         <div className="cabecalho-login">
           <p className="tag-login">
             Área do tutor
@@ -129,7 +125,7 @@ function Login() {
           ← Voltar para a página inicial
         </Link>
       </section>
-    </main>
+    </LayoutPublico>
   );
 }
 

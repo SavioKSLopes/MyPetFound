@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
+import LayoutPublico from "./components/layout/LayoutPublico.jsx";
+import AnimalCard from "./components/animal/AnimalCard.jsx";
+import AnimalImagem from "./components/animal/AnimalImagem.jsx";
+import AnimalStatus from "./components/animal/AnimalStatus.jsx";
+import EstadoTela from "./components/ui/EstadoTela.jsx";
 import RotaProtegida from "./components/RotaProtegida.jsx";
-import { api } from "./services/api.js";
+import { buscarAnimais } from "./services/animaisService.js";
 
 import BuscarAnimais from "./pages/BuscarAnimais/BuscarAnimais.jsx";
 import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
@@ -26,9 +31,7 @@ function Home() {
   useEffect(() => {
     async function carregarAnimaisPerdidos() {
       try {
-        const response = await api.get(
-          "/publico/animais-perdidos/",
-        );
+        const response = await buscarAnimais();
 
         const dados = Array.isArray(response.data)
           ? response.data
@@ -52,34 +55,7 @@ function Home() {
 
   return (
     <div className="pagina">
-      <header className="cabecalho">
-        <Link className="logo" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <nav className="navegacao" aria-label="Navegação principal">
-          <Link to="/buscar">Buscar pets</Link>
-
-          <a href="#como-funciona">Como funciona</a>
-
-          <Link
-            className="botao botao-secundario"
-            to="/entrar"
-          >
-            Entrar
-          </Link>
-
-          <Link
-            className="botao botao-urgencia"
-            to="/meus-animais"
-          >
-            Meu pet desapareceu
-          </Link>
-        </nav>
-      </header>
-
-      <main>
+      <LayoutPublico className="pagina-inicial">
         <section className="hero">
           <p className="tag">
             Uma rede de ajuda para Guanambi-BA
@@ -160,19 +136,19 @@ function Home() {
           </div>
 
           {carregando && (
-            <p className="mensagem">
-              Carregando animais perdidos...
-            </p>
+            <EstadoTela tipo="carregando" className="mensagem">
+              <p>Carregando animais perdidos...</p>
+            </EstadoTela>
           )}
 
           {!carregando && erro && (
-            <p className="mensagem mensagem-erro">
+            <EstadoTela tipo="erro" className="mensagem mensagem-erro">
               {erro}
-            </p>
+            </EstadoTela>
           )}
 
           {!carregando && !erro && animais.length === 0 && (
-            <div className="estado-vazio">
+            <EstadoTela tipo="vazio" className="estado-vazio">
               <span aria-hidden="true">🐾</span>
 
               <h3>Nenhum animal perdido no momento</h3>
@@ -181,29 +157,20 @@ function Home() {
                 Isso é uma boa notícia. Quando houver um anúncio ativo,
                 ele aparecerá aqui.
               </p>
-            </div>
+            </EstadoTela>
           )}
 
           {!carregando && !erro && animais.length > 0 && (
             <div className="grid-animais">
               {animais.map((animal) => (
-                <article className="card-animal" key={animal.id}>
-                  <div className="foto-placeholder">
-                    {animal.foto ? (
-                      <img
-                        src={animal.foto}
-                        alt={`Foto de ${animal.nome}`}
-                      />
-                    ) : (
-                      <span aria-hidden="true">🐾</span>
-                    )}
-                  </div>
+                <AnimalCard animal={animal} variant="publico" className="card-animal" key={animal.id}>
+                  <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-placeholder" />
 
                   <div className="conteudo-card">
-                    <span className="status status-perdido">
+                    <AnimalStatus status="PERDIDO" statusNome="Perdido" className="status status-perdido">
                       <span aria-hidden="true">⚠</span>
                       Perdido
-                    </span>
+                    </AnimalStatus>
 
                     <h3>{animal.nome}</h3>
 
@@ -224,7 +191,7 @@ function Home() {
                       Ver detalhes
                     </Link>
                   </div>
-                </article>
+                </AnimalCard>
               ))}
             </div>
           )}
@@ -282,7 +249,7 @@ function Home() {
             </p>
           </div>
         </section>
-      </main>
+      </LayoutPublico>
 
       <footer className="rodape">
         <p>

@@ -1,12 +1,13 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+import useAuth from "../hooks/useAuth.js";
 
 
 function RotaProtegida() {
   const localizacao = useLocation();
 
-  const token = localStorage.getItem("mypetfound_token");
+  const { temToken } = useAuth();
 
-  if (!token) {
+  if (!temToken) {
     return (
       <Navigate
         to="/entrar"

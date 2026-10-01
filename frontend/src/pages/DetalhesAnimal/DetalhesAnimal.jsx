@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import ReportarAvistamento from "../ReportarAvistamento/ReportarAvistamento.jsx";
-import { api } from "../../services/api.js";
+import LayoutPublico from "../../components/layout/LayoutPublico";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import AnimalStatus from "../../components/animal/AnimalStatus";
+import Card from "../../components/ui/Card";
+import EstadoTela from "../../components/ui/EstadoTela";
+import { obterAnimalPublico } from "../../services/animaisService.js";
 import "./DetalhesAnimal.css";
 
 function DetalhesAnimal() {
@@ -16,9 +21,7 @@ function DetalhesAnimal() {
   useEffect(() => {
     async function carregarAnimal() {
       try {
-        const response = await api.get(
-          `/publico/animais-perdidos/${id}/`,
-        );
+        const response = await obterAnimalPublico(id);
 
         setAnimal(response.data);
       } catch (error) {
@@ -37,18 +40,18 @@ function DetalhesAnimal() {
 
   if (carregando) {
     return (
-      <main className="pagina-detalhes">
-        <p className="mensagem-detalhes">
+      <LayoutPublico className="pagina-detalhes">
+        <EstadoTela tipo="carregando" className="mensagem-detalhes">
           Carregando informações do animal...
-        </p>
-      </main>
+        </EstadoTela>
+      </LayoutPublico>
     );
   }
 
   if (erro || !animal) {
     return (
-      <main className="pagina-detalhes">
-        <section className="erro-detalhes">
+      <LayoutPublico className="pagina-detalhes">
+        <EstadoTela tipo="erro" className="erro-detalhes">
           <h1>Não foi possível abrir o anúncio</h1>
 
           <p>
@@ -59,23 +62,18 @@ function DetalhesAnimal() {
           <Link className="botao-voltar" to="/">
             Voltar para a página inicial
           </Link>
-        </section>
-      </main>
+        </EstadoTela>
+      </LayoutPublico>
     );
   }
 
   return (
-    <main className="pagina-detalhes">
-      <header className="cabecalho-detalhes">
-        <Link className="logo-detalhes" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <Link className="voltar-link" to="/">
+    <LayoutPublico className="pagina-detalhes">
+      <div className="acoes-contextuais-detalhes">
+        <Link className="voltar-link" to="/buscar">
           ← Voltar para os animais perdidos
         </Link>
-      </header>
+      </div>
 
       <section className="banner-perdido">
         <span aria-hidden="true">⚠️</span>
@@ -86,22 +84,13 @@ function DetalhesAnimal() {
       </section>
 
       <section className="conteudo-detalhes">
-        <div className="foto-detalhes">
-          {animal.foto ? (
-            <img
-              src={animal.foto}
-              alt={`Foto de ${animal.nome}`}
-            />
-          ) : (
-            <span aria-hidden="true">🐾</span>
-          )}
-        </div>
+        <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-detalhes" />
 
         <div className="informacoes-detalhes">
-          <span className="status status-perdido">
+          <AnimalStatus status="PERDIDO" statusNome="Perdido" className="status">
             <span aria-hidden="true">⚠</span>
             Perdido
-          </span>
+          </AnimalStatus>
 
           <h1>{animal.nome}</h1>
 
@@ -109,7 +98,7 @@ function DetalhesAnimal() {
             {animal.especie_nome} · {animal.porte_nome}
           </p>
 
-          <section className="card-detalhes">
+          <Card as="section" className="card-detalhes">
             <h2>Características</h2>
 
             <dl>
@@ -133,14 +122,14 @@ function DetalhesAnimal() {
                 <dd>{animal.cor || "Não informada"}</dd>
               </div>
             </dl>
-          </section>
+          </Card>
 
           {animal.descricao && (
-            <section className="card-detalhes">
+            <Card as="section" className="card-detalhes">
               <h2>Informações adicionais</h2>
 
               <p>{animal.descricao}</p>
-            </section>
+            </Card>
           )}
 
           <section className="card-avistamento">
@@ -175,7 +164,7 @@ function DetalhesAnimal() {
           aoFechar={() => setFormularioAberto(false)}
         />
       )}
-    </main>
+    </LayoutPublico>
   );
 }
 

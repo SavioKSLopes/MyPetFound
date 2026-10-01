@@ -1,0 +1,114 @@
+.cabecalho-publico {
+  width: 100%;
+  max-width: 1180px;
+  min-height: 70px;
+  margin: 0 auto 34px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-grande);
+  box-shadow: var(--sombra-suave);
+}
+
+.logo-publica {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--cor-texto);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.icone-logo-publica {
+  width: 34px;
+  height: 34px;
+  display: inline-grid;
+  place-items: center;
+  color: #ffffff;
+  background: var(--cor-primaria);
+  border-radius: 10px;
+  font-size: 1.05rem;
+}
+
+.navegacao-publica {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.link-navegacao-publica {
+  min-height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.link-navegacao-publica:hover,
+.link-navegacao-publica-ativo {
+  color: var(--cor-primaria-escura);
+  background: #eff6ff;
+}
+
+.botao-entrar-publico {
+  min-height: 38px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  background: var(--cor-primaria);
+  border-radius: var(--raio-pequeno);
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.botao-entrar-publico:hover {
+  background: var(--cor-primaria-escura);
+}
+
+.cabecalho-publico a:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 28%);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .cabecalho-publico {
+    min-height: auto;
+    padding: 14px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .navegacao-publica {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .link-navegacao-publica,
+  .botao-entrar-publico {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .navegacao-publica {
+    grid-template-columns: 1fr;
+  }
+}

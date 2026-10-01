@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-import CabecalhoTutor from "../../components/CabecalhoTutor/CabecalhoTutor";
-import { api } from "../../services/api.js";
+import AnimalCard from "../../components/animal/AnimalCard";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import AnimalStatus from "../../components/animal/AnimalStatus";
+import LayoutTutor from "../../components/layout/LayoutTutor";
+import EstadoTela from "../../components/ui/EstadoTela";
+import SecaoCabecalho from "../../components/ui/SecaoCabecalho";
+import { animalEstaDesaparecido, obterNomeEspecie, obterNomePorte } from "../../utils/animal.js";
+import useAuth from "../../hooks/useAuth.js";
+import { listarMeusAnimais } from "../../services/animaisService.js";
 import "./MeusAnimais.css";
 
 function MeusAnimais() {
-  const navegar = useNavigate();
+  const { sair } = useAuth();
 
   const [animais, setAnimais] = useState([]);
   const [carregando, setCarregando] = useState(true);
@@ -19,18 +26,14 @@ function MeusAnimais() {
       setErro("");
 
       try {
-        const response = await api.get("/animais/");
+        const response = await listarMeusAnimais();
 
         setAnimais(response.data);
       } catch (error) {
         console.error("Erro ao carregar animais:", error);
 
         if (error.response?.status === 401) {
-          localStorage.removeItem("mypetfound_token");
-
-          navegar("/entrar", {
-            replace: true,
-          });
+          sair("/entrar");
 
           return;
         }
@@ -45,53 +48,36 @@ function MeusAnimais() {
     }
 
     carregarAnimais();
-  }, [navegar, recarregar]);
-
-  function animalEstaDesaparecido(animal) {
-    const status = String(animal.status || "").toUpperCase();
-
-    return (
-      animal.desaparecido === true ||
-      status === "PERDIDO" ||
-      status === "DESAPARECIDO"
-    );
-  }
+  }, [sair, recarregar]);
 
   return (
-    <main className="pagina-meus-animais">
-      <CabecalhoTutor />
+    <LayoutTutor className="pagina-meus-animais">
 
-      <section className="intro-painel">
-        <div className="conteudo-intro-painel">
-          <p className="tag-painel">Área do tutor</p>
-
-          <h1>Meus animais</h1>
-
-          <p>
-            Cadastre seus pets, acompanhe ocorrências e veja os avistamentos
-            recebidos pela comunidade.
-          </p>
-        </div>
-
-        <Link
-          className="botao-cadastrar-animal"
-          to="/meus-animais/novo"
-        >
-          <span aria-hidden="true">+</span>
-          Cadastrar animal
-        </Link>
-      </section>
+      <SecaoCabecalho
+        etiqueta="Área do tutor"
+        titulo="Meus animais"
+        tituloAs="h1"
+        descricao="Cadastre seus pets, acompanhe ocorrências e veja os avistamentos recebidos pela comunidade."
+        className="intro-painel"
+        conteudoClassName="conteudo-intro-painel"
+        etiquetaClassName="tag-painel"
+        acao={(
+          <Link className="botao-cadastrar-animal" to="/meus-animais/novo">
+            <span aria-hidden="true">+</span>
+            Cadastrar animal
+          </Link>
+        )}
+      />
 
       {carregando && (
-        <section className="estado-painel">
+        <EstadoTela tipo="carregando" className="estado-painel">
           <span className="carregador" aria-hidden="true" />
-
           <p>Carregando seus animais...</p>
-        </section>
+        </EstadoTela>
       )}
 
       {!carregando && erro && (
-        <section className="estado-painel estado-erro">
+        <EstadoTela tipo="erro" className="estado-painel estado-erro">
           <span aria-hidden="true">⚠️</span>
 
           <h2>Não foi possível carregar seus animais</h2>
@@ -105,11 +91,11 @@ function MeusAnimais() {
           >
             Tentar novamente
           </button>
-        </section>
+        </EstadoTela>
       )}
 
       {!carregando && !erro && animais.length === 0 && (
-        <section className="estado-painel estado-vazio-painel">
+        <EstadoTela tipo="vazio" className="estado-painel estado-vazio-painel">
           <span aria-hidden="true">🐾</span>
 
           <h2>Você ainda não cadastrou nenhum animal</h2>
@@ -125,7 +111,7 @@ function MeusAnimais() {
           >
             Cadastrar meu primeiro animal
           </Link>
-        </section>
+        </EstadoTela>
       )}
 
       {!carregando && !erro && animais.length > 0 && (
@@ -134,39 +120,30 @@ function MeusAnimais() {
             const desaparecido = animalEstaDesaparecido(animal);
 
             return (
-              <article
+              <AnimalCard
+                animal={animal}
+                variant="tutor"
                 className={`card-meu-animal${
                   desaparecido ? " card-meu-animal-perdido" : ""
                 }`}
                 key={animal.id}
               >
-                <div className="foto-meu-animal">
-                  {animal.foto ? (
-                    <img
-                      src={animal.foto}
-                      alt={`Foto de ${animal.nome}`}
-                    />
-                  ) : (
-                    <span aria-hidden="true">🐾</span>
-                  )}
-                </div>
+                <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-meu-animal" />
 
                 <div className="conteudo-meu-animal">
                   <div className="cabecalho-card-animal">
-                    <span
-                      className={`status-painel status-${(
-                        animal.status || "CADASTRADO"
-                      ).toLowerCase()}`}
-                    >
-                      {animal.status_nome || animal.status || "Cadastrado"}
-                    </span>
+                    <AnimalStatus
+                      status={animal.status}
+                      statusNome={animal.status_nome}
+                      desaparecido={desaparecido}
+                      className="status-painel"
+                    />
                   </div>
 
                   <h2>{animal.nome}</h2>
 
                   <p className="tipo-meu-animal">
-                    {animal.especie_nome || animal.especie} ·{" "}
-                    {animal.porte_nome || animal.porte}
+                    {obterNomeEspecie(animal)} · {obterNomePorte(animal)}
                   </p>
 
                   <p className="detalhes-meu-animal">
@@ -201,12 +178,12 @@ function MeusAnimais() {
                     </Link>
                   </div>
                 </div>
-              </article>
+              </AnimalCard>
             );
           })}
         </section>
       )}
-    </main>
+    </LayoutTutor>
   );
 }
 

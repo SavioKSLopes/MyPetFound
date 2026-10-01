@@ -5,30 +5,12 @@
   background: #f8fafc;
 }
 
-.cabecalho-editar-animal,
 .cabecalho-formulario-editar,
 .formulario-editar-animal,
 .estado-editar-animal {
   width: 100%;
   max-width: 980px;
   margin-inline: auto;
-}
-
-.cabecalho-editar-animal {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.logo-editar-animal {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.2rem;
-  font-weight: 850;
-  text-decoration: none;
 }
 
 .link-voltar-editar {
@@ -333,11 +315,6 @@
 @media (max-width: 560px) {
   .pagina-editar-animal {
     padding: 20px 18px 40px;
-  }
-
-  .cabecalho-editar-animal {
-    align-items: flex-start;
-    flex-direction: column;
   }
 
   .cabecalho-formulario-editar {

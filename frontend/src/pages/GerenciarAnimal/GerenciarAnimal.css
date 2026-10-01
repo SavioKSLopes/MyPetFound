@@ -5,7 +5,6 @@
   background: #f8fafc;
 }
 
-.cabecalho-gerenciar,
 .titulo-gerenciar,
 .grid-gerenciar-animal,
 .secao-ocorrencias-gerenciar,
@@ -16,29 +15,6 @@
   max-width: 1180px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.cabecalho-gerenciar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.logo-gerenciar {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.2rem;
-  font-weight: 850;
-  text-decoration: none;
-}
-
-.acoes-cabecalho-gerenciar {
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 .link-voltar-gerenciar {
@@ -473,6 +449,13 @@
   object-fit: cover;
 }
 
+.foto-avistamento img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
 .foto-avistamento-sem-imagem {
   display: grid;
   place-items: center;
@@ -646,17 +629,6 @@
     padding: 20px 18px 42px;
   }
 
-  .cabecalho-gerenciar {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .acoes-cabecalho-gerenciar {
-    width: 100%;
-    justify-content: space-between;
-  }
-
   .titulo-gerenciar {
     align-items: flex-start;
     flex-direction: column;
@@ -702,10 +674,6 @@
 }
 
 @media (max-width: 420px) {
-  .acoes-cabecalho-gerenciar {
-    align-items: flex-start;
-    flex-direction: column;
-  }
 
   .botao-sair-gerenciar {
     width: 100%;

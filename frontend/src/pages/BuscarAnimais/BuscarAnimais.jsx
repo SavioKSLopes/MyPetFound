@@ -1,7 +1,15 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { api } from "../../services/api.js";
+
+import AnimalCard from "../../components/animal/AnimalCard";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import AnimalStatus from "../../components/animal/AnimalStatus";
+import LayoutPublico from "../../components/layout/LayoutPublico";
+import EstadoTela from "../../components/ui/EstadoTela";
+import { buscarAnimais as buscarAnimaisService } from "../../services/animaisService.js";
+import { obterNomeEspecie, obterNomePorte } from "../../utils/animal.js";
+import { formatarData } from "../../utils/formatadores.js";
 import "./BuscarAnimais.css";
 
 const filtrosIniciais = {
@@ -21,6 +29,8 @@ function BuscarAnimais() {
 
   useEffect(() => {
     carregarAnimais();
+    // A busca inicial é intencional; mudanças em filtros não disparam nova busca.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   async function carregarAnimais(filtrosAtuais = filtros) {
@@ -36,12 +46,7 @@ function BuscarAnimais() {
         }
       });
 
-      const resposta = await api.get(
-        "/publico/animais-perdidos/",
-        {
-          params,
-        },
-      );
+      const resposta = await buscarAnimaisService(params);
 
       const dados = Array.isArray(resposta.data)
         ? resposta.data
@@ -82,37 +87,8 @@ function BuscarAnimais() {
     carregarAnimais(filtrosIniciais);
   }
 
-  function formatarData(dataHora) {
-    if (!dataHora) {
-      return "Data não informada";
-    }
-
-    return new Date(dataHora).toLocaleDateString("pt-BR", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-    });
-  }
-
   return (
-    <main className="pagina-buscar-animais">
-      <header className="cabecalho-buscar-animais">
-        <Link className="logo-buscar-animais" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <nav
-          className="navegacao-buscar-animais"
-          aria-label="Navegação principal"
-        >
-          <Link to="/">Início</Link>
-
-          <Link to="/mapa-animais-perdidos">
-            Ver mapa
-          </Link>
-        </nav>
-      </header>
+    <LayoutPublico className="pagina-buscar-animais">
 
       <section className="introducao-buscar-animais">
         <p className="tag-buscar-animais">
@@ -259,20 +235,20 @@ function BuscarAnimais() {
         </div>
 
         {carregando && (
-          <div className="estado-busca-animais">
+          <EstadoTela tipo="carregando" className="estado-busca-animais">
             <span
               className="carregador-buscar-animais"
               aria-hidden="true"
             />
 
             <p>Carregando anúncios de animais perdidos...</p>
-          </div>
+          </EstadoTela>
         )}
 
         {!carregando && erro && (
-          <div
+          <EstadoTela
+            tipo="erro"
             className="estado-busca-animais estado-erro-busca"
-            role="alert"
           >
             <span aria-hidden="true">⚠️</span>
 
@@ -289,11 +265,11 @@ function BuscarAnimais() {
             >
               Tentar novamente
             </button>
-          </div>
+          </EstadoTela>
         )}
 
         {!carregando && !erro && animais.length === 0 && (
-          <div className="estado-busca-animais">
+          <EstadoTela tipo="vazio" className="estado-busca-animais">
             <span aria-hidden="true">🐾</span>
 
             <div>
@@ -312,30 +288,21 @@ function BuscarAnimais() {
             >
               Limpar filtros
             </button>
-          </div>
+          </EstadoTela>
         )}
 
         {!carregando && !erro && animais.length > 0 && (
           <div className="grid-resultados-animais">
             {animais.map((animal) => (
-              <article
+              <AnimalCard
+                animal={animal}
+                variant="publico"
                 className="card-resultado-animal"
                 key={animal.id}
               >
-                <div className="foto-resultado-animal">
-                  {animal.foto ? (
-                    <img
-                      src={animal.foto}
-                      alt={`Foto de ${animal.nome}`}
-                    />
-                  ) : (
-                    <span aria-hidden="true">🐾</span>
-                  )}
-
-                  <span className="selo-perdido-animal">
-                    Desaparecido
-                  </span>
-                </div>
+                <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-resultado-animal">
+                  <AnimalStatus status="PERDIDO" statusNome="Desaparecido" className="selo-perdido-animal" />
+                </AnimalImagem>
 
                 <div className="conteudo-resultado-animal">
                   <div className="topo-resultado-animal">
@@ -343,8 +310,7 @@ function BuscarAnimais() {
                       <h3>{animal.nome}</h3>
 
                       <p>
-                        {animal.especie_nome || animal.especie} ·{" "}
-                        {animal.porte_nome || animal.porte}
+                        {obterNomeEspecie(animal)} · {obterNomePorte(animal)}
                       </p>
                     </div>
 
@@ -385,7 +351,7 @@ function BuscarAnimais() {
                     Ver detalhes e ajudar
                   </Link>
                 </div>
-              </article>
+              </AnimalCard>
             ))}
           </div>
         )}
@@ -399,7 +365,7 @@ function BuscarAnimais() {
           envie um avistamento para ajudar o tutor a localizá-lo.
         </p>
       </section>
-    </main>
+    </LayoutPublico>
   );
 }
 

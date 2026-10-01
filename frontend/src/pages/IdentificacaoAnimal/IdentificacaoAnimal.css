@@ -5,21 +5,10 @@
   background: #f8fafc;
 }
 
-.cabecalho-identificacao-animal,
 .card-identificacao-animal {
   width: 100%;
   max-width: 860px;
   margin: 0 auto;
-}
-
-.logo-identificacao-animal {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.2rem;
-  font-weight: 800;
-  text-decoration: none;
 }
 
 .card-identificacao-animal {

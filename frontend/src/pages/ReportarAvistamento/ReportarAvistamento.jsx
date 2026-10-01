@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { api } from "../../services/api.js";
+import { criarAvistamento } from "../../services/avistamentosService.js";
 import "./ReportarAvistamento.css";
 
 function ReportarAvistamento({ animal, aoFechar }) {
@@ -42,15 +42,7 @@ function ReportarAvistamento({ animal, aoFechar }) {
     }
 
     try {
-      await api.post(
-        "/publico/avistamentos/",
-        dados,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      await criarAvistamento(dados);
 
       setEnviado(true);
     } catch (error) {

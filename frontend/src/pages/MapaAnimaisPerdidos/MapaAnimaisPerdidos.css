@@ -5,30 +5,12 @@
   background: #f8fafc;
 }
 
-.cabecalho-mapa-animais,
 .cabecalho-conteudo-mapa,
 .card-mapa-animais,
 .estado-mapa {
   max-width: 1180px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.cabecalho-mapa-animais {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.logo-mapa-animais {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.2rem;
-  font-weight: 850;
-  text-decoration: none;
 }
 
 .link-voltar-mapa {
@@ -321,12 +303,6 @@
 @media (max-width: 640px) {
   .pagina-mapa-animais {
     padding: 20px 18px 40px;
-  }
-
-  .cabecalho-mapa-animais {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
   }
 
   .cabecalho-conteudo-mapa {

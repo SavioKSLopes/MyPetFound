@@ -1,8 +1,7 @@
 .pagina-login {
   min-height: 100vh;
   padding: 24px;
-  display: grid;
-  place-items: center;
+  display: block;
   background:
     radial-gradient(
       circle at top right,
@@ -13,6 +12,7 @@
 }
 
 .painel-login {
+  margin: 30px auto;
   width: min(100%, 440px);
   padding: 34px;
   background: #ffffff;
@@ -21,16 +21,6 @@
   box-shadow:
     0 0 0 5px rgb(21 101 192 / 8%),
     0 22px 55px rgb(15 23 42 / 14%);
-}
-
-.logo-login {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.18rem;
-  font-weight: 850;
-  text-decoration: none;
 }
 
 .cabecalho-login {

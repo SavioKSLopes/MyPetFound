@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { api } from "../../services/api.js";
+
+import LayoutTutor from "../../components/layout/LayoutTutor";
+import { registrarOcorrencia } from "../../services/ocorrenciasService.js";
 import "./RegistrarDesaparecimento.css";
 import SeletorLocalizacao from "../../components/SeletorLocalizacao.jsx";
+import useAuth from "../../hooks/useAuth.js";
 
 
 function RegistrarDesaparecimento() {
   const { id } = useParams();
   const navegar = useNavigate();
+  const { sair } = useAuth();
 
   const agora = new Date();
   const dataLocal = new Date(
@@ -45,7 +49,7 @@ function RegistrarDesaparecimento() {
     }
 
     try {
-      await api.post("/ocorrencias/", dados);
+      await registrarOcorrencia(dados);
 
       navegar(`/meus-animais/${id}`, {
         replace: true,
@@ -54,11 +58,7 @@ function RegistrarDesaparecimento() {
       console.error("Erro ao registrar desaparecimento:", error);
 
       if (error.response?.status === 401) {
-        localStorage.removeItem("mypetfound_token");
-
-        navegar("/entrar", {
-          replace: true,
-        });
+        sair("/entrar");
 
         return;
       }
@@ -86,23 +86,7 @@ function RegistrarDesaparecimento() {
   }
 
   return (
-    <main className="pagina-registrar-desaparecimento">
-      <header className="cabecalho-registrar-desaparecimento">
-        <Link
-          className="logo-registrar-desaparecimento"
-          to="/"
-        >
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <Link
-          className="voltar-gerenciamento"
-          to={`/meus-animais/${id}`}
-        >
-          ← Voltar para o animal
-        </Link>
-      </header>
+    <LayoutTutor className="pagina-registrar-desaparecimento">
 
       <section className="conteudo-registrar-desaparecimento">
         <aside className="aviso-desaparecimento">
@@ -228,7 +212,7 @@ function RegistrarDesaparecimento() {
           </form>
         </section>
       </section>
-    </main>
+    </LayoutTutor>
   );
 }
 

@@ -2,34 +2,15 @@
   min-height: 100vh;
   padding: 32px max(18px, 7vw) 56px;
   color: #1a1a1a;
-  background: #faf7f2;
+  background: #f8fafc;
 }
 
-.cabecalho-detalhes,
 .banner-perdido,
 .conteudo-detalhes {
   width: 100%;
   max-width: 1180px;
   margin-right: auto;
   margin-left: auto;
-}
-
-.cabecalho-detalhes {
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.logo-detalhes {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.25rem;
-  font-weight: 800;
-  text-decoration: none;
 }
 
 .voltar-link {
@@ -41,6 +22,12 @@
 
 .voltar-link:hover {
   text-decoration: underline;
+}
+
+.acoes-contextuais-detalhes {
+  width: 100%;
+  max-width: 1180px;
+  margin: -18px auto 20px;
 }
 
 .banner-perdido {
@@ -278,12 +265,6 @@
 @media (max-width: 680px) {
   .pagina-detalhes {
     padding: 20px 18px 40px;
-  }
-
-  .cabecalho-detalhes {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 12px;
   }
 
   .banner-perdido {

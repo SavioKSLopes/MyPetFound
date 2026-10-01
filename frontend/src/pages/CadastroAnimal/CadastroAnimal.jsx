@@ -1,12 +1,18 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { api } from "../../services/api.js";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import CamposAnimal from "../../components/animal/CamposAnimal";
+import LayoutTutor from "../../components/layout/LayoutTutor";
+import Card from "../../components/ui/Card";
+import useAuth from "../../hooks/useAuth.js";
+import { criarAnimal } from "../../services/animaisService.js";
 import "./CadastroAnimal.css";
 
 
 function CadastroAnimal() {
   const navegar = useNavigate();
+  const { sair } = useAuth();
 
   const [nome, setNome] = useState("");
   const [especie, setEspecie] = useState("");
@@ -36,6 +42,11 @@ function CadastroAnimal() {
     }
   }
 
+  function atualizarCampo(campo, valor) {
+    const setters = { nome: setNome, especie: setEspecie, raca: setRaca, porte: setPorte, cor: setCor, descricao: setDescricao };
+    setters[campo](valor);
+  }
+
   async function cadastrarAnimal(event) {
     event.preventDefault();
 
@@ -56,11 +67,7 @@ function CadastroAnimal() {
     }
 
     try {
-      await api.post("/animais/", dados, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await criarAnimal(dados);
 
       navegar("/meus-animais", {
         replace: true,
@@ -69,11 +76,7 @@ function CadastroAnimal() {
       console.error("Erro ao cadastrar animal:", error);
 
       if (error.response?.status === 401) {
-        localStorage.removeItem("mypetfound_token");
-
-        navegar("/entrar", {
-          replace: true,
-        });
+        sair("/entrar");
 
         return;
       }
@@ -101,17 +104,12 @@ function CadastroAnimal() {
   }
 
   return (
-    <main className="pagina-cadastro-animal">
-      <header className="cabecalho-cadastro-animal">
-        <Link className="logo-cadastro-animal" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
+    <LayoutTutor className="pagina-cadastro-animal">
+      <div className="acoes-contextuais-cadastro">
         <Link className="voltar-painel" to="/meus-animais">
           ← Voltar para meus animais
         </Link>
-      </header>
+      </div>
 
       <section className="conteudo-cadastro-animal">
         <div className="introducao-cadastro-animal">
@@ -138,7 +136,7 @@ function CadastroAnimal() {
           </div>
         </div>
 
-        <section className="card-cadastro-animal">
+        <Card as="section" className="card-cadastro-animal">
           <form onSubmit={cadastrarAnimal}>
             <div className="cabecalho-formulario-animal">
               <h2>Dados do pet</h2>
@@ -154,16 +152,12 @@ function CadastroAnimal() {
               </label>
 
               <div className="area-upload-foto">
-                <div className="preview-foto-animal">
-                  {fotoPreview ? (
-                    <img
-                      src={fotoPreview}
-                      alt="Prévia da foto selecionada"
-                    />
-                  ) : (
-                    <span aria-hidden="true">🐾</span>
-                  )}
-                </div>
+                <AnimalImagem
+                  src={fotoPreview}
+                  nome={nome || "selecionada"}
+                  alt="Prévia da foto selecionada"
+                  className="preview-foto-animal"
+                />
 
                 <div className="conteudo-upload-foto">
                   <label
@@ -188,104 +182,11 @@ function CadastroAnimal() {
               </div>
             </div>
 
-            <div className="grid-campos-animal">
-              <div className="campo-cadastro-animal campo-largo">
-                <label htmlFor="nome">
-                  Nome do animal *
-                </label>
-
-                <input
-                  id="nome"
-                  type="text"
-                  value={nome}
-                  onChange={(event) => setNome(event.target.value)}
-                  placeholder="Ex.: Luna"
-                  maxLength="100"
-                  required
-                />
-              </div>
-
-              <div className="campo-cadastro-animal">
-                <label htmlFor="especie">
-                  Espécie *
-                </label>
-
-                <select
-                  id="especie"
-                  value={especie}
-                  onChange={(event) => setEspecie(event.target.value)}
-                  required
-                >
-                  <option value="">Selecione</option>
-                  <option value="CACHORRO">Cachorro</option>
-                  <option value="GATO">Gato</option>
-                  <option value="OUTRO">Outro</option>
-                </select>
-              </div>
-
-              <div className="campo-cadastro-animal">
-                <label htmlFor="porte">
-                  Porte *
-                </label>
-
-                <select
-                  id="porte"
-                  value={porte}
-                  onChange={(event) => setPorte(event.target.value)}
-                  required
-                >
-                  <option value="">Selecione</option>
-                  <option value="PEQUENO">Pequeno</option>
-                  <option value="MEDIO">Médio</option>
-                  <option value="GRANDE">Grande</option>
-                </select>
-              </div>
-
-              <div className="campo-cadastro-animal">
-                <label htmlFor="raca">
-                  Raça
-                </label>
-
-                <input
-                  id="raca"
-                  type="text"
-                  value={raca}
-                  onChange={(event) => setRaca(event.target.value)}
-                  placeholder="Ex.: SRD, Poodle, Siamês"
-                  maxLength="100"
-                />
-              </div>
-
-              <div className="campo-cadastro-animal">
-                <label htmlFor="cor">
-                  Cor predominante *
-                </label>
-
-                <input
-                  id="cor"
-                  type="text"
-                  value={cor}
-                  onChange={(event) => setCor(event.target.value)}
-                  placeholder="Ex.: Caramelo"
-                  maxLength="100"
-                  required
-                />
-              </div>
-
-              <div className="campo-cadastro-animal campo-largo">
-                <label htmlFor="descricao">
-                  Características e observações
-                </label>
-
-                <textarea
-                  id="descricao"
-                  value={descricao}
-                  onChange={(event) => setDescricao(event.target.value)}
-                  placeholder="Ex.: Possui uma mancha branca no peito, usa coleira vermelha e é bastante dócil."
-                  rows="5"
-                />
-              </div>
-            </div>
+            <CamposAnimal
+              modo="cadastro"
+              valores={{ nome, especie, raca, porte, cor, descricao }}
+              aoAlterar={atualizarCampo}
+            />
 
             {erro && (
               <p className="erro-cadastro-animal" role="alert">
@@ -312,9 +213,9 @@ function CadastroAnimal() {
               </button>
             </div>
           </form>
-        </section>
+        </Card>
       </section>
-    </main>
+    </LayoutTutor>
   );
 }
 

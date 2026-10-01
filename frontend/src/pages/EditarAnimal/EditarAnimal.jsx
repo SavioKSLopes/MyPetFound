@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import { api } from "../../services/api.js";
+import LayoutTutor from "../../components/layout/LayoutTutor";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import CamposAnimal from "../../components/animal/CamposAnimal";
+import Card from "../../components/ui/Card";
+import EstadoTela from "../../components/ui/EstadoTela";
+import useAuth from "../../hooks/useAuth.js";
+import { atualizarAnimal, obterAnimalTutor } from "../../services/animaisService.js";
 import "./EditarAnimal.css";
 
 function EditarAnimal() {
   const { id } = useParams();
   const navegar = useNavigate();
+  const { sair } = useAuth();
 
   const [animal, setAnimal] = useState(null);
   const [nome, setNome] = useState("");
@@ -28,7 +35,7 @@ function EditarAnimal() {
         setCarregando(true);
         setErro("");
 
-        const resposta = await api.get(`/animais/${id}/`);
+        const resposta = await obterAnimalTutor(id);
         const dados = resposta.data;
 
         setAnimal(dados);
@@ -43,11 +50,7 @@ function EditarAnimal() {
         console.error("Erro ao carregar animal:", error);
 
         if (error.response?.status === 401) {
-          localStorage.removeItem("mypetfound_token");
-
-          navegar("/entrar", {
-            replace: true,
-          });
+          sair("/entrar");
 
           return;
         }
@@ -70,7 +73,7 @@ function EditarAnimal() {
     }
 
     carregarAnimal();
-  }, [id, navegar]);
+  }, [id, navegar, sair]);
 
   useEffect(() => {
     return () => {
@@ -79,6 +82,11 @@ function EditarAnimal() {
       }
     };
   }, [foto, previewFoto]);
+
+  function atualizarCampo(campo, valor) {
+    const setters = { nome: setNome, especie: setEspecie, raca: setRaca, porte: setPorte, cor: setCor, descricao: setDescricao };
+    setters[campo](valor);
+  }
 
   function trocarFoto(event) {
     const arquivo = event.target.files?.[0];
@@ -137,15 +145,7 @@ function EditarAnimal() {
         dados.append("foto", foto);
       }
 
-      await api.patch(
-        `/animais/${id}/`,
-        dados,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        },
-      );
+      await atualizarAnimal(id, dados);
 
       navegar(`/meus-animais/${id}`, {
         replace: true,
@@ -182,20 +182,20 @@ function EditarAnimal() {
 
   if (carregando) {
     return (
-      <main className="pagina-editar-animal">
-        <section className="estado-editar-animal">
+      <LayoutTutor className="pagina-editar-animal">
+        <EstadoTela tipo="carregando" className="estado-editar-animal">
           <span className="carregador-editar" aria-hidden="true" />
 
           <p>Carregando dados do animal...</p>
-        </section>
-      </main>
+        </EstadoTela>
+      </LayoutTutor>
     );
   }
 
   if (erro && !animal) {
     return (
-      <main className="pagina-editar-animal">
-        <section className="estado-editar-animal estado-erro-editar">
+      <LayoutTutor className="pagina-editar-animal">
+        <EstadoTela tipo="erro" className="estado-editar-animal estado-erro-editar">
           <span aria-hidden="true">⚠️</span>
 
           <h1>Não foi possível editar este animal</h1>
@@ -208,26 +208,18 @@ function EditarAnimal() {
           >
             Voltar para meus animais
           </Link>
-        </section>
-      </main>
+        </EstadoTela>
+      </LayoutTutor>
     );
   }
 
   return (
-    <main className="pagina-editar-animal">
-      <header className="cabecalho-editar-animal">
-        <Link className="logo-editar-animal" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <Link
-          className="link-voltar-editar"
-          to={`/meus-animais/${id}`}
-        >
+    <LayoutTutor className="pagina-editar-animal">
+      <div className="acoes-contextuais-editar">
+        <Link className="link-voltar-editar" to={`/meus-animais/${id}`}>
           ← Voltar para gerenciamento
         </Link>
-      </header>
+      </div>
 
       <section className="cabecalho-formulario-editar">
         <p className="tag-editar-animal">
@@ -246,7 +238,7 @@ function EditarAnimal() {
         className="formulario-editar-animal"
         onSubmit={salvarAlteracoes}
       >
-        <section className="card-editar-animal card-foto-editar">
+        <Card as="section" className="card-editar-animal card-foto-editar">
           <div>
             <h2>Foto do animal</h2>
 
@@ -257,16 +249,7 @@ function EditarAnimal() {
           </div>
 
           <div className="area-foto-editar">
-            <div className="preview-foto-editar">
-              {previewFoto ? (
-                <img
-                  src={previewFoto}
-                  alt={`Foto de ${nome || animal.nome}`}
-                />
-              ) : (
-                <span aria-hidden="true">🐾</span>
-              )}
-            </div>
+            <AnimalImagem src={previewFoto} nome={nome || animal.nome} className="preview-foto-editar" />
 
             <label className="botao-selecionar-foto">
               Trocar foto
@@ -277,9 +260,9 @@ function EditarAnimal() {
               />
             </label>
           </div>
-        </section>
+        </Card>
 
-        <section className="card-editar-animal">
+        <Card as="section" className="card-editar-animal">
           <div className="cabecalho-card-editar">
             <div>
               <p className="subtitulo-editar-animal">
@@ -292,81 +275,12 @@ function EditarAnimal() {
             <span aria-hidden="true">🐾</span>
           </div>
 
-          <div className="campos-editar-animal">
-            <label>
-              Nome
-              <input
-                type="text"
-                value={nome}
-                onChange={(event) => setNome(event.target.value)}
-                placeholder="Ex.: Luna"
-                maxLength="100"
-                required
-              />
-            </label>
-
-            <label>
-              Espécie
-              <select
-                value={especie}
-                onChange={(event) => setEspecie(event.target.value)}
-                required
-              >
-                <option value="">Selecione</option>
-                <option value="CACHORRO">Cachorro</option>
-                <option value="GATO">Gato</option>
-                <option value="OUTRO">Outro</option>
-              </select>
-            </label>
-
-            <label>
-              Raça
-              <input
-                type="text"
-                value={raca}
-                onChange={(event) => setRaca(event.target.value)}
-                placeholder="Ex.: Siamês"
-                maxLength="100"
-              />
-            </label>
-
-            <label>
-              Porte
-              <select
-                value={porte}
-                onChange={(event) => setPorte(event.target.value)}
-                required
-              >
-                <option value="">Selecione</option>
-                <option value="PEQUENO">Pequeno</option>
-                <option value="MEDIO">Médio</option>
-                <option value="GRANDE">Grande</option>
-              </select>
-            </label>
-
-            <label className="campo-largo-editar">
-              Cor predominante
-              <input
-                type="text"
-                value={cor}
-                onChange={(event) => setCor(event.target.value)}
-                placeholder="Ex.: Preto e branco"
-                maxLength="100"
-              />
-            </label>
-
-            <label className="campo-largo-editar">
-              Características adicionais
-              <textarea
-                value={descricao}
-                onChange={(event) => setDescricao(event.target.value)}
-                placeholder="Ex.: Possui cicatriz nas costas."
-                rows="5"
-                maxLength="1000"
-              />
-            </label>
-          </div>
-        </section>
+          <CamposAnimal
+            modo="edicao"
+            valores={{ nome, especie, raca, porte, cor, descricao }}
+            aoAlterar={atualizarCampo}
+          />
+        </Card>
 
         {erro && (
           <p className="mensagem-erro-editar" role="alert">
@@ -393,7 +307,7 @@ function EditarAnimal() {
           </button>
         </div>
       </form>
-    </main>
+    </LayoutTutor>
   );
 }
 

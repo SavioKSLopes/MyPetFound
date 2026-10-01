@@ -1,17 +1,10 @@
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
+import useAuth from "../../hooks/useAuth.js";
 import "./CabecalhoTutor.css";
 
 function CabecalhoTutor() {
-  const navegar = useNavigate();
-
-  function sair() {
-    localStorage.removeItem("mypetfound_token");
-
-    navegar("/", {
-      replace: true,
-    });
-  }
+  const { sair } = useAuth();
 
   function classeLinkNavegacao({ isActive }) {
     return `link-navegacao-tutor${
@@ -50,6 +43,7 @@ function CabecalhoTutor() {
         <NavLink
           className={classeLinkNavegacao}
           to="/"
+          end
         >
           Animais perdidos
         </NavLink>

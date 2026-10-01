@@ -1,108 +1,11 @@
-:root {
-  font-family: Inter, system-ui, sans-serif;
-  color: #1a1a1a;
-  background: #faf7f2;
-  font-synthesis: none;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  min-width: 320px;
-  background: #faf7f2;
-}
-
-button,
-input,
-textarea,
-select {
-  font: inherit;
-}
-
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button {
-  cursor: pointer;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
 .pagina {
   min-height: 100vh;
 }
 
-.cabecalho {
-  min-height: 72px;
-  padding: 0 7%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  background: #ffffff;
-  border-bottom: 1px solid #e4e0da;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #1565c0;
-  font-size: 1.25rem;
-  font-weight: 800;
-}
-
-.navegacao {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  color: #5f6368;
-  font-weight: 600;
-}
-
-.navegacao a:hover,
 .link-botao:hover {
   color: #1565c0;
 }
 
-.botao {
-  min-height: 44px;
-  padding: 10px 16px;
-  border: 1px solid transparent;
-  border-radius: 8px;
-  font-weight: 700;
-}
-
-.botao-secundario {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #1565c0;
-  background: #ffffff;
-  border-color: #1565c0;
-}
-
-.botao-secundario:hover {
-  color: #ffffff;
-  background: #1565c0;
-}
-
-.botao-urgencia {
-  color: #ffffff;
-  background: #e65100;
-}
-
-.botao-urgencia:hover {
-  background: #bf4300;
-}
 
 .hero {
   max-width: 980px;
@@ -462,23 +365,7 @@ a {
   text-decoration: underline;
 }
 
-button:focus-visible,
-a:focus-visible {
-  outline: 3px solid #1565c0;
-  outline-offset: 3px;
-}
-
 @media (max-width: 900px) {
-  .cabecalho {
-    padding: 16px 20px;
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .navegacao {
-    width: 100%;
-    flex-wrap: wrap;
-  }
 
   .grid-animais {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -501,14 +388,6 @@ a:focus-visible {
 @media (max-width: 600px) {
   .hero {
     padding: 64px 20px 48px;
-  }
-
-  .navegacao a {
-    display: none;
-  }
-
-  .botao {
-    flex: 1;
   }
 
   .hero-acoes,

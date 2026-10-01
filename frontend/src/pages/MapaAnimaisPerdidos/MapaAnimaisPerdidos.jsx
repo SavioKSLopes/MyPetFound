@@ -9,7 +9,13 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 
-import { api } from "../../services/api.js";
+
+import LayoutPublico from "../../components/layout/LayoutPublico";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import AnimalStatus from "../../components/animal/AnimalStatus";
+import EstadoTela from "../../components/ui/EstadoTela";
+import { buscarAnimais } from "../../services/animaisService.js";
+import { obterNomeEspecie, obterNomePorte } from "../../utils/animal.js";
 import "leaflet/dist/leaflet.css";
 import "./MapaAnimaisPerdidos.css";
 
@@ -72,9 +78,7 @@ function MapaAnimaisPerdidos() {
   useEffect(() => {
     async function carregarAnimais() {
       try {
-        const response = await api.get(
-          "/publico/animais-perdidos/",
-        );
+        const response = await buscarAnimais();
 
         const animaisComLocalizacao = response.data.filter(
           (animal) =>
@@ -103,17 +107,7 @@ function MapaAnimaisPerdidos() {
   );
 
   return (
-    <main className="pagina-mapa-animais">
-      <header className="cabecalho-mapa-animais">
-        <Link className="logo-mapa-animais" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-
-        <Link className="link-voltar-mapa" to="/">
-          ← Voltar para animais perdidos
-        </Link>
-      </header>
+    <LayoutPublico className="pagina-mapa-animais">
 
       <section className="cabecalho-conteudo-mapa">
         <div>
@@ -143,15 +137,15 @@ function MapaAnimaisPerdidos() {
       </section>
 
       {carregando && (
-        <section className="estado-mapa">
+        <EstadoTela tipo="carregando" className="estado-mapa">
           <span className="carregador-mapa" aria-hidden="true" />
 
           <p>Carregando mapa...</p>
-        </section>
+        </EstadoTela>
       )}
 
       {!carregando && erro && (
-        <section className="estado-mapa estado-erro-mapa">
+        <EstadoTela tipo="erro" className="estado-mapa estado-erro-mapa">
           <span aria-hidden="true">⚠️</span>
 
           <h2>Não foi possível carregar o mapa</h2>
@@ -161,11 +155,11 @@ function MapaAnimaisPerdidos() {
           <Link className="botao-voltar-mapa" to="/">
             Voltar para a página inicial
           </Link>
-        </section>
+        </EstadoTela>
       )}
 
       {!carregando && !erro && quantidadeAnimais === 0 && (
-        <section className="estado-mapa">
+        <EstadoTela tipo="vazio" className="estado-mapa">
           <span aria-hidden="true">📍</span>
 
           <h2>Nenhum ponto no mapa por enquanto</h2>
@@ -179,7 +173,7 @@ function MapaAnimaisPerdidos() {
           <Link className="botao-voltar-mapa" to="/">
             Ver lista de animais perdidos
           </Link>
-        </section>
+        </EstadoTela>
       )}
 
       {!carregando && !erro && quantidadeAnimais > 0 && (
@@ -208,26 +202,15 @@ function MapaAnimaisPerdidos() {
               >
                 <Popup>
                   <article className="popup-animal-mapa">
-                    <div className="popup-foto-animal">
-                      {animal.foto ? (
-                        <img
-                          src={animal.foto}
-                          alt={`Foto de ${animal.nome}`}
-                        />
-                      ) : (
-                        <span aria-hidden="true">🐾</span>
-                      )}
-                    </div>
+                    <AnimalImagem src={animal.foto} nome={animal.nome} className="popup-foto-animal" />
 
                     <div className="popup-conteudo-animal">
-                      <span className="popup-status-perdido">
-                        Perdido
-                      </span>
+                      <AnimalStatus status="PERDIDO" statusNome="Perdido" className="popup-status-perdido" />
 
                       <h2>{animal.nome}</h2>
 
                       <p>
-                        {animal.especie_nome} · {animal.porte_nome}
+                        {obterNomeEspecie(animal)} · {obterNomePorte(animal)}
                       </p>
 
                       <p className="popup-localidade">
@@ -255,7 +238,7 @@ function MapaAnimaisPerdidos() {
           </p>
         </section>
       )}
-    </main>
+    </LayoutPublico>
   );
 }
 

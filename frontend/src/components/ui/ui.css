@@ -1,0 +1,51 @@
+.card-ui {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-medio);
+  box-shadow: 0 5px 16px rgb(15 23 42 / 5%);
+}
+
+.botao-ui {
+  min-height: 40px;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--raio-pequeno);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.botao-ui-primario { color: #fff; background: var(--cor-primaria); }
+.botao-ui-primario:hover:not(:disabled) { background: var(--cor-primaria-escura); }
+.botao-ui-secundario { color: #475569; background: #fff; border-color: #cbd5e1; }
+.botao-ui-perigo { color: #fff; background: #c2410c; }
+.botao-ui-link { color: var(--cor-primaria); background: transparent; }
+.botao-ui:disabled { cursor: not-allowed; opacity: .65; }
+
+.estado-tela { min-width: 0; }
+.estado-tela-carregador { width: 34px; height: 34px; display: block; border: 3px solid #dbeafe; border-top-color: var(--cor-primaria); border-radius: 50%; animation: estado-tela-girar 700ms linear infinite; }
+.estado-tela-icone { display: block; font-size: 2rem; }
+.estado-tela-simples h2 { margin: 12px 0 0; }
+.estado-tela-simples p { margin: 10px 0 0; }
+.estado-tela .botao-ui { margin-top: 16px; }
+@keyframes estado-tela-girar { to { transform: rotate(360deg); } }
+
+.secao-cabecalho-ui { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
+.secao-cabecalho-etiqueta { margin: 0 0 10px; color: var(--cor-primaria); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+.secao-cabecalho-ui h1,
+.secao-cabecalho-ui h2 { margin: 0; color: var(--cor-texto); }
+.secao-cabecalho-descricao { margin: 12px 0 0; color: var(--cor-texto-secundario); line-height: 1.6; }
+
+.campo-formulario-ui { min-width: 0; }
+.campo-formulario-erro { display: block; margin-top: 6px; color: var(--cor-perigo); }
+
+@media (max-width: 760px) {
+  .secao-cabecalho-ui { align-items: stretch; flex-direction: column; gap: 16px; }
+}

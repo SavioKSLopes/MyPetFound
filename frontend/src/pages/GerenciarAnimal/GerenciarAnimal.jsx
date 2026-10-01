@@ -1,12 +1,22 @@
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
-import { api } from "../../services/api.js";
+import LayoutTutor from "../../components/layout/LayoutTutor";
+import AnimalCard from "../../components/animal/AnimalCard";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import AnimalStatus from "../../components/animal/AnimalStatus";
+import EstadoTela from "../../components/ui/EstadoTela";
+import { obterAnimalTutor, obterQrCodeAnimal } from "../../services/animaisService.js";
+import { listarAvistamentos } from "../../services/avistamentosService.js";
+import { listarOcorrencias, marcarOcorrenciaComoReencontrada } from "../../services/ocorrenciasService.js";
+import { formatarDataHora } from "../../utils/formatadores.js";
+import { obterNomeEspecie, obterNomePorte } from "../../utils/animal.js";
+import useAuth from "../../hooks/useAuth.js";
 import "./GerenciarAnimal.css";
 
 function GerenciarAnimal() {
   const { id } = useParams();
-  const navegar = useNavigate();
+  const { sair } = useAuth();
 
   const [animal, setAnimal] = useState(null);
   const [carregando, setCarregando] = useState(true);
@@ -41,9 +51,9 @@ function GerenciarAnimal() {
           respostaAvistamentos,
           respostaOcorrencias,
         ] = await Promise.all([
-          api.get(`/animais/${id}/`),
-          api.get(`/avistamentos/?animal=${id}`),
-          api.get(`/ocorrencias/?animal=${id}`),
+          obterAnimalTutor(id),
+          listarAvistamentos(id),
+          listarOcorrencias(id),
         ]);
 
         setAnimal(respostaAnimal.data);
@@ -71,11 +81,7 @@ function GerenciarAnimal() {
         );
 
         if (error.response?.status === 401) {
-          localStorage.removeItem("mypetfound_token");
-
-          navegar("/entrar", {
-            replace: true,
-          });
+          sair("/entrar");
 
           return;
         }
@@ -115,25 +121,14 @@ function GerenciarAnimal() {
         return "";
       });
     };
-  }, [id, navegar]);
-
-  function sair() {
-    localStorage.removeItem("mypetfound_token");
-
-    navegar("/", {
-      replace: true,
-    });
-  }
+  }, [id, sair]);
 
   function formatarData(dataHora) {
     if (!dataHora) {
       return "Data não informada";
     }
 
-    return new Date(dataHora).toLocaleString("pt-BR", {
-      dateStyle: "short",
-      timeStyle: "short",
-    });
+    return formatarDataHora(dataHora);
   }
 
   function abrirMapa(avistamento) {
@@ -160,12 +155,7 @@ function GerenciarAnimal() {
     setErroQrCode("");
 
     try {
-      const resposta = await api.get(
-        `/animais/${animal.id}/qrcode/`,
-        {
-          responseType: "blob",
-        },
-      );
+      const resposta = await obterQrCodeAnimal(animal.id);
 
       const novaUrl = URL.createObjectURL(resposta.data);
 
@@ -217,9 +207,7 @@ function GerenciarAnimal() {
       setErroOcorrencia("");
       setMensagemSucesso("");
 
-      const resposta = await api.post(
-        `/ocorrencias/${ocorrenciaAtiva.id}/marcar-reencontrado/`,
-      );
+      const resposta = await marcarOcorrenciaComoReencontrada(ocorrenciaAtiva.id);
 
       setOcorrencias((ocorrenciasAtuais) =>
         ocorrenciasAtuais.map((ocorrencia) =>
@@ -257,20 +245,20 @@ function GerenciarAnimal() {
 
   if (carregando) {
     return (
-      <main className="pagina-gerenciar-animal">
-        <section className="estado-gerenciar">
+      <LayoutTutor className="pagina-gerenciar-animal">
+          <EstadoTela tipo="carregando" className="estado-gerenciar">
           <span className="carregador-gerenciar" aria-hidden="true" />
 
           <p>Carregando dados do animal...</p>
-        </section>
-      </main>
+        </EstadoTela>
+      </LayoutTutor>
     );
   }
 
   if (erro || !animal) {
     return (
-      <main className="pagina-gerenciar-animal">
-        <section className="estado-gerenciar estado-erro-gerenciar">
+      <LayoutTutor className="pagina-gerenciar-animal">
+          <EstadoTela tipo="erro" className="estado-gerenciar estado-erro-gerenciar">
           <span aria-hidden="true">⚠️</span>
 
           <h1>Não foi possível abrir este animal</h1>
@@ -286,14 +274,10 @@ function GerenciarAnimal() {
           >
             Voltar para meus animais
           </Link>
-        </section>
-      </main>
+        </EstadoTela>
+      </LayoutTutor>
     );
   }
-
-  const statusClasse = (
-    animal.status || "CADASTRADO"
-  ).toLowerCase();
 
   const nomeArquivoQrCode = `qrcode-${animal.nome
     .toLowerCase()
@@ -302,30 +286,12 @@ function GerenciarAnimal() {
     .replaceAll(" ", "-")}.png`;
 
   return (
-    <main className="pagina-gerenciar-animal">
-      <header className="cabecalho-gerenciar">
-        <Link className="logo-gerenciar" to="/">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
+    <LayoutTutor className="pagina-gerenciar-animal">
+      <div className="acoes-contextuais-gerenciar">
+        <Link className="link-voltar-gerenciar" to="/meus-animais">
+          ← Meus animais
         </Link>
-
-        <div className="acoes-cabecalho-gerenciar">
-          <Link
-            className="link-voltar-gerenciar"
-            to="/meus-animais"
-          >
-            ← Meus animais
-          </Link>
-
-          <button
-            className="botao-sair-gerenciar"
-            type="button"
-            onClick={sair}
-          >
-            Sair
-          </button>
-        </div>
-      </header>
+      </div>
 
       <section className="titulo-gerenciar">
         <div>
@@ -341,32 +307,22 @@ function GerenciarAnimal() {
           </p>
         </div>
 
-        <span
-          className={`status-gerenciar status-${statusClasse}`}
-        >
-          {animal.status_nome || animal.status || "Cadastrado"}
-        </span>
+        <AnimalStatus
+          status={animal.status}
+          statusNome={animal.status_nome}
+          className="status-gerenciar"
+        />
       </section>
 
       <section className="grid-gerenciar-animal">
-        <article className="card-perfil-animal">
-          <div className="foto-perfil-animal">
-            {animal.foto ? (
-              <img
-                src={animal.foto}
-                alt={`Foto de ${animal.nome}`}
-              />
-            ) : (
-              <span aria-hidden="true">🐾</span>
-            )}
-          </div>
+        <AnimalCard animal={animal} variant="perfil" className="card-perfil-animal">
+          <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-perfil-animal" />
 
           <div className="dados-perfil-animal">
             <h2>{animal.nome}</h2>
 
             <p>
-              {animal.especie_nome || animal.especie} ·{" "}
-              {animal.porte_nome || animal.porte}
+              {obterNomeEspecie(animal)} · {obterNomePorte(animal)}
             </p>
 
             <Link
@@ -376,7 +332,7 @@ function GerenciarAnimal() {
               Editar dados do animal
             </Link>
           </div>
-        </article>
+        </AnimalCard>
 
         <article className="card-caracteristicas">
           <div className="titulo-card-gerenciar">
@@ -638,28 +594,28 @@ function GerenciarAnimal() {
         </div>
 
         {carregandoAvistamentos && (
-          <div className="estado-avistamentos">
+          <EstadoTela tipo="carregando" className="estado-avistamentos">
             <span
               className="carregador-gerenciar"
               aria-hidden="true"
             />
 
             <p>Carregando avistamentos...</p>
-          </div>
+          </EstadoTela>
         )}
 
         {!carregandoAvistamentos && erroAvistamentos && (
-          <div className="estado-avistamentos estado-erro-avistamentos">
+          <EstadoTela tipo="erro" className="estado-avistamentos estado-erro-avistamentos">
             <span aria-hidden="true">⚠️</span>
 
             <p>{erroAvistamentos}</p>
-          </div>
+          </EstadoTela>
         )}
 
         {!carregandoAvistamentos &&
           !erroAvistamentos &&
           avistamentos.length === 0 && (
-            <div className="estado-avistamentos">
+            <EstadoTela tipo="vazio" className="estado-avistamentos">
               <span aria-hidden="true">👀</span>
 
               <div>
@@ -670,7 +626,7 @@ function GerenciarAnimal() {
                   aparecerão nesta área.
                 </p>
               </div>
-            </div>
+            </EstadoTela>
           )}
 
         {!carregandoAvistamentos &&
@@ -686,18 +642,14 @@ function GerenciarAnimal() {
                     key={avistamento.id}
                   >
                     {avistamento.foto ? (
-                      <img
+                      <AnimalImagem
                         className="foto-avistamento"
                         src={avistamento.foto}
+                        nome={`avistamento de ${animal.nome}`}
                         alt="Foto enviada no avistamento"
                       />
                     ) : (
-                      <div
-                        className="foto-avistamento-sem-imagem"
-                        aria-hidden="true"
-                      >
-                        👀
-                      </div>
+                      <div className="foto-avistamento-sem-imagem" aria-hidden="true">👀</div>
                     )}
 
                     <div className="conteudo-avistamento">
@@ -763,7 +715,7 @@ function GerenciarAnimal() {
           você, tutor responsável pelo animal.
         </p>
       </section>
-    </main>
+    </LayoutTutor>
   );
 }
 

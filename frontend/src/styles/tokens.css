@@ -1,0 +1,20 @@
+:root {
+  --cor-primaria: #1565c0;
+  --cor-primaria-escura: #0d4f9b;
+  --cor-fundo: #f8fafc;
+  --cor-superficie: #ffffff;
+  --cor-texto: #0f172a;
+  --cor-texto-secundario: #64748b;
+  --cor-borda: #e2e8f0;
+  --cor-sucesso: #166534;
+  --cor-sucesso-fundo: #f0fdf4;
+  --cor-alerta: #9a3412;
+  --cor-alerta-fundo: #fff7ed;
+  --cor-perigo: #b91c1c;
+  --cor-perigo-fundo: #fef2f2;
+  --raio-pequeno: 8px;
+  --raio-medio: 12px;
+  --raio-grande: 16px;
+  --sombra-suave: 0 8px 24px rgb(15 23 42 / 7%);
+  --largura-conteudo: 1180px;
+}

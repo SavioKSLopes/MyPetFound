@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
-import { api } from "../../services/api.js";
+
+import LayoutPublico from "../../components/layout/LayoutPublico";
+import AnimalImagem from "../../components/animal/AnimalImagem";
+import EstadoTela from "../../components/ui/EstadoTela";
+import { obterIdentificacaoAnimal } from "../../services/animaisService.js";
+import { enviarMensagemPublica } from "../../services/mensagensService.js";
 import "./IdentificacaoAnimal.css";
 
 function IdentificacaoAnimal() {
@@ -25,9 +30,7 @@ function IdentificacaoAnimal() {
         setCarregando(true);
         setErro("");
 
-        const resposta = await api.get(
-          `/publico/identificacao/${codigo}/`,
-        );
+        const resposta = await obterIdentificacaoAnimal(codigo);
 
         if (ativo) {
           setAnimal(resposta.data);
@@ -79,13 +82,10 @@ function IdentificacaoAnimal() {
       setErroMensagem("");
       setMensagemEnviada(false);
 
-      await api.post(
-        `/animais/${animal.id}/mensagens/`,
-        {
-          mensagem: textoMensagem,
-          localizacao_texto: textoLocalizacao,
-        },
-      );
+      await enviarMensagemPublica(animal.id, {
+        mensagem: textoMensagem,
+        localizacao_texto: textoLocalizacao,
+      });
 
       setMensagem("");
       setLocalizacaoTexto("");
@@ -106,38 +106,20 @@ function IdentificacaoAnimal() {
   }
 
   return (
-    <main className="pagina-identificacao-animal">
-      <header className="cabecalho-identificacao-animal">
-        <Link to="/" className="logo-identificacao-animal">
-          <span aria-hidden="true">🐾</span>
-          MyPetFound
-        </Link>
-      </header>
+    <LayoutPublico className="pagina-identificacao-animal">
 
       <section className="card-identificacao-animal">
         {carregando && (
-          <p role="status">Carregando identificação...</p>
+          <EstadoTela tipo="carregando" mensagem="Carregando identificação..." />
         )}
 
         {!carregando && erro && (
-          <>
-            <h1>Identificação indisponível</h1>
-            <p role="alert">{erro}</p>
-          </>
+          <EstadoTela tipo="naoEncontrado" titulo="Identificação indisponível" mensagem={erro} />
         )}
 
         {!carregando && !erro && animal && (
           <>
-            <div className="foto-identificacao-animal">
-              {animal.foto ? (
-                <img
-                  src={animal.foto}
-                  alt={`Foto de ${animal.nome}`}
-                />
-              ) : (
-                <span aria-hidden="true">🐾</span>
-              )}
-            </div>
+            <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-identificacao-animal" />
 
             <div className="dados-identificacao-animal">
               <p className="etiqueta-identificacao-animal">
@@ -222,7 +204,7 @@ function IdentificacaoAnimal() {
           </>
         )}
       </section>
-    </main>
+    </LayoutPublico>
   );
 }
 

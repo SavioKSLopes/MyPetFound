@@ -1,0 +1,6 @@
+.animal-card { min-width: 0; }
+.animal-imagem-placeholder { display: inline-grid; place-items: center; }
+.animal-status { width: fit-content; max-width: 100%; display: inline-flex; align-items: center; }
+.animal-status-perdido { color: #9a3412; }
+.animal-status-positivo { color: var(--cor-sucesso); }
+.animal-status-neutro { color: #475569; }
