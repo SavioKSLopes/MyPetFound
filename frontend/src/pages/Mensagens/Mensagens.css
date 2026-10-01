@@ -1,0 +1,223 @@
+.pagina-mensagens {
+  min-height: 100vh;
+  padding: 30px max(18px, 7vw) 60px;
+  color: #1e293b;
+  background: #f8fafc;
+}
+
+.cabecalho-mensagens,
+.conteudo-mensagens {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.cabecalho-mensagens {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.logo-mensagens,
+.voltar-mensagens {
+  color: #1565c0;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.logo-mensagens {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.2rem;
+}
+
+.voltar-mensagens {
+  padding: 8px 12px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+.conteudo-mensagens {
+  margin-top: 42px;
+}
+
+.titulo-mensagens {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.titulo-mensagens p {
+  margin: 0 0 6px;
+  color: #1565c0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.titulo-mensagens h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: clamp(1.8rem, 4vw, 2.4rem);
+}
+
+.contador-mensagens {
+  padding: 7px 10px;
+  color: #0755a5;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.lista-mensagens {
+  display: grid;
+  gap: 14px;
+}
+
+.card-mensagem,
+.vazio-mensagens,
+.erro-mensagens,
+.estado-mensagens {
+  padding: 22px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+}
+
+.card-mensagem-nova {
+  border-color: #93c5fd;
+  box-shadow: 0 4px 14px rgb(37 99 235 / 8%);
+}
+
+.cabecalho-card-mensagem {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.animal-mensagem {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+
+.cabecalho-card-mensagem time {
+  display: block;
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 0.85rem;
+}
+
+.status-mensagem {
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 800;
+}
+
+.status-mensagem-nova {
+  color: #0755a5;
+  background: #dbeafe;
+}
+
+.status-mensagem-lida {
+  color: #475569;
+  background: #f1f5f9;
+}
+
+.texto-mensagem {
+  margin: 18px 0 12px;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+.localizacao-mensagem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: #475569;
+  font-size: 0.92rem;
+}
+
+.card-mensagem button,
+.erro-mensagens button {
+  margin-top: 18px;
+  padding: 9px 12px;
+  color: #fff;
+  background: #1565c0;
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.card-mensagem button:hover,
+.erro-mensagens button:hover {
+  background: #0d47a1;
+}
+
+.card-mensagem button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.vazio-mensagens {
+  text-align: center;
+}
+
+.vazio-mensagens span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.vazio-mensagens h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.2rem;
+}
+
+.vazio-mensagens p {
+  max-width: 440px;
+  margin: 10px auto 0;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.erro-mensagens {
+  color: #b91c1c;
+}
+
+.erro-mensagens p,
+.estado-mensagens {
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .pagina-mensagens {
+    padding: 20px 14px 40px;
+  }
+
+  .cabecalho-mensagens,
+  .titulo-mensagens,
+  .cabecalho-card-mensagem {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .titulo-mensagens {
+    gap: 12px;
+  }
+}

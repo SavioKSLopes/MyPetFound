@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, Route, Routes } from "react-router-dom";
 
+import RotaProtegida from "./components/RotaProtegida.jsx";
+import { api } from "./services/api.js";
+
 import BuscarAnimais from "./pages/BuscarAnimais/BuscarAnimais.jsx";
 import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
 import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
 import EditarAnimal from "./pages/EditarAnimal/EditarAnimal.jsx";
 import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
+import IdentificacaoAnimal from "./pages/IdentificacaoAnimal/IdentificacaoAnimal.jsx";
 import Login from "./pages/Login/Login.jsx";
 import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos.jsx";
+import Mensagens from "./pages/Mensagens/Mensagens.jsx";
 import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
 import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
-import IdentificacaoAnimal from "./pages/IdentificacaoAnimal/IdentificacaoAnimal.jsx";
 
-import RotaProtegida from "./components/RotaProtegida";
-import { api } from "./services/api";
 import "./App.css";
 
 function Home() {
@@ -352,6 +354,11 @@ function App() {
         <Route
           path="/meus-animais/:id/desaparecimento"
           element={<RegistrarDesaparecimento />}
+        />
+
+        <Route
+          path="/mensagens"
+          element={<Mensagens />}
         />
       </Route>
     </Routes>
