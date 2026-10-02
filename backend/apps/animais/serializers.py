@@ -36,6 +36,7 @@ class AnimalSerializer(serializers.ModelSerializer):
             "porte_nome",
             "cor",
             "descricao",
+            "foto",
             "status",
             "status_nome",
             "criado_em",

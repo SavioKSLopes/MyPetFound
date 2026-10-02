@@ -135,8 +135,7 @@
 
 .botao-limpar-filtros,
 .botao-buscar-animais,
-.botao-tentar-novamente,
-.botao-ver-detalhes-animal {
+.botao-tentar-novamente {
   min-height: 42px;
   padding: 0 15px;
   display: inline-flex;
@@ -163,16 +162,14 @@
 }
 
 .botao-buscar-animais,
-.botao-tentar-novamente,
-.botao-ver-detalhes-animal {
+.botao-tentar-novamente {
   color: #ffffff;
   background: #1565c0;
   border: 1px solid #1565c0;
 }
 
 .botao-buscar-animais:hover,
-.botao-tentar-novamente:hover,
-.botao-ver-detalhes-animal:hover {
+.botao-tentar-novamente:hover {
   background: #0d4f9b;
   border-color: #0d4f9b;
   transform: translateY(-1px);
@@ -202,6 +199,7 @@
 
 .grid-resultados-animais {
   display: grid;
+  align-items: stretch;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
   margin-top: 22px;
@@ -216,28 +214,7 @@
   box-shadow: 0 5px 16px rgb(15 23 42 / 6%);
 }
 
-.foto-resultado-animal {
-  position: relative;
-  height: 195px;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  color: #1565c0;
-  background: #dce8f6;
-  font-size: 3.6rem;
-}
-
-.foto-resultado-animal img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-}
-
 .selo-perdido-animal {
-  position: absolute;
-  top: 12px;
-  right: 12px;
   padding: 6px 9px;
   color: #9a3412;
   background: #fff7ed;
@@ -247,29 +224,11 @@
   font-weight: 850;
 }
 
-.conteudo-resultado-animal {
-  padding: 20px;
-}
-
 .topo-resultado-animal {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 14px;
-}
-
-.topo-resultado-animal h3 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 1.25rem;
-  overflow-wrap: anywhere;
-}
-
-.topo-resultado-animal p {
-  margin: 6px 0 0;
-  color: #64748b;
-  font-size: 0.88rem;
-  overflow-wrap: anywhere;
 }
 
 .topo-resultado-animal > span {
@@ -282,6 +241,10 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 13px;
   margin: 20px 0 0;
+}
+
+.informacoes-resultado-animal {
+  gap: 4px;
 }
 
 .dados-resultado-animal div {
@@ -311,16 +274,10 @@
 }
 
 .data-desaparecimento-animal {
-  margin: 18px 0 0;
+  margin: 10px 0 0;
   color: #64748b;
   font-size: 0.8rem;
   line-height: 1.5;
-}
-
-.botao-ver-detalhes-animal {
-  width: 100%;
-  box-sizing: border-box;
-  margin-top: 18px;
 }
 
 .estado-busca-animais {

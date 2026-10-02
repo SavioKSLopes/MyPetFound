@@ -66,4 +66,3 @@ class RegistrarAvistamentoPublicoView(generics.CreateAPIView):
             )
 
         serializer.save(ocorrencia=ocorrencia)
-        serializer.save()

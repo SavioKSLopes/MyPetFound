@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { normalizarUrlImagem } from "../../utils/imagem.js";
 import "./animal.css";
 
 function AnimalImagem({
@@ -7,23 +9,35 @@ function AnimalImagem({
   imageClassName = "",
   placeholderClassName = "",
   alt,
+  objectFit = "contain",
+  variant = "padrao",
   children,
 }) {
+  const [urlComFalha, setUrlComFalha] = useState("");
+  const url = normalizarUrlImagem(src);
+  const imagemDisponivel = Boolean(url && urlComFalha !== url);
+
   return (
-    <div className={className}>
-      {src ? (
+    <div className={`animal-imagem animal-imagem--${variant} ${className}`.trim()}>
+      {imagemDisponivel ? (
         <img
           className={imageClassName || undefined}
-          src={src}
+          src={url}
           alt={alt || `Foto de ${nome || "animal"}`}
+          style={variant === "card" ? undefined : { objectFit }}
+          onError={(event) => {
+            console.error("Falha ao carregar foto do animal:", event.currentTarget.src);
+            setUrlComFalha(url);
+          }}
         />
       ) : (
-        <span
-          className={placeholderClassName || undefined}
-          aria-hidden="true"
+        <div
+          className={`animal-imagem-placeholder ${placeholderClassName}`.trim()}
+          role="img"
+          aria-label={nome ? `Foto indisponível de ${nome}` : "Foto indisponível"}
         >
           🐾
-        </span>
+        </div>
       )}
       {children}
     </div>

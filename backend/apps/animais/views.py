@@ -6,7 +6,7 @@ from django.core import signing
 from django.db.models import Exists, OuterRef, Q
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, permissions, viewsets, views
+from rest_framework import decorators, generics, permissions, viewsets, views
 from rest_framework.response import Response
 
 from apps.ocorrencias.models import Ocorrencia
@@ -27,6 +27,50 @@ class AnimalViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(tutor=self.request.user)
+
+    @decorators.action(detail=True, methods=["get"], url_path="historico")
+    def historico(self, request, pk=None):
+        animal = self.get_object()
+        eventos = [{
+            "id": f"cadastro-{animal.pk}",
+            "tipo": "CADASTRO",
+            "data_hora": animal.criado_em,
+            "localidade": "",
+            "descricao": "Animal cadastrado.",
+            "ocorrencia": None,
+        }]
+
+        for ocorrencia in animal.ocorrencias.prefetch_related("avistamentos").all():
+            referencia = {
+                "id": ocorrencia.id,
+                "tipo": ocorrencia.tipo,
+                "status": ocorrencia.status,
+                "status_nome": ocorrencia.get_status_display(),
+            }
+            eventos.append({
+                "id": f"ocorrencia-{ocorrencia.pk}",
+                "tipo": ocorrencia.tipo,
+                "data_hora": ocorrencia.data_hora,
+                "localidade": ocorrencia.localidade,
+                "descricao": ocorrencia.descricao,
+                "ocorrencia": referencia,
+            })
+            for avistamento in ocorrencia.avistamentos.all():
+                eventos.append({
+                    "id": f"avistamento-{avistamento.pk}",
+                    "tipo": "AVISTAMENTO",
+                    "data_hora": avistamento.data_hora,
+                    "localidade": avistamento.localidade,
+                    "descricao": avistamento.descricao,
+                    "foto": request.build_absolute_uri(avistamento.foto.url) if avistamento.foto else None,
+                    "ocorrencia": referencia,
+                })
+
+        eventos.sort(key=lambda evento: evento["data_hora"])
+        return Response({
+            "animal": AnimalSerializer(animal, context={"request": request}).data,
+            "eventos": eventos,
+        })
 
 
 class AnimaisPerdidosPublicosView(generics.ListAPIView):
@@ -142,7 +186,7 @@ class AnimalIdentificacaoPublicaView(views.APIView):
                 "raca": animal.raca,
                 "porte": animal.get_porte_display(),
                 "cor": animal.cor,
-                "foto": None,
+                "foto": request.build_absolute_uri(animal.foto.url) if animal.foto else None,
             }
         )
 

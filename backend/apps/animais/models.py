@@ -62,6 +62,13 @@ class Animal(models.Model):
         ),
     )
 
+    foto = models.ImageField(
+        upload_to="animais/%Y/%m/",
+        null=True,
+        blank=True,
+        verbose_name="Foto principal",
+    )
+
     status = models.CharField(
         max_length=15,
         choices=Status.choices,

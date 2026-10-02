@@ -5,6 +5,7 @@ import ReportarAvistamento from "../ReportarAvistamento/ReportarAvistamento.jsx"
 import LayoutPublico from "../../components/layout/LayoutPublico";
 import AnimalImagem from "../../components/animal/AnimalImagem";
 import AnimalStatus from "../../components/animal/AnimalStatus";
+import CompartilharAnuncio from "../../components/animal/CompartilharAnuncio.jsx";
 import Card from "../../components/ui/Card";
 import EstadoTela from "../../components/ui/EstadoTela";
 import { obterAnimalPublico } from "../../services/animaisService.js";
@@ -155,6 +156,7 @@ function DetalhesAnimal() {
             <span aria-hidden="true">🔒</span>
             Dados do tutor são protegidos e não são exibidos publicamente.
           </p>
+          <CompartilharAnuncio animal={animal} />
         </div>
       </section>
 

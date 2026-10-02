@@ -25,6 +25,15 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
 
         return queryset
 
+    def get_serializer(self, *args, **kwargs):
+        serializer = super().get_serializer(*args, **kwargs)
+        serializer_fields = serializer.child.fields if hasattr(serializer, "child") else serializer.fields
+        if "animal" in serializer_fields:
+            serializer_fields["animal"].queryset = Animal.objects.filter(
+                tutor=self.request.user,
+            )
+        return serializer
+
     def perform_create(self, serializer):
         animal = serializer.validated_data["animal"]
 

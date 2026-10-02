@@ -16,20 +16,20 @@ export function obterAnimalTutor(id) {
   return api.get(`/animais/${id}/`);
 }
 
+export function obterHistoricoAnimal(id) {
+  return api.get(`/animais/${id}/historico/`);
+}
+
 export function obterIdentificacaoAnimal(codigo) {
   return api.get(`/publico/identificacao/${codigo}/`);
 }
 
 export function criarAnimal(dados) {
-  return api.post("/animais/", dados, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return api.post("/animais/", dados);
 }
 
 export function atualizarAnimal(id, dados) {
-  return api.patch(`/animais/${id}/`, dados, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
+  return api.patch(`/animais/${id}/`, dados);
 }
 
 export function obterQrCodeAnimal(id) {

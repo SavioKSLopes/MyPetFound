@@ -1,0 +1,12 @@
+.cortador-foto-fundo { position: fixed; inset: 0; z-index: 1000; padding: 18px; display: grid; place-items: center; background: rgb(15 23 42 / 68%); }
+.cortador-foto { width: min(100%, 560px); max-height: 100%; overflow: auto; padding: 22px; background: #fff; border-radius: 16px; box-shadow: 0 20px 70px rgb(0 0 0 / 30%); }
+.cortador-foto h2 { margin: 0; color: #0f172a; }
+.cortador-foto > p { margin: 8px 0 16px; color: #64748b; line-height: 1.5; }
+.moldura-recorte-foto { position: relative; width: min(100%, 500px); margin: 0 auto; aspect-ratio: 4 / 3; overflow: hidden; touch-action: none; cursor: grab; background: #0f172a; outline-offset: 4px; }
+.moldura-recorte-foto:active { cursor: grabbing; }
+.moldura-recorte-foto img { position: absolute; max-width: none; max-height: none; user-select: none; pointer-events: none; }
+.controle-zoom-recorte { display: flex; align-items: center; gap: 14px; margin-top: 18px; color: #334155; font-weight: 700; }
+.controle-zoom-recorte input { flex: 1; accent-color: #1565c0; }
+.acoes-recorte-foto { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+.erro-recorte-foto { color: #b91c1c; }
+@media (max-width: 480px) { .cortador-foto { padding: 16px; } .acoes-recorte-foto { flex-direction: column-reverse; } }

@@ -331,6 +331,9 @@ function GerenciarAnimal() {
             >
               Editar dados do animal
             </Link>
+            <Link className="botao-editar-animal" to={`/meus-animais/${animal.id}/historico`}>
+              Ver histórico
+            </Link>
           </div>
         </AnimalCard>
 

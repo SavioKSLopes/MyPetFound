@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import AnimalImagem from "../../components/animal/AnimalImagem";
 import CamposAnimal from "../../components/animal/CamposAnimal";
+import CortadorFoto from "../../components/animal/CortadorFoto.jsx";
 import LayoutTutor from "../../components/layout/LayoutTutor";
 import Card from "../../components/ui/Card";
 import useAuth from "../../hooks/useAuth.js";
@@ -22,24 +23,25 @@ function CadastroAnimal() {
   const [descricao, setDescricao] = useState("");
   const [foto, setFoto] = useState(null);
   const [fotoPreview, setFotoPreview] = useState("");
+  const [arquivoParaCortar, setArquivoParaCortar] = useState(null);
+
+  useEffect(() => () => {
+    if (fotoPreview.startsWith("blob:")) URL.revokeObjectURL(fotoPreview);
+  }, [fotoPreview]);
 
   const [enviando, setEnviando] = useState(false);
   const [erro, setErro] = useState("");
 
   function selecionarFoto(event) {
     const arquivo = event.target.files?.[0] || null;
+    event.target.value = "";
+    if (arquivo) setArquivoParaCortar(arquivo);
+  }
 
+  function confirmarFotoRecortada(arquivo) {
     setFoto(arquivo);
-
-    if (fotoPreview) {
-      URL.revokeObjectURL(fotoPreview);
-    }
-
-    if (arquivo) {
-      setFotoPreview(URL.createObjectURL(arquivo));
-    } else {
-      setFotoPreview("");
-    }
+    setFotoPreview(URL.createObjectURL(arquivo));
+    setArquivoParaCortar(null);
   }
 
   function atualizarCampo(campo, valor) {
@@ -215,6 +217,13 @@ function CadastroAnimal() {
           </form>
         </Card>
       </section>
+      {arquivoParaCortar && (
+        <CortadorFoto
+          arquivo={arquivoParaCortar}
+          aoCancelar={() => setArquivoParaCortar(null)}
+          aoConfirmar={confirmarFotoRecortada}
+        />
+      )}
     </LayoutTutor>
   );
 }

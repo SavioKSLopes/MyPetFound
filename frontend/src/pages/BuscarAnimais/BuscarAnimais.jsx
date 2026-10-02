@@ -300,56 +300,54 @@ function BuscarAnimais() {
                 className="card-resultado-animal"
                 key={animal.id}
               >
-                <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-resultado-animal">
-                  <AnimalStatus status="PERDIDO" statusNome="Desaparecido" className="selo-perdido-animal" />
-                </AnimalImagem>
+                <AnimalImagem src={animal.foto} nome={animal.nome} variant="card" />
 
-                <div className="conteudo-resultado-animal">
+                <div className="animal-card-conteudo">
+                  <div className="animal-card-status">
+                    <AnimalStatus status="PERDIDO" statusNome="Desaparecido" className="selo-perdido-animal" />
+                  </div>
                   <div className="topo-resultado-animal">
-                    <div>
-                      <h3>{animal.nome}</h3>
-
-                      <p>
-                        {obterNomeEspecie(animal)} · {obterNomePorte(animal)}
-                      </p>
-                    </div>
+                    <h3 className="animal-card-nome">{animal.nome}</h3>
 
                     <span aria-hidden="true">🔎</span>
                   </div>
 
-                  <dl className="dados-resultado-animal">
-                    <div>
-                      <dt>Raça</dt>
+                  <div className="animal-card-informacoes informacoes-resultado-animal">
+                    <p className="animal-card-linha">
+                      {obterNomeEspecie(animal)} · {obterNomePorte(animal)}
+                    </p>
+                    <dl className="dados-resultado-animal">
+                      <div>
+                        <dt>Raça</dt>
 
-                      <dd>{animal.raca || "Não informada"}</dd>
-                    </div>
+                        <dd>{animal.raca || "Não informada"}</dd>
+                      </div>
 
-                    <div>
-                      <dt>Cor</dt>
+                      <div>
+                        <dt>Cor</dt>
 
-                      <dd>{animal.cor || "Não informada"}</dd>
-                    </div>
+                        <dd>{animal.cor || "Não informada"}</dd>
+                      </div>
 
-                    <div className="dado-localidade-animal">
-                      <dt>Último local informado</dt>
+                      <div className="dado-localidade-animal">
+                        <dt>Último local informado</dt>
 
-                      <dd>
-                        {animal.localidade || "Não informado"}
-                      </dd>
-                    </div>
-                  </dl>
+                        <dd>
+                          {animal.localidade || "Não informado"}
+                        </dd>
+                      </div>
+                    </dl>
 
-                  <p className="data-desaparecimento-animal">
-                    Desaparecido em{" "}
-                    {formatarData(animal.data_desaparecimento)}
-                  </p>
+                    <p className="data-desaparecimento-animal animal-card-linha">
+                      Desaparecido em {formatarData(animal.data_desaparecimento)}
+                    </p>
+                  </div>
 
-                  <Link
-                    className="botao-ver-detalhes-animal"
-                    to={`/animais/${animal.id}`}
-                  >
-                    Ver detalhes e ajudar
-                  </Link>
+                  <div className="animal-card-acoes">
+                    <Link className="animal-card-botao--detalhes" to={`/animais/${animal.id}`}>
+                      Ver detalhes e ajudar
+                    </Link>
+                  </div>
                 </div>
               </AnimalCard>
             ))}

@@ -15,6 +15,7 @@ import CadastroUsuario from "./pages/CadastroUsuario/CadastroUsuario.jsx";
 import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
 import EditarAnimal from "./pages/EditarAnimal/EditarAnimal.jsx";
 import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
+import HistoricoAnimal from "./pages/HistoricoAnimal/HistoricoAnimal.jsx";
 import IdentificacaoAnimal from "./pages/IdentificacaoAnimal/IdentificacaoAnimal.jsx";
 import Login from "./pages/Login/Login.jsx";
 import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos.jsx";
@@ -165,32 +166,32 @@ function Home() {
             <div className="grid-animais">
               {animais.map((animal) => (
                 <AnimalCard animal={animal} variant="publico" className="card-animal" key={animal.id}>
-                  <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-placeholder" />
+                  <AnimalImagem src={animal.foto} nome={animal.nome} variant="card" />
 
-                  <div className="conteudo-card">
+                  <div className="animal-card-conteudo">
+                    <div className="animal-card-status">
                     <AnimalStatus status="PERDIDO" statusNome="Perdido" className="status status-perdido">
                       <span aria-hidden="true">⚠</span>
                       Perdido
                     </AnimalStatus>
+                    </div>
 
-                    <h3>{animal.nome}</h3>
+                    <h3 className="animal-card-nome">{animal.nome}</h3>
 
-                    <p>
-                      {animal.especie_nome || animal.especie} ·{" "}
-                      {animal.porte_nome || animal.porte}
-                    </p>
+                    <div className="animal-card-informacoes">
+                      <p className="animal-card-linha">
+                        {animal.especie_nome || animal.especie} · {animal.porte_nome || animal.porte}
+                      </p>
+                      <p className="animal-card-linha">
+                        {animal.cor || "Cor não informada"} · {animal.raca || "Raça não informada"}
+                      </p>
+                    </div>
 
-                    <p className="texto-secundario">
-                      {animal.cor || "Cor não informada"}
-                      {animal.raca ? ` · ${animal.raca}` : ""}
-                    </p>
-
-                    <Link
-                      className="botao-detalhes"
-                      to={`/animais/${animal.id}`}
-                    >
-                      Ver detalhes
-                    </Link>
+                    <div className="animal-card-acoes">
+                      <Link className="animal-card-botao--detalhes" to={`/animais/${animal.id}`}>
+                        Ver detalhes
+                      </Link>
+                    </div>
                   </div>
                 </AnimalCard>
               ))}
@@ -301,6 +302,7 @@ function App() {
       />
 
       <Route element={<RotaProtegida />}>
+        <Route path="/meus-animais/:id/historico" element={<HistoricoAnimal />} />
         <Route
           path="/meus-animais"
           element={<MeusAnimais />}

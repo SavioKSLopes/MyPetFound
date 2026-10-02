@@ -39,6 +39,7 @@ class AnimalPublicoSerializer(serializers.ModelSerializer):
             "porte_nome",
             "cor",
             "descricao",
+            "foto",
             "status",
             "status_nome",
             "ocorrencia_id",

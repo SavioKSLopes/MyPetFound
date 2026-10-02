@@ -1,5 +1,102 @@
 .animal-card { min-width: 0; }
-.animal-imagem-placeholder { display: inline-grid; place-items: center; }
+.animal-card-publico {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.animal-imagem { position: relative; min-width: 0; }
+.animal-imagem-placeholder { display: grid; place-items: center; }
+.animal-imagem--card {
+  width: 100%;
+  height: 195px;
+  min-height: 195px;
+  max-height: 195px;
+  flex: 0 0 195px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  color: #1565c0;
+  background: #dce8f6;
+}
+.animal-imagem--card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+}
+.animal-imagem--card .animal-imagem-placeholder {
+  width: 100%;
+  height: 100%;
+  color: #1565c0;
+  background: #dce8f6;
+  font-size: 3.2rem;
+}
+.animal-card-conteudo {
+  min-width: 0;
+  min-height: 220px;
+  padding: 16px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+.animal-card-status {
+  min-height: 25px;
+  display: flex;
+  align-items: flex-start;
+}
+.animal-card-nome {
+  min-height: 29px;
+  margin: 12px 0 4px;
+  color: #0f172a;
+  font-size: 1.25rem;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+.animal-card-informacoes {
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+}
+.animal-card-linha {
+  min-height: 22px;
+  margin: 0;
+  color: #64748b;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.animal-card-acoes {
+  width: 100%;
+  margin-top: auto;
+  padding-top: 18px;
+}
+.animal-card-botao--detalhes {
+  width: 100%;
+  min-height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid #1565c0;
+  border-radius: 8px;
+  color: #1565c0;
+  background: #ffffff;
+  font-size: 0.86rem;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+.animal-card-botao--detalhes:hover {
+  color: #ffffff;
+  background: #1565c0;
+  border-color: #1565c0;
+}
+.animal-card-botao--detalhes:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 28%);
+  outline-offset: 3px;
+}
 .animal-status { width: fit-content; max-width: 100%; display: inline-flex; align-items: center; }
 .animal-status-perdido { color: #9a3412; }
 .animal-status-positivo { color: var(--cor-sucesso); }

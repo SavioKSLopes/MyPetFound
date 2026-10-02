@@ -128,7 +128,7 @@ function MeusAnimais() {
                 }`}
                 key={animal.id}
               >
-                <AnimalImagem src={animal.foto} nome={animal.nome} className="foto-meu-animal" />
+                <AnimalImagem src={animal.foto} nome={animal.nome} variant="card" />
 
                 <div className="conteudo-meu-animal">
                   <div className="cabecalho-card-animal">

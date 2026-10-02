@@ -70,7 +70,7 @@
   min-height: clamp(300px, 42vw, 430px);
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .informacoes-detalhes {

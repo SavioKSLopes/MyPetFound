@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import LayoutTutor from "../../components/layout/LayoutTutor";
 import AnimalImagem from "../../components/animal/AnimalImagem";
 import CamposAnimal from "../../components/animal/CamposAnimal";
+import CortadorFoto from "../../components/animal/CortadorFoto.jsx";
 import Card from "../../components/ui/Card";
 import EstadoTela from "../../components/ui/EstadoTela";
 import useAuth from "../../hooks/useAuth.js";
@@ -24,6 +25,7 @@ function EditarAnimal() {
   const [descricao, setDescricao] = useState("");
   const [foto, setFoto] = useState(null);
   const [previewFoto, setPreviewFoto] = useState("");
+  const [arquivoParaCortar, setArquivoParaCortar] = useState(null);
 
   const [carregando, setCarregando] = useState(true);
   const [salvando, setSalvando] = useState(false);
@@ -100,13 +102,15 @@ function EditarAnimal() {
       return;
     }
 
-    if (previewFoto?.startsWith("blob:")) {
-      URL.revokeObjectURL(previewFoto);
-    }
+    event.target.value = "";
+    setArquivoParaCortar(arquivo);
+    setErro("");
+  }
 
+  function confirmarFotoRecortada(arquivo) {
     setFoto(arquivo);
     setPreviewFoto(URL.createObjectURL(arquivo));
-    setErro("");
+    setArquivoParaCortar(null);
   }
 
   async function salvarAlteracoes(event) {
@@ -307,6 +311,13 @@ function EditarAnimal() {
           </button>
         </div>
       </form>
+      {arquivoParaCortar && (
+        <CortadorFoto
+          arquivo={arquivoParaCortar}
+          aoCancelar={() => setArquivoParaCortar(null)}
+          aoConfirmar={confirmarFotoRecortada}
+        />
+      )}
     </LayoutTutor>
   );
 }
