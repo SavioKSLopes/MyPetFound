@@ -1,4 +1,4 @@
-# MyPetFound
+ # MyPetFound
 
 Aplicação web comunitária para cadastrar animais, divulgar desaparecimentos, receber avistamentos e ajudar a devolver animais encontrados aos seus tutores. O backend também oferece uma identificação pública por QR Code e mensagens privadas para o tutor.
 
@@ -175,10 +175,3 @@ python manage.py test
 ```
 
 Os testes Django usam o banco de teste derivado da configuração PostgreSQL. É necessário que o PostgreSQL configurado esteja acessível para criar o banco temporário. Os testes de upload usam diretório de mídia temporário e removem os arquivos após a execução.
-
-## Limitações conhecidas
-
-- O projeto não declara serviço de frontend em contêiner nem servidor de mídia de produção.
-- Web Share varia conforme suporte e contexto seguro do navegador; o WhatsApp continua disponível como alternativa explícita.
-- Histórico não tem data própria de reencontro, pois esse dado não existe no modelo atual.
-- Links locais de anúncio e QR dependem de uma origem de frontend acessível para compartilhamento fora do dispositivo.
