@@ -11,6 +11,7 @@ import { buscarAnimais } from "./services/animaisService.js";
 
 import BuscarAnimais from "./pages/BuscarAnimais/BuscarAnimais.jsx";
 import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
+import CadastroUsuario from "./pages/CadastroUsuario/CadastroUsuario.jsx";
 import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
 import EditarAnimal from "./pages/EditarAnimal/EditarAnimal.jsx";
 import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
@@ -291,6 +292,8 @@ function App() {
       />
 
       <Route path="/entrar" element={<Login />} />
+
+      <Route path="/cadastro" element={<CadastroUsuario />} />
 
       <Route
         path="/identificacao/:codigo"

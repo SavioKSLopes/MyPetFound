@@ -300,6 +300,33 @@
   line-height: 1.6;
 }
 
+.estado-vazio-painel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.estado-vazio-painel > span {
+  margin: 0;
+  line-height: 1;
+}
+
+.estado-vazio-painel h2 {
+  width: 100%;
+  margin: 0;
+}
+
+.estado-vazio-painel p {
+  width: 100%;
+  margin: 0;
+}
+
+.estado-vazio-painel .botao-cadastrar-vazio {
+  margin-top: 4px;
+}
+
 .estado-erro {
   border-color: #fecdca;
 }

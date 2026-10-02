@@ -1,14 +1,15 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import LayoutPublico from "../../components/layout/LayoutPublico";
+import useAuth from "../../hooks/useAuth.js";
 import { api } from "../../services/api.js";
 import "./Login.css";
 
 
 function Login() {
-  const navegar = useNavigate();
   const localizacao = useLocation();
+  const { autenticar } = useAuth();
 
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
@@ -16,6 +17,7 @@ function Login() {
   const [erro, setErro] = useState("");
 
   const destino = localizacao.state?.de || "/meus-animais";
+  const mensagemSucesso = localizacao.state?.mensagemSucesso;
 
   async function fazerLogin(event) {
     event.preventDefault();
@@ -29,14 +31,8 @@ function Login() {
         password: senha,
       });
 
-      localStorage.setItem("mypetfound_token", response.data.token);
-
-      navegar(destino, {
-        replace: true,
-      });
+      autenticar(response.data.token, destino);
     } catch (error) {
-      console.error("Erro ao entrar:", error);
-
       if (error.response?.status === 400) {
         setErro(
           "Usuário ou senha inválidos. Verifique os dados e tente novamente.",
@@ -67,6 +63,12 @@ function Login() {
         </div>
 
         <form className="formulario-login" onSubmit={fazerLogin}>
+          {mensagemSucesso && (
+            <p className="sucesso-login" role="status">
+              {mensagemSucesso}
+            </p>
+          )}
+
           <div className="campo-login">
             <label htmlFor="usuario">
               Usuário

@@ -11,8 +11,19 @@ function useAuth() {
     navegar(destino, { replace: true });
   }, [navegar]);
 
+  const autenticar = useCallback((token, destino = "/meus-animais") => {
+    if (typeof token !== "string" || token.length === 0) {
+      return false;
+    }
+
+    localStorage.setItem(CHAVE_TOKEN, token);
+    navegar(destino, { replace: true });
+    return true;
+  }, [navegar]);
+
   return {
     temToken: Boolean(localStorage.getItem(CHAVE_TOKEN)),
+    autenticar,
     sair,
   };
 }

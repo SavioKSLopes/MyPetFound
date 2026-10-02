@@ -1,0 +1,134 @@
+.pagina-cadastro-usuario {
+  min-height: 100vh;
+  padding: 24px;
+  background:
+    radial-gradient(circle at top right, rgb(21 101 192 / 10%), transparent 34%),
+    var(--cor-fundo);
+}
+
+.painel-cadastro-usuario {
+  width: min(100%, 540px);
+  margin: 28px auto 48px;
+  padding: 34px;
+}
+
+.cabecalho-cadastro-usuario h1 {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: clamp(1.7rem, 5vw, 2.1rem);
+  line-height: 1.2;
+}
+
+.cabecalho-cadastro-usuario > p:last-child {
+  margin: 10px 0 0;
+  color: var(--cor-texto-secundario);
+  line-height: 1.55;
+}
+
+.etiqueta-cadastro-usuario {
+  width: fit-content;
+  margin: 0 0 10px;
+  padding: 5px 10px;
+  color: var(--cor-primaria-escura);
+  background: var(--cor-ativo);
+  border: 1px solid #bfdbfe;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.formulario-cadastro-usuario {
+  margin-top: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.formulario-cadastro-usuario .campo-formulario-ui > label {
+  margin-bottom: 7px;
+  display: block;
+  color: #334155;
+  font-size: 0.86rem;
+  font-weight: 750;
+}
+
+.formulario-cadastro-usuario .campo-formulario-ui > input {
+  width: 100%;
+  min-height: 44px;
+  padding: 9px 13px;
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--raio-pequeno);
+  font: inherit;
+  font-size: 0.94rem;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+.formulario-cadastro-usuario .campo-formulario-ui > input:focus {
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgb(21 101 192 / 14%);
+  outline: none;
+}
+
+.formulario-cadastro-usuario .campo-formulario-ui > small {
+  margin-top: 6px;
+  display: block;
+  color: var(--cor-texto-secundario);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.formulario-cadastro-usuario .campo-formulario-ui > .campo-formulario-erro {
+  color: var(--cor-perigo);
+}
+
+.formulario-cadastro-usuario .campo-formulario-ui > input[aria-invalid="true"] {
+  border-color: var(--cor-perigo);
+}
+
+.erro-cadastro-usuario {
+  margin: 0;
+  padding: 11px 12px;
+  color: var(--cor-perigo);
+  background: var(--cor-perigo-fundo);
+  border: 1px solid #fecaca;
+  border-radius: var(--raio-pequeno);
+  font-size: 0.86rem;
+  line-height: 1.45;
+}
+
+.botao-cadastro-usuario {
+  width: 100%;
+  min-height: 45px;
+  margin-top: 2px;
+}
+
+.rodape-cadastro-usuario {
+  margin: 22px 0 0;
+  color: var(--cor-texto-secundario);
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+.rodape-cadastro-usuario a {
+  color: var(--cor-primaria);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.rodape-cadastro-usuario a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 520px) {
+  .pagina-cadastro-usuario {
+    padding: 16px;
+  }
+
+  .painel-cadastro-usuario {
+    margin-top: 20px;
+    padding: 26px 21px;
+  }
+}
