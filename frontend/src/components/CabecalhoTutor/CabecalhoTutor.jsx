@@ -1,29 +1,24 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import useAuth from "../../hooks/useAuth.js";
+import MarcaMyPetFound from "../MarcaMyPetFound/MarcaMyPetFound";
 import "./CabecalhoTutor.css";
 
 function CabecalhoTutor() {
   const { sair } = useAuth();
 
   function classeLinkNavegacao({ isActive }) {
-    return `link-navegacao-tutor${
-      isActive ? " link-navegacao-tutor-ativo" : ""
+    return `link-navegacao-base${
+      isActive ? " link-navegacao-base-ativo" : ""
     }`;
   }
 
   return (
-    <header className="cabecalho-tutor">
-      <Link className="logo-tutor" to="/">
-        <span className="icone-logo-tutor" aria-hidden="true">
-          🐾
-        </span>
-
-        <span>MyPetFound</span>
-      </Link>
+    <header className="cabecalho-base cabecalho-tutor">
+      <MarcaMyPetFound />
 
       <nav
-        className="navegacao-tutor"
+        className="navegacao-base navegacao-tutor"
         aria-label="Navegação da área do tutor"
       >
         <NavLink
@@ -49,7 +44,7 @@ function CabecalhoTutor() {
         </NavLink>
 
         <button
-          className="botao-sair-tutor"
+          className="botao-cabecalho botao-sair-base"
           type="button"
           onClick={sair}
         >

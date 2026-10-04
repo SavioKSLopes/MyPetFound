@@ -1,0 +1,122 @@
+.cabecalho-base {
+  width: min(100%, var(--largura-conteudo));
+  min-height: 70px;
+  margin: 0 auto 34px;
+  padding: 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  box-sizing: border-box;
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-grande);
+  box-shadow: var(--sombra-suave);
+}
+
+.navegacao-base {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.link-navegacao-base {
+  min-height: 38px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  font-weight: 800;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 160ms ease, background 160ms ease;
+}
+
+.link-navegacao-base:hover,
+.link-navegacao-base-ativo {
+  color: var(--cor-primaria-escura);
+  background: #eff6ff;
+}
+
+.botao-cabecalho {
+  min-height: 38px;
+  margin: 0;
+  padding: 0 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  border: 1px solid transparent;
+  border-radius: var(--raio-pequeno);
+  font-size: 0.84rem;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.botao-entrar-publico {
+  color: #fff;
+  background: var(--cor-primaria);
+}
+
+.botao-entrar-publico:hover {
+  background: var(--cor-primaria-escura);
+}
+
+.botao-sair-base {
+  margin-left: 8px;
+  color: #475569;
+  background: #fff;
+  border-color: #cbd5e1;
+  cursor: pointer;
+}
+
+.botao-sair-base:hover {
+  color: #b91c1c;
+  background: #fef2f2;
+  border-color: #fecaca;
+}
+
+.cabecalho-base a:focus-visible,
+.cabecalho-base button:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 28%);
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .cabecalho-base {
+    min-height: auto;
+    padding: 14px;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .navegacao-base {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .link-navegacao-base,
+  .botao-cabecalho {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+}
+
+@media (max-width: 440px) {
+  .navegacao-base {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

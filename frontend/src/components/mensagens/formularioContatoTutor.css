@@ -1,0 +1,89 @@
+.formulario-contato-tutor {
+  margin-top: 0;
+  padding: 20px;
+  border: 1px solid #dbe4ef;
+  border-radius: 14px;
+  background: #ffffff;
+  box-shadow: 0 5px 16px rgb(15 23 42 / 5%);
+}
+
+.formulario-contato-tutor h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.25rem;
+}
+
+.formulario-contato-tutor > p {
+  margin: 8px 0 18px;
+  color: #64748b;
+  line-height: 1.55;
+}
+
+.formulario-contato-tutor form {
+  display: grid;
+  gap: 14px;
+}
+
+.formulario-contato-tutor textarea {
+  min-height: 112px;
+  resize: vertical;
+}
+
+.formulario-contato-tutor input,
+.formulario-contato-tutor textarea {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.formulario-contato-tutor input,
+.formulario-contato-tutor textarea {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #0f172a;
+  background: #ffffff;
+  font: inherit;
+}
+
+.formulario-contato-tutor textarea:focus,
+.formulario-contato-tutor input:focus {
+  border-color: #1565c0;
+  outline: 3px solid rgb(21 101 192 / 18%);
+}
+
+.acoes-formulario-contato {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.formulario-contato-tutor form .botao-enviar-mensagem {
+  width: 100%;
+  min-height: 44px;
+  color: #ffffff;
+  background: #1565c0;
+  border: 1px solid #1565c0;
+}
+
+.formulario-contato-tutor form .botao-enviar-mensagem:hover:not(:disabled) {
+  background: #0d4f9b;
+  border-color: #0d4f9b;
+}
+
+.privacidade-formulario-contato {
+  margin: -6px 0 0;
+  color: #64748b;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.feedback-contato:empty {
+  display: none;
+}
+
+.feedback-contato p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.erro-contato { color: #b91c1c; }
+.sucesso-contato { color: #15803d; font-weight: 700; }

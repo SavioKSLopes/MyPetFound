@@ -1,100 +1,93 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
+import SeletorLocalizacao from "../../components/SeletorLocalizacao.jsx";
+import FormularioContatoTutor from "../../components/mensagens/FormularioContatoTutor.jsx";
 import { criarAvistamento } from "../../services/avistamentosService.js";
 import "./ReportarAvistamento.css";
 
-function ReportarAvistamento({ animal, aoFechar }) {
+function ReportarAvistamento({ animal, aoFechar, aoConcluir }) {
   const [localidade, setLocalidade] = useState("");
   const [dataHora, setDataHora] = useState("");
-  const [descricao, setDescricao] = useState("");
   const [nomeContato, setNomeContato] = useState("");
   const [telefoneContato, setTelefoneContato] = useState("");
   const [foto, setFoto] = useState(null);
+  const [localizacaoMapa, setLocalizacaoMapa] = useState(null);
+  const [avistamentoRegistrado, setAvistamentoRegistrado] = useState(false);
+  const [sucesso, setSucesso] = useState(false);
+  const [fechando, setFechando] = useState(false);
+  const avistamentoCriadoRef = useRef(false);
+  const timersRef = useRef([]);
 
-  const [enviando, setEnviando] = useState(false);
-  const [erro, setErro] = useState("");
-  const [enviado, setEnviado] = useState(false);
+  useEffect(() => () => {
+    timersRef.current.forEach((timer) => window.clearTimeout(timer));
+    timersRef.current = [];
+  }, []);
 
-  async function enviarAvistamento(event) {
-    event.preventDefault();
-    setErro("");
+  const coordenadas = localizacaoMapa
+    ? `${localizacaoMapa.latitude.toFixed(6)}, ${localizacaoMapa.longitude.toFixed(6)}`
+    : "";
+  const localizacaoTexto = localidade.trim() || coordenadas;
 
-    if (!animal?.id) {
-      setErro(
-        "Não foi possível identificar o animal deste avistamento.",
-      );
-      return;
+  function concluirComSucesso() {
+    if (sucesso || fechando) return;
+    setSucesso(true);
+    timersRef.current.push(window.setTimeout(() => setFechando(true), 900));
+    timersRef.current.push(window.setTimeout(() => {
+      aoFechar();
+      aoConcluir?.("Avistamento registrado e tutor avisado.");
+    }, 1120));
+  }
+
+  async function registrarAvistamentoAntesDoAviso({ mensagem }) {
+    if (sucesso || fechando) {
+      throw new Error("O avistamento já foi concluído.");
+    }
+    if (avistamentoCriadoRef.current) return;
+
+    if (!animal?.id || !localidade.trim() || !dataHora) {
+      throw new Error("Dados obrigatórios do avistamento ausentes.");
     }
 
-    setEnviando(true);
-
     const dados = new FormData();
-
     dados.append("animal", String(animal.id));
-    dados.append("localidade", localidade);
+    dados.append("localidade", localidade.trim());
     dados.append("data_hora", dataHora);
-    dados.append("descricao", descricao);
+    dados.append("descricao", mensagem);
     dados.append("nome_contato", nomeContato);
     dados.append("telefone_contato", telefoneContato);
 
-    if (foto) {
-      dados.append("foto", foto);
+    if (foto) dados.append("foto", foto);
+    if (localizacaoMapa) {
+      dados.append("latitude", localizacaoMapa.latitude.toFixed(6));
+      dados.append("longitude", localizacaoMapa.longitude.toFixed(6));
     }
 
-    try {
-      await criarAvistamento(dados);
-
-      setEnviado(true);
-    } catch (error) {
-      console.error("Erro ao enviar avistamento:", error);
-      console.error(
-        "Resposta da API:",
-        error.response?.data,
-      );
-
-      const errosDaApi = error.response?.data;
-
-      if (errosDaApi && typeof errosDaApi === "object") {
-        const mensagens = Object.entries(errosDaApi)
-          .flatMap(([campo, valor]) => {
-            const valores = Array.isArray(valor)
-              ? valor
-              : [valor];
-
-            return valores.map(
-              (mensagem) => `${campo}: ${mensagem}`,
-            );
-          })
-          .join(" ");
-
-        setErro(
-          mensagens ||
-            "Verifique os dados e tente novamente.",
-        );
-      } else {
-        setErro(
-          "Não foi possível enviar o avistamento. " +
-            "Tente novamente em alguns instantes.",
-        );
-      }
-    } finally {
-      setEnviando(false);
-    }
+    await criarAvistamento(dados);
+    avistamentoCriadoRef.current = true;
+    setAvistamentoRegistrado(true);
   }
 
   return (
     <div
-      className="modal-fundo"
+      className={`modal-fundo${fechando ? " modal-avistamento-overlay--saindo" : ""}`}
       role="presentation"
-      onMouseDown={aoFechar}
+      onMouseDown={sucesso ? undefined : aoFechar}
     >
       <section
-        className="modal-avistamento"
+        className={`modal-avistamento${sucesso ? " modal-avistamento--sucesso" : ""}${fechando ? " modal-avistamento--saindo" : ""}`}
         role="dialog"
         aria-modal="true"
         aria-labelledby="titulo-avistamento"
         onMouseDown={(event) => event.stopPropagation()}
       >
+        {sucesso ? (
+          <div className="avistamento-sucesso" role="status" aria-live="polite">
+            <span className="avistamento-sucesso__icone" aria-hidden="true">✓</span>
+            <h2 id="titulo-avistamento">Avistamento enviado!</h2>
+            <p>O local foi registrado e o tutor recebeu seu aviso.</p>
+          </div>
+        ) : (
+          <>
         <button
           className="botao-fechar-modal"
           type="button"
@@ -104,171 +97,116 @@ function ReportarAvistamento({ animal, aoFechar }) {
           ×
         </button>
 
-        {enviado ? (
-          <div className="sucesso-avistamento">
-            <span aria-hidden="true">✓</span>
+        <header className="cabecalho-modal">
+          <p className="tag">Ajude a encontrar {animal.nome}</p>
+          <h2 id="titulo-avistamento">Reportar avistamento</h2>
+          <p>
+            Informe o local e o horário aproximado. Seus dados de contato
+            são opcionais e serão acessíveis somente ao tutor.
+          </p>
+        </header>
 
-            <h2>Avistamento enviado!</h2>
+        <div className="avistamento">
+          <section className="avistamento__localizacao" aria-label="Localização do avistamento">
+            <div className="campo-formulario">
+              <label htmlFor="localidade">
+                Onde você viu {animal.nome}? *
+              </label>
+              <input
+                id="localidade"
+                type="text"
+                value={localidade}
+                onChange={(event) => setLocalidade(event.target.value)}
+                placeholder="Ex.: Praça do Feijão, Centro, Guanambi-BA"
+                maxLength={255}
+                required
+                disabled={avistamentoRegistrado}
+              />
+            </div>
 
-            <p>
-              Obrigado por ajudar a encontrar {animal.nome}. O tutor poderá
-              visualizar essas informações no painel dele.
-            </p>
+            <div className="campo-formulario">
+              <label htmlFor="data_hora">Quando você viu? *</label>
+              <input
+                id="data_hora"
+                type="datetime-local"
+                value={dataHora}
+                onChange={(event) => setDataHora(event.target.value)}
+                required
+                disabled={avistamentoRegistrado}
+              />
+            </div>
 
-            <button
-              className="botao-enviar-avistamento"
-              type="button"
-              onClick={aoFechar}
-            >
-              Fechar
-            </button>
-          </div>
-        ) : (
-          <>
-            <header className="cabecalho-modal">
-              <p className="tag">
-                Ajude a encontrar {animal.nome}
+            <SeletorLocalizacao
+              valor={localizacaoMapa}
+              aoSelecionar={setLocalizacaoMapa}
+              contexto="avistamento"
+            />
+            {coordenadas && (
+              <p className="coordenadas-avistamento">
+                Coordenadas selecionadas: {coordenadas}
               </p>
+            )}
+          </section>
 
-              <h2 id="titulo-avistamento">
-                Reportar avistamento
-              </h2>
+          <section className="avistamento__detalhes">
+            <div className="campo-formulario">
+              <label htmlFor="foto">
+                Foto do avistamento <span>(opcional)</span>
+              </label>
+              <input
+                id="foto"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(event) => setFoto(event.target.files?.[0] || null)}
+                disabled={avistamentoRegistrado}
+              />
+              <small>
+                Envie uma foto somente se ela foi tirada no momento do
+                avistamento.
+              </small>
+            </div>
 
-              <p>
-                Informe o local e o horário aproximado. Seus dados de contato
-                são opcionais e serão acessíveis somente ao tutor.
-              </p>
-            </header>
+            <div className="campo-formulario">
+              <label htmlFor="nome_contato">
+                Seu nome <span>(opcional)</span>
+              </label>
+              <input
+                id="nome_contato"
+                type="text"
+                value={nomeContato}
+                onChange={(event) => setNomeContato(event.target.value)}
+                placeholder="Como podemos chamar você?"
+                disabled={avistamentoRegistrado}
+              />
+            </div>
 
-            <form onSubmit={enviarAvistamento}>
-              <div className="campo-formulario">
-                <label htmlFor="localidade">
-                  Onde você viu {animal.nome}? *
-                </label>
+            <div className="campo-formulario">
+              <label htmlFor="telefone_contato">
+                Telefone ou WhatsApp <span>(opcional)</span>
+              </label>
+              <input
+                id="telefone_contato"
+                type="tel"
+                value={telefoneContato}
+                onChange={(event) => setTelefoneContato(event.target.value)}
+                placeholder="(77) 99999-9999"
+                disabled={avistamentoRegistrado}
+              />
+            </div>
+          </section>
 
-                <input
-                  id="localidade"
-                  type="text"
-                  value={localidade}
-                  onChange={(event) => {
-                    setLocalidade(event.target.value);
-                  }}
-                  placeholder="Ex.: Praça do Feijão, Centro, Guanambi-BA"
-                  required
-                />
-              </div>
-
-              <div className="campo-formulario">
-                <label htmlFor="data_hora">
-                  Quando você viu? *
-                </label>
-
-                <input
-                  id="data_hora"
-                  type="datetime-local"
-                  value={dataHora}
-                  onChange={(event) => {
-                    setDataHora(event.target.value);
-                  }}
-                  required
-                />
-              </div>
-
-              <div className="campo-formulario">
-                <label htmlFor="descricao">
-                  Informações adicionais
-                </label>
-
-                <textarea
-                  id="descricao"
-                  value={descricao}
-                  onChange={(event) => {
-                    setDescricao(event.target.value);
-                  }}
-                  rows="5"
-                  placeholder="Ex.: Ela estava perto da praça, parecia assustada e seguia em direção ao centro."
-                />
-              </div>
-
-              <div className="campo-formulario">
-                <label htmlFor="foto">
-                  Foto do avistamento <span>(opcional)</span>
-                </label>
-
-                <input
-                  id="foto"
-                  type="file"
-                  accept="image/png,image/jpeg,image/webp"
-                  onChange={(event) => {
-                    setFoto(event.target.files?.[0] || null);
-                  }}
-                />
-
-                <small>
-                  Envie uma foto somente se ela foi tirada no momento do
-                  avistamento.
-                </small>
-              </div>
-
-              <div className="campo-formulario">
-                <label htmlFor="nome_contato">
-                  Seu nome <span>(opcional)</span>
-                </label>
-
-                <input
-                  id="nome_contato"
-                  type="text"
-                  value={nomeContato}
-                  onChange={(event) => {
-                    setNomeContato(event.target.value);
-                  }}
-                  placeholder="Como podemos chamar você?"
-                />
-              </div>
-
-              <div className="campo-formulario">
-                <label htmlFor="telefone_contato">
-                  Telefone ou WhatsApp <span>(opcional)</span>
-                </label>
-
-                <input
-                  id="telefone_contato"
-                  type="tel"
-                  value={telefoneContato}
-                  onChange={(event) => {
-                    setTelefoneContato(event.target.value);
-                  }}
-                  placeholder="(77) 99999-9999"
-                />
-              </div>
-
-              {erro && (
-                <p className="erro-formulario" role="alert">
-                  {erro}
-                </p>
-              )}
-
-              <div className="acoes-modal">
-                <button
-                  className="botao-cancelar-avistamento"
-                  type="button"
-                  onClick={aoFechar}
-                  disabled={enviando}
-                >
-                  Cancelar
-                </button>
-
-                <button
-                  className="botao-enviar-avistamento"
-                  type="submit"
-                  disabled={enviando}
-                >
-                  {enviando
-                    ? "Enviando..."
-                    : "Enviar avistamento"}
-                </button>
-              </div>
-            </form>
+          <section className="campo-mensagem-avistamento">
+            <FormularioContatoTutor
+              modoAvistamento
+              animalId={animal.id}
+              localizacaoTexto={localizacaoTexto}
+              avistamentoRegistrado={avistamentoRegistrado}
+              onBeforeSend={registrarAvistamentoAntesDoAviso}
+              onSuccess={concluirComSucesso}
+              aoCancelar={aoFechar}
+            />
+          </section>
+        </div>
           </>
         )}
       </section>

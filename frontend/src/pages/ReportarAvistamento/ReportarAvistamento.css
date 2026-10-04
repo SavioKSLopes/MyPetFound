@@ -291,3 +291,126 @@
     width: 100%;
   }
 }
+
+.modal-avistamento .formulario-contato-tutor {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.modal-avistamento .formulario-contato-tutor form {
+  display: block;
+}
+
+.campo-mensagem-avistamento {
+  margin-top: 16px;
+}
+
+.ajuda-privacidade-avistamento {
+  margin: 6px 0 0;
+  display: block;
+  color: inherit;
+  font-size: inherit;
+}
+
+.modal-avistamento--saindo {
+  animation: modal-avistamento-saida 220ms ease-in both;
+  pointer-events: none;
+}
+
+.modal-avistamento-overlay--saindo {
+  animation: overlay-avistamento-saida 220ms ease-in both;
+}
+
+@keyframes modal-avistamento-saida {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateY(6px) scale(0.985);
+  }
+}
+
+@keyframes overlay-avistamento-saida {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+.avistamento-sucesso {
+  min-height: 210px;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  padding: 32px 24px;
+  text-align: center;
+  animation: avistamento-sucesso-entrada 180ms ease-out both;
+}
+
+.avistamento-sucesso__icone {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  margin-bottom: 12px;
+  border-radius: 50%;
+  color: #ffffff;
+  background: #1565c0;
+  box-shadow: 0 6px 16px rgb(21 101 192 / 22%);
+  font-size: 1.45rem;
+  font-weight: 800;
+}
+
+.avistamento-sucesso h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1.12rem;
+}
+
+.avistamento-sucesso p {
+  max-width: 320px;
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+@keyframes avistamento-sucesso-entrada {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.toast-avistamento-sucesso {
+  position: fixed;
+  z-index: 1100;
+  right: 24px;
+  bottom: 24px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 14px 18px;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid #b9d7f7;
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 16%);
+}
+
+@media (max-width: 560px) {
+  .toast-avistamento-sucesso {
+    right: 16px;
+    bottom: 16px;
+    left: 16px;
+    max-width: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-avistamento,
+  .modal-avistamento--saindo,
+  .modal-avistamento-overlay--saindo,
+  .avistamento-sucesso {
+    animation: none;
+  }
+}

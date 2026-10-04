@@ -61,16 +61,18 @@ function CentralizarNoPonto({ valor }) {
 }
 
 
-function SeletorLocalizacao({ valor, aoSelecionar }) {
+function SeletorLocalizacao({ valor, aoSelecionar, contexto = "desaparecimento" }) {
+  const ehAvistamento = contexto === "avistamento";
+
   return (
     <section className="seletor-localizacao">
       <div className="cabecalho-seletor-localizacao">
         <div>
-          <h3>Marque o último local visto</h3>
+          <h3>{ehAvistamento ? "Marque o local do avistamento" : "Marque o último local visto"}</h3>
 
           <p>
-            Clique no mapa para posicionar o marcador. Você pode arrastar o
-            mapa e aproximar a região antes de selecionar o ponto.
+            Clique no mapa para posicionar o marcador. Você pode arrastar e
+            aproximar antes de selecionar o ponto.
           </p>
         </div>
 
@@ -90,7 +92,7 @@ function SeletorLocalizacao({ valor, aoSelecionar }) {
           center={GUANAMBI}
           zoom={13}
           scrollWheelZoom
-          className="mapa-seletor-localizacao"
+          className={`mapa-seletor-localizacao${ehAvistamento ? " avistamento__mapa" : ""}`}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -107,15 +109,15 @@ function SeletorLocalizacao({ valor, aoSelecionar }) {
       </div>
 
       {valor ? (
-        <p className="localizacao-selecionada">
+        <p className={`localizacao-selecionada${ehAvistamento ? " avistamento__status-localizacao" : ""}`}>
           <span aria-hidden="true">✓</span>
           Ponto selecionado no mapa.
         </p>
       ) : (
-        <p className="localizacao-nao-selecionada">
+        <p className={`localizacao-nao-selecionada${ehAvistamento ? " avistamento__status-localizacao" : ""}`}>
           <span aria-hidden="true">📍</span>
           Nenhum ponto selecionado. O mapa é opcional, mas ajuda a comunidade
-          a localizar a área do desaparecimento.
+            a localizar a área {ehAvistamento ? "do avistamento" : "do desaparecimento"}.
         </p>
       )}
     </section>

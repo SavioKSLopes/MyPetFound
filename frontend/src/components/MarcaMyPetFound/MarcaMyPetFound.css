@@ -1,0 +1,36 @@
+.marca-mypetfound {
+  min-width: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--cor-texto);
+  font-size: 1.1rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.marca-mypetfound-icone {
+  width: 34px;
+  height: 34px;
+  flex: 0 0 34px;
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  color: #fff;
+  background: var(--cor-primaria);
+  border-radius: 10px;
+}
+
+.marca-mypetfound-icone img {
+  width: 22px;
+  height: 22px;
+  display: block;
+  object-fit: contain;
+}
+
+.marca-mypetfound-nome {
+  display: block;
+  line-height: 1;
+}

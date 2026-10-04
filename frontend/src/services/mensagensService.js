@@ -9,5 +9,10 @@ export function marcarMensagemComoLida(id) {
 }
 
 export function enviarMensagemPublica(animalId, payload) {
-  return api.post(`/animais/${animalId}/mensagens/`, payload);
+  const { mensagem, localizacao_texto = "" } = payload;
+
+  return api.post(`/animais/${animalId}/mensagens/`, {
+    mensagem,
+    localizacao_texto,
+  });
 }

@@ -1,26 +1,24 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
+import useAuth from "../../hooks/useAuth.js";
+import MarcaMyPetFound from "../MarcaMyPetFound/MarcaMyPetFound";
 import "./CabecalhoPublico.css";
 
 function CabecalhoPublico({ mostrarEntrar = true }) {
+  const { isAuthenticated, sair } = useAuth();
+
   function classeLink({ isActive }) {
-    return `link-navegacao-publica${
-      isActive ? " link-navegacao-publica-ativo" : ""
+    return `link-navegacao-base${
+      isActive ? " link-navegacao-base-ativo" : ""
     }`;
   }
 
   return (
-    <header className="cabecalho-publico">
-      <Link className="logo-publica" to="/">
-        <span className="icone-logo-publica" aria-hidden="true">
-          🐾
-        </span>
-
-        <span>MyPetFound</span>
-      </Link>
+    <header className="cabecalho-base cabecalho-publico">
+      <MarcaMyPetFound />
 
       <nav
-        className="navegacao-publica"
+        className="navegacao-base navegacao-publica"
         aria-label="Navegação principal"
       >
         <NavLink className={classeLink} to="/" end>
@@ -35,10 +33,25 @@ function CabecalhoPublico({ mostrarEntrar = true }) {
           Mapa
         </NavLink>
 
-        {mostrarEntrar && (
-          <NavLink className="botao-entrar-publico" to="/entrar">
-            Entrar
-          </NavLink>
+        {isAuthenticated ? (
+          <>
+            <NavLink className={classeLink} to="/meus-animais">
+              Meus animais
+            </NavLink>
+            <button
+              className="botao-cabecalho botao-sair-base"
+              type="button"
+              onClick={() => sair()}
+            >
+              Sair
+            </button>
+          </>
+        ) : (
+          mostrarEntrar && (
+            <NavLink className="botao-cabecalho botao-entrar-publico" to="/entrar">
+              Entrar
+            </NavLink>
+          )
         )}
       </nav>
     </header>

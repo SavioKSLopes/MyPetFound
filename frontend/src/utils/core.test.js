@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { montarTextoCompartilhamento, obterUrlPublicaAnuncio } from "./compartilhamento.js";
+import {
+  copiarTexto,
+  ehUrlPublicaDeAnuncio,
+  montarTextoCompartilhamento,
+  montarUrlFacebook,
+  montarUrlPublicaAnuncio,
+  montarUrlWhatsApp,
+  montarUrlX,
+  obterUrlPublicaAnuncio,
+} from "./compartilhamento.js";
 import { normalizarUrlImagem } from "./imagem.js";
 import { ordenarEventosHistorico } from "./historico.js";
 import { normalizarApiBaseUrl } from "../services/api.js";
@@ -12,9 +21,85 @@ test("texto de compartilhamento mantém acentos e usa somente dados do anúncio"
     porte_nome: "Médio", localidade: "São João", telefone: "privado", tutor: "privado",
   }, "https://pets.example/animais/8");
   assert.match(texto, /São João/);
-  assert.match(texto, /Características: Vira-lata, Caramelo, Médio/);
+  assert.match(texto, /Porte: Médio/);
+  assert.match(texto, /Características: Vira-lata, Caramelo/);
   assert.doesNotMatch(texto, /privado/);
   assert.match(texto, /\n/);
+});
+
+test("URLs de compartilhamento são codificadas e usam o anúncio público", () => {
+  const animal = { id: 8, nome: "Tico" };
+  const url = montarUrlPublicaAnuncio(animal, "https://pets.example");
+  const texto = "Ajude a encontrar Tico.\nSão João";
+  const whatsapp = new URL(montarUrlWhatsApp(texto));
+  const facebook = new URL(montarUrlFacebook(url));
+  const x = new URL(montarUrlX(texto, url));
+
+  assert.equal(url, "https://pets.example/animais/8");
+  assert.equal(whatsapp.origin, "https://wa.me");
+  assert.equal(whatsapp.searchParams.get("text"), texto);
+  assert.equal(facebook.searchParams.get("u"), url);
+  assert.equal(x.searchParams.get("text"), texto);
+  assert.equal(x.searchParams.get("url"), url);
+});
+
+test("Facebook recebe somente o parâmetro u com a URL pública codificada", () => {
+  const urlPublica = "https://pets.example/animais/123?cidade=São João&campanha=adoção";
+  const urlFacebook = montarUrlFacebook(urlPublica);
+  const parsed = new URL(urlFacebook);
+
+  assert.equal(
+    urlFacebook,
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(urlPublica)}`,
+  );
+  assert.deepEqual([...parsed.searchParams.keys()], ["u"]);
+  assert.equal(parsed.searchParams.get("u"), urlPublica);
+  assert.equal(ehUrlPublicaDeAnuncio(urlPublica), true);
+});
+
+test("URL do Facebook rejeita rota privada, QR Code, token e URL vazia", () => {
+  for (const url of [
+    "",
+    "https://pets.example/meus-animais/123",
+    "https://pets.example/identificacao/assinatura-qr",
+    "https://pets.example/animais/123?access_token=secreto",
+  ]) {
+    assert.equal(ehUrlPublicaDeAnuncio(url), false);
+    assert.throws(() => montarUrlFacebook(url), TypeError);
+  }
+});
+
+test("fallback de copiar usa textarea temporário quando Clipboard API não está disponível", async () => {
+  const documentoOriginal = Object.getOwnPropertyDescriptor(globalThis, "document");
+  const contextoSeguroOriginal = Object.getOwnPropertyDescriptor(globalThis, "isSecureContext");
+  let campoRemovido = false;
+  let textoSelecionado = "";
+  const mockDocument = {
+    body: { appendChild(campo) { textoSelecionado = campo.value; } },
+    createElement() {
+      return {
+        value: "",
+        style: {},
+        setAttribute() {},
+        select() {},
+        remove() { campoRemovido = true; },
+      };
+    },
+    execCommand(comando) { return comando === "copy"; },
+  };
+
+  Object.defineProperty(globalThis, "document", { configurable: true, value: mockDocument });
+  Object.defineProperty(globalThis, "isSecureContext", { configurable: true, value: false });
+  try {
+    assert.equal(await copiarTexto("texto para copiar"), true);
+    assert.equal(textoSelecionado, "texto para copiar");
+    assert.equal(campoRemovido, true);
+  } finally {
+    if (documentoOriginal) Object.defineProperty(globalThis, "document", documentoOriginal);
+    else delete globalThis.document;
+    if (contextoSeguroOriginal) Object.defineProperty(globalThis, "isSecureContext", contextoSeguroOriginal);
+    else delete globalThis.isSecureContext;
+  }
 });
 
 test("anúncio canônico e imagem relativa são resolvidos na origem adequada", () => {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import ReportarAvistamento from "../ReportarAvistamento/ReportarAvistamento.jsx";
@@ -6,6 +6,7 @@ import LayoutPublico from "../../components/layout/LayoutPublico";
 import AnimalImagem from "../../components/animal/AnimalImagem";
 import AnimalStatus from "../../components/animal/AnimalStatus";
 import CompartilharAnuncio from "../../components/animal/CompartilharAnuncio.jsx";
+import FormularioContatoTutor from "../../components/mensagens/FormularioContatoTutor.jsx";
 import Card from "../../components/ui/Card";
 import EstadoTela from "../../components/ui/EstadoTela";
 import { obterAnimalPublico } from "../../services/animaisService.js";
@@ -18,6 +19,24 @@ function DetalhesAnimal() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [formularioAberto, setFormularioAberto] = useState(false);
+  const [avisoAvistamentoEnviado, setAvisoAvistamentoEnviado] = useState("");
+  const botaoReportarRef = useRef(null);
+  const timerAvisoRef = useRef(null);
+
+  useEffect(() => () => window.clearTimeout(timerAvisoRef.current), []);
+
+  function fecharFormularioAvistamento() {
+    setFormularioAberto(false);
+    window.requestAnimationFrame(() => botaoReportarRef.current?.focus());
+  }
+
+  function mostrarAvisoAvistamento(texto) {
+    window.clearTimeout(timerAvisoRef.current);
+    setAvisoAvistamentoEnviado(texto);
+    timerAvisoRef.current = window.setTimeout(() => {
+      setAvisoAvistamentoEnviado("");
+    }, 3500);
+  }
 
   useEffect(() => {
     async function carregarAnimal() {
@@ -133,39 +152,56 @@ function DetalhesAnimal() {
             </Card>
           )}
 
-          <section className="card-avistamento">
-            <div className="conteudo-avistamento-publico">
-              <h2>Você viu este pet?</h2>
-
-              <p>
-                Informe onde e quando viu o animal. Sua colaboração pode ajudar
-                este pet a voltar para casa.
+          <section className="detalhes-contato-publico" aria-label="Ações para ajudar">
+            {animal.status !== "REENCONTRADO" ? (
+              <section className="card-acao-avistamento">
+                <div className="conteudo-acao-avistamento">
+                  <h2>Você viu este pet?</h2>
+                  <p>
+                    Informe onde e quando viu o animal. Sua colaboração pode
+                    ajudar este pet a voltar para casa.
+                  </p>
+                </div>
+                <button
+                  ref={botaoReportarRef}
+                  type="button"
+                  className="botao-reportar-avistamento"
+                  onClick={() => setFormularioAberto(true)}
+                >
+                  Reportar avistamento
+                </button>
+              </section>
+            ) : (
+              <p className="aviso-animal-encerrado">
+                Este animal já foi reencontrado e não está recebendo novos avisos.
               </p>
-            </div>
+            )}
 
-            <button
-              className="botao-avistamento"
-              type="button"
-              onClick={() => setFormularioAberto(true)}
-            >
-              Reportar avistamento
-            </button>
+            <section className="detalhes-compartilhamento">
+              <h2>Ajude a encontrar {animal.nome}</h2>
+              <p>Compartilhe este anúncio com pessoas da região.</p>
+              <CompartilharAnuncio animal={animal} />
+            </section>
           </section>
-
-          <p className="aviso-privacidade">
-            <span aria-hidden="true">🔒</span>
-            Dados do tutor são protegidos e não são exibidos publicamente.
-          </p>
-          <CompartilharAnuncio animal={animal} />
         </div>
       </section>
 
-      {formularioAberto && (
+      {formularioAberto && animal.status !== "REENCONTRADO" && (
         <ReportarAvistamento
           animal={animal}
-          aoFechar={() => setFormularioAberto(false)}
-        />
+          aoFechar={fecharFormularioAvistamento}
+          aoConcluir={mostrarAvisoAvistamento}
+        >
+          <FormularioContatoTutor animalId={animal.id} />
+        </ReportarAvistamento>
       )}
+
+      {avisoAvistamentoEnviado && (
+        <div className="toast-avistamento-sucesso" role="status" aria-live="polite">
+          {avisoAvistamentoEnviado}
+        </div>
+      )}
+
     </LayoutPublico>
   );
 }

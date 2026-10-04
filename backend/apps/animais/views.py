@@ -181,6 +181,7 @@ class AnimalIdentificacaoPublicaView(views.APIView):
         return Response(
             {
                 "id": animal.id,
+                "status": animal.status,
                 "nome": animal.nome,
                 "especie": animal.get_especie_display(),
                 "raca": animal.raca,
