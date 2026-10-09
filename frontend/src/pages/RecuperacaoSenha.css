@@ -1,0 +1,133 @@
+.pagina-recuperacao-senha {
+  min-height: 100vh;
+  padding: 24px 16px;
+  background:
+    radial-gradient(circle at top right, rgb(21 101 192 / 10%), transparent 34%),
+    var(--cor-fundo);
+}
+
+.painel-recuperacao-senha {
+  width: min(100%, 520px);
+  margin: 24px auto 40px;
+  padding: 32px;
+}
+
+.cabecalho-recuperacao-senha h1,
+.painel-recuperacao-senha > div > h1 {
+  margin: 0;
+  color: var(--cor-texto);
+  font-size: clamp(1.55rem, 5vw, 2rem);
+  line-height: 1.2;
+}
+
+.cabecalho-recuperacao-senha p,
+.painel-recuperacao-senha > div > p {
+  margin: 10px 0 0;
+  color: var(--cor-texto-secundario);
+  line-height: 1.55;
+}
+
+.formulario-recuperacao-senha {
+  margin-top: 24px;
+  display: grid;
+  gap: 18px;
+}
+
+.formulario-recuperacao-senha .campo-formulario-ui > label,
+.campo-senha-recuperacao > label {
+  margin-bottom: 7px;
+  display: block;
+  color: #334155;
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.formulario-recuperacao-senha .campo-formulario-ui > input,
+.entrada-senha-recuperacao > input {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 10px 12px;
+  color: var(--cor-texto);
+  background: var(--cor-superficie);
+  border: 1px solid #cbd5e1;
+  border-radius: var(--raio-pequeno);
+  font: inherit;
+}
+
+.entrada-senha-recuperacao {
+  position: relative;
+  width: 100%;
+}
+
+.entrada-senha-recuperacao > input {
+  padding-right: 48px;
+}
+
+.botao-visibilidade-senha {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 7px;
+  color: #64748b;
+  background: transparent;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.botao-visibilidade-senha svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.botao-visibilidade-senha:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 20%);
+  outline-offset: 1px;
+}
+
+.campo-senha-recuperacao > small {
+  margin-top: 7px;
+  display: block;
+  color: var(--cor-texto-secundario);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.erro-recuperacao-senha {
+  margin: 0;
+  padding: 11px 12px;
+  color: var(--cor-perigo);
+  background: var(--cor-perigo-fundo);
+  border: 1px solid #fecaca;
+  border-radius: var(--raio-pequeno);
+  line-height: 1.45;
+}
+
+.acao-recuperacao {
+  width: 100%;
+  min-height: 46px;
+}
+
+.link-voltar-recuperacao {
+  margin-top: 22px;
+  display: inline-block;
+  color: var(--cor-primaria);
+  font-weight: 700;
+}
+
+.link-voltar-recuperacao:hover { text-decoration: underline; }
+
+@media (max-width: 480px) {
+  .painel-recuperacao-senha { padding: 26px 20px; }
+}
