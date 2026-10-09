@@ -195,3 +195,37 @@ EMAIL_HOST_PASSWORD = _configuracao_email["EMAIL_HOST_PASSWORD"]
 EMAIL_USE_TLS = _configuracao_email["EMAIL_USE_TLS"]
 EMAIL_USE_SSL = _configuracao_email["EMAIL_USE_SSL"]
 DEFAULT_FROM_EMAIL = _configuracao_email["DEFAULT_FROM_EMAIL"]
+
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "%(asctime)s %(levelname)s %(name)s %(message)s"
+        },
+    },
+    "filters": {
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+    },
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "verbose",
+        },
+    },
+    "loggers": {
+        "django.request": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+        "django.security": {
+            "handlers": ["console"],
+            "level": "ERROR",
+            "propagate": False,
+        },
+    },
+}
