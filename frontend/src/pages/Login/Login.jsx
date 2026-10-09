@@ -86,9 +86,14 @@ function Login() {
           </div>
 
           <div className="campo-login">
-            <label htmlFor="senha">
-              Senha
-            </label>
+            <div className="linha-senha">
+              <label htmlFor="senha">
+                Senha
+              </label>
+              <Link to="/esqueci-senha" className="acao-login-recuperacao">
+                Esqueci minha senha
+              </Link>
+            </div>
 
             <input
               id="senha"
@@ -116,16 +121,12 @@ function Login() {
           </button>
         </form>
 
-        <p className="rodape-login">
-          Ainda não possui uma conta?{" "}
-          <Link to="/cadastro">
-            Criar cadastro
-          </Link>
-        </p>
-
-        <Link className="voltar-inicio-login" to="/">
-          ← Voltar para a página inicial
-        </Link>
+        <div className="acoes-login">
+          <p className="acao-login-cadastro">
+            Ainda não possui uma conta?{" "}
+            <Link to="/cadastro">Criar cadastro</Link>
+          </p>
+        </div>
       </section>
     </LayoutPublico>
   );

@@ -94,9 +94,39 @@ Configurações lidas pelo backend (`backend/config/settings.py`):
 | `POSTGRES_PASSWORD` | Senha PostgreSQL | Conforme ambiente local/Compose |
 | `POSTGRES_HOST` | Host PostgreSQL | `localhost` |
 | `POSTGRES_PORT` | Porta PostgreSQL | `5432` |
-| `FRONTEND_URL` | Origem usada no destino inserido no QR Code | `http://localhost:5173` |
+| `FRONTEND_URL` | Origem usada nos links de QR Code e recuperação de senha | `http://localhost:5173` |
+| `EMAIL_HOST` | Host SMTP; vazio seleciona o envio em console | Vazio |
+| `EMAIL_PORT` | Porta SMTP | `587` |
+| `EMAIL_HOST_USER` | Usuário SMTP | Vazio |
+| `EMAIL_HOST_PASSWORD` | Credencial SMTP, somente no `.env` local | Vazio |
+| `EMAIL_USE_TLS` | Ativa TLS no SMTP (desativado automaticamente se SSL estiver ativo) | `True` |
+| `EMAIL_USE_SSL` | Ativa SSL no SMTP | `False` |
+| `DEFAULT_FROM_EMAIL` | Remetente das mensagens | `nao-responda@mypetfound.local` |
 
 O Compose injeta as variáveis do `.env` e define o host do banco como `db` para o backend no contêiner. O frontend aceita `VITE_API_URL` e `VITE_PUBLIC_URL`; ambas são variáveis opcionais de build/desenvolvimento, sem valor versionado no repositório.
+
+### Recuperação de senha e e-mail
+
+Sem `EMAIL_HOST`, o desenvolvimento local usa o `ConsoleEmailBackend`; os e-mails de recuperação e links temporários aparecem nos logs do backend:
+
+```sh
+docker compose logs -f backend
+```
+
+Para enviar por SMTP, defina `EMAIL_HOST` e as demais variáveis no `.env` local. Com o host preenchido, o Django seleciona automaticamente o backend SMTP. Exemplo de configuração:
+
+```env
+FRONTEND_URL=http://localhost:5173
+EMAIL_HOST=smtp.seu-provedor.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=seu-email@exemplo.com
+EMAIL_HOST_PASSWORD=sua-credencial-secreta
+EMAIL_USE_TLS=True
+EMAIL_USE_SSL=False
+DEFAULT_FROM_EMAIL="MyPetFound <seu-email@exemplo.com>"
+```
+
+Nunca versione o `.env` nem credenciais SMTP. Use a credencial apropriada do provedor; se um provedor exigir senha de aplicativo, mantenha-a somente no arquivo local ignorado pelo Git.
 
 ## Migrações e mídia
 

@@ -3,7 +3,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 .animal-imagem { position: relative; min-width: 0; }
 .animal-imagem-placeholder { display: grid; place-items: center; }

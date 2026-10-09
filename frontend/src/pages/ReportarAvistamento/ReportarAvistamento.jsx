@@ -157,6 +157,7 @@ function ReportarAvistamento({ animal, aoFechar, aoConcluir }) {
                 id="foto"
                 type="file"
                 accept="image/png,image/jpeg,image/webp"
+                capture="environment"
                 onChange={(event) => setFoto(event.target.files?.[0] || null)}
                 disabled={avistamentoRegistrado}
               />

@@ -2,20 +2,25 @@
   position: fixed;
   z-index: 1000;
   inset: 0;
-  padding: 20px;
+  padding: 10px;
   display: grid;
   place-items: center;
-  overflow-y: auto;
+  overflow: hidden;
   background: rgb(15 23 42 / 58%);
   backdrop-filter: blur(4px);
 }
 
 .modal-avistamento {
   position: relative;
-  width: min(100%, 500px);
-  max-height: calc(100vh - 40px);
-  padding: 26px;
-  overflow-y: auto;
+  width: 100%;
+  max-width: 760px;
+  max-height: calc(100vh - 20px);
+  max-height: calc(100dvh - 20px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 18px 16px 0;
   color: #1e293b;
   background: #ffffff;
   border: 1px solid #e2e8f0;
@@ -61,8 +66,9 @@
 }
 
 .cabecalho-modal {
+  flex: 0 0 auto;
   padding-right: 40px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
 .cabecalho-modal .tag {
@@ -73,7 +79,7 @@
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.875rem;
   font-weight: 800;
   letter-spacing: 0.02em;
 }
@@ -88,11 +94,12 @@
 .cabecalho-modal p:last-child {
   margin: 8px 0 0;
   color: #64748b;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   line-height: 1.45;
 }
 
 .campo-formulario {
+  min-width: 0;
   margin-top: 14px;
 }
 
@@ -100,13 +107,13 @@
   margin-bottom: 6px;
   display: block;
   color: #334155;
-  font-size: 0.83rem;
+  font-size: 0.875rem;
   font-weight: 750;
 }
 
 .campo-formulario label span {
   color: #94a3b8;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-weight: 500;
 }
 
@@ -114,21 +121,24 @@
 .campo-formulario textarea {
   box-sizing: border-box;
   width: 100%;
+  min-width: 0;
   color: #1e293b;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 9px;
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 1rem;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
 .campo-formulario input:not([type="file"]) {
-  height: 42px;
+  min-height: 44px;
   padding: 0 12px;
 }
 
 .campo-formulario input[type="file"] {
+  max-width: 100%;
+  min-height: 44px;
   padding: 8px 10px;
   color: #475569;
   cursor: pointer;
@@ -142,7 +152,7 @@
   border: 0;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   font-weight: 750;
 }
 
@@ -169,7 +179,7 @@
   margin-top: 6px;
   display: block;
   color: #94a3b8;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   line-height: 1.35;
 }
 
@@ -187,7 +197,8 @@
 .acoes-modal {
   margin-top: 22px;
   padding-top: 18px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
   justify-content: flex-end;
   gap: 10px;
   border-top: 1px solid #edf0f3;
@@ -195,7 +206,7 @@
 
 .botao-cancelar-avistamento,
 .botao-enviar-avistamento {
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 14px;
   border-radius: 8px;
   cursor: pointer;
@@ -271,24 +282,74 @@
 
 @media (max-width: 560px) {
   .modal-fundo {
-    padding: 12px;
-    align-items: end;
+    padding: 10px;
   }
 
   .modal-avistamento {
     width: 100%;
-    max-height: calc(100vh - 24px);
-    padding: 22px 18px;
+    max-height: calc(100vh - 20px);
+    max-height: calc(100dvh - 20px);
+    padding: 16px 14px 0;
     border-radius: 16px;
   }
 
-  .acoes-modal {
-    flex-direction: column-reverse;
+  .cabecalho-modal {
+    margin-bottom: 8px;
   }
 
-  .botao-cancelar-avistamento,
+  .avistamento {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 2px 12px;
+    scrollbar-gutter: stable;
+  }
+
+  .acoes-modal {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 10px 0 max(10px, env(safe-area-inset-bottom));
+    background: #ffffff;
+  }
+
   .botao-enviar-avistamento {
     width: 100%;
+  }
+
+  .botao-cancelar-avistamento { width: 100%; }
+
+  .campo-formulario input[type="file"]::file-selector-button {
+    max-width: 100%;
+    margin: 0 8px 4px 0;
+  }
+}
+
+@media (min-width: 561px) {
+  .modal-avistamento { padding: 24px 24px 0; }
+  .cabecalho-modal { margin-bottom: 16px; }
+  .avistamento {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 2px 16px;
+  }
+}
+
+@media (min-width: 768px) {
+  .avistamento__localizacao,
+  .avistamento__detalhes {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    column-gap: 16px;
+  }
+
+  .avistamento__localizacao .seletor-localizacao,
+  .avistamento__localizacao .coordenadas-avistamento,
+  .avistamento__detalhes .campo-formulario:first-child {
+    grid-column: 1 / -1;
   }
 }
 

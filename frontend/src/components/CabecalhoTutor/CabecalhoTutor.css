@@ -1,1 +1,71 @@
 @import "../cabecalho/cabecalho.css";
+
+.cabecalho-tutor .botao-menu-mobile {
+  box-sizing: border-box;
+  max-width: 100%;
+  display: none;
+}
+
+.cabecalho-tutor .navegacao-tutor {
+  flex: 0 1 auto;
+}
+
+@media (max-width: 768px) {
+  .cabecalho-base.cabecalho-tutor {
+    min-height: 70px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 12px;
+  }
+
+  .cabecalho-tutor .botao-menu-mobile {
+    width: 42px;
+    height: 42px;
+    margin-left: auto;
+    padding: 0;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    color: #1565c0;
+    background: #fff;
+    cursor: pointer;
+  }
+
+  .cabecalho-tutor .botao-menu-mobile svg {
+    width: 21px;
+    height: 21px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 2;
+  }
+
+  .cabecalho-base.cabecalho-tutor .navegacao-tutor {
+    width: 100%;
+    flex: 1 0 100%;
+    display: none;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    margin-top: 12px;
+    padding: 10px 0 0;
+    border-top: 1px solid #e2e8f0;
+  }
+
+  .cabecalho-base.cabecalho-tutor .navegacao-tutor.menu-tutor--aberto {
+    display: grid;
+  }
+
+  .cabecalho-tutor .navegacao-tutor .link-navegacao-base,
+  .cabecalho-tutor .navegacao-tutor .botao-cabecalho {
+    width: 100%;
+    min-height: 44px;
+    justify-content: flex-start;
+    margin: 0;
+    padding: 0 12px;
+    text-align: left;
+  }
+}

@@ -1,6 +1,6 @@
 .pagina-identificacao-animal {
   min-height: 100vh;
-  padding: 30px max(18px, 7vw) 60px;
+  padding: 20px 12px 40px;
   color: #1e293b;
   background: #f8fafc;
 }
@@ -13,8 +13,8 @@
 
 .card-identificacao-animal {
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  margin-top: 50px;
+  grid-template-columns: minmax(0, 1fr);
+  margin-top: 24px;
   overflow: hidden;
   background: #fff;
   border: 1px solid #e2e8f0;
@@ -24,7 +24,7 @@
 
 .foto-identificacao-animal {
   display: grid;
-  min-height: 340px;
+  min-height: 240px;
   overflow: hidden;
   place-items: center;
   color: #1565c0;
@@ -52,7 +52,7 @@
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 999px;
-  font-size: 0.72rem;
+  font-size: 0.875rem;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -76,7 +76,7 @@
 
 .dados-identificacao-animal dt {
   color: #64748b;
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -145,6 +145,7 @@
   width: 100%;
   margin-top: 8px;
   padding: 12px 16px;
+  min-height: 44px;
   color: #fff;
   background: #1565c0;
   border: 0;
@@ -178,21 +179,21 @@
   font-weight: 700;
 }
 
-@media (max-width: 680px) {
-  .pagina-identificacao-animal {
-    padding: 20px 14px 40px;
-  }
+@media (min-width: 480px) {
+  .pagina-identificacao-animal { padding-inline: 20px; }
+}
 
+@media (min-width: 768px) {
   .card-identificacao-animal {
-    grid-template-columns: 1fr;
-    margin-top: 32px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    margin-top: 40px;
   }
 
   .foto-identificacao-animal {
-    min-height: 240px;
+    min-height: 340px;
   }
 
   .dados-identificacao-animal {
-    padding: 24px;
+    padding: 32px;
   }
 }

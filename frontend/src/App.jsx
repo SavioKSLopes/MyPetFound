@@ -14,6 +14,7 @@ import CadastroAnimal from "./pages/CadastroAnimal/CadastroAnimal.jsx";
 import CadastroUsuario from "./pages/CadastroUsuario/CadastroUsuario.jsx";
 import DetalhesAnimal from "./pages/DetalhesAnimal/DetalhesAnimal.jsx";
 import EditarAnimal from "./pages/EditarAnimal/EditarAnimal.jsx";
+import EsqueciSenha from "./pages/EsqueciSenha/EsqueciSenha.jsx";
 import GerenciarAnimal from "./pages/GerenciarAnimal/GerenciarAnimal.jsx";
 import HistoricoAnimal from "./pages/HistoricoAnimal/HistoricoAnimal.jsx";
 import IdentificacaoAnimal from "./pages/IdentificacaoAnimal/IdentificacaoAnimal.jsx";
@@ -22,6 +23,7 @@ import MapaAnimaisPerdidos from "./pages/MapaAnimaisPerdidos/MapaAnimaisPerdidos
 import Mensagens from "./pages/Mensagens/Mensagens.jsx";
 import MeusAnimais from "./pages/MeusAnimais/MeusAnimais.jsx";
 import RegistrarDesaparecimento from "./pages/RegistrarDesaparecimento/RegistrarDesaparecimento.jsx";
+import RedefinirSenha from "./pages/RedefinirSenha/RedefinirSenha.jsx";
 
 import "./App.css";
 
@@ -293,6 +295,10 @@ function App() {
       />
 
       <Route path="/entrar" element={<Login />} />
+
+      <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+
+      <Route path="/redefinir-senha/:uid/:token" element={<RedefinirSenha />} />
 
       <Route path="/cadastro" element={<CadastroUsuario />} />
 

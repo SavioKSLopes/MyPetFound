@@ -148,10 +148,49 @@ REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
     ],
+    "DEFAULT_THROTTLE_RATES": {
+        "password_reset_request": "5/hour",
+        "password_reset_confirm": "10/hour",
+    },
 }
 
 
 FRONTEND_URL = os.getenv(
     "FRONTEND_URL",
     "http://localhost:5173",
-)
+).rstrip("/")
+
+def obter_configuracao_email(variaveis=None):
+    variaveis = os.environ if variaveis is None else variaveis
+    email_host = variaveis.get("EMAIL_HOST", "").strip()
+    usa_ssl = variaveis.get("EMAIL_USE_SSL", "False").lower() == "true"
+    usa_tls = variaveis.get("EMAIL_USE_TLS", "True").lower() == "true"
+
+    return {
+        "EMAIL_BACKEND": (
+            "django.core.mail.backends.smtp.EmailBackend"
+            if email_host
+            else "django.core.mail.backends.console.EmailBackend"
+        ),
+        "EMAIL_HOST": email_host,
+        "EMAIL_PORT": int(variaveis.get("EMAIL_PORT", "587")),
+        "EMAIL_HOST_USER": variaveis.get("EMAIL_HOST_USER", ""),
+        "EMAIL_HOST_PASSWORD": variaveis.get("EMAIL_HOST_PASSWORD", ""),
+        "EMAIL_USE_TLS": usa_tls and not usa_ssl,
+        "EMAIL_USE_SSL": usa_ssl,
+        "DEFAULT_FROM_EMAIL": variaveis.get(
+            "DEFAULT_FROM_EMAIL",
+            "nao-responda@mypetfound.local",
+        ),
+    }
+
+
+_configuracao_email = obter_configuracao_email()
+EMAIL_BACKEND = _configuracao_email["EMAIL_BACKEND"]
+EMAIL_HOST = _configuracao_email["EMAIL_HOST"]
+EMAIL_PORT = _configuracao_email["EMAIL_PORT"]
+EMAIL_HOST_USER = _configuracao_email["EMAIL_HOST_USER"]
+EMAIL_HOST_PASSWORD = _configuracao_email["EMAIL_HOST_PASSWORD"]
+EMAIL_USE_TLS = _configuracao_email["EMAIL_USE_TLS"]
+EMAIL_USE_SSL = _configuracao_email["EMAIL_USE_SSL"]
+DEFAULT_FROM_EMAIL = _configuracao_email["DEFAULT_FROM_EMAIL"]

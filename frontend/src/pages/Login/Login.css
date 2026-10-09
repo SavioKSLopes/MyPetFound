@@ -67,6 +67,36 @@
   margin-top: 0;
 }
 
+.linha-senha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.linha-senha label,
+.link-esqueci-senha {
+  font-size: 0.875rem; /* mesmo tamanho */
+  line-height: 1.35;
+}
+
+.linha-senha label {
+  margin: 0;
+}
+
+.linha-senha > label,
+.linha-senha > a {
+  font-size: 14px;
+}
+
+.link-esqueci-senha {
+  color: #1565c0;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
 .campo-login label {
   margin-bottom: 7px;
   display: block;
@@ -149,30 +179,35 @@
   opacity: 0.65;
 }
 
-.rodape-login {
-  margin: 22px 0 0;
+.acoes-login {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.acoes-login {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 16px;
+}
+
+.acao-login-cadastro {
+  margin: 0;
   color: #64748b;
-  text-align: center;
-  font-size: 0.88rem;
+  font-size: inherit;
+  line-height: 1.45;
+  text-align: left;
 }
 
-.rodape-login a,
-.voltar-inicio-login {
+.acao-login-cadastro a,
+.acao-login-recuperacao {
   color: #1565c0;
-  font-weight: 750;
+  font-weight: 700;
   text-decoration: none;
-}
-
-.rodape-login a:hover,
-.voltar-inicio-login:hover {
-  text-decoration: underline;
-}
-
-.voltar-inicio-login {
-  margin-top: 22px;
-  display: block;
-  text-align: center;
-  font-size: 0.84rem;
 }
 
 @media (max-width: 520px) {

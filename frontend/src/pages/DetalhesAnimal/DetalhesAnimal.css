@@ -1,6 +1,6 @@
 .pagina-detalhes {
   min-height: 100vh;
-  padding: 32px max(18px, 7vw) 56px;
+  padding: 20px 12px 40px;
   color: #1a1a1a;
   background: #f8fafc;
 }
@@ -49,8 +49,8 @@
 
 .conteudo-detalhes {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 32px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
   align-items: start;
 }
 
@@ -67,6 +67,7 @@
 
 .foto-detalhes img {
   width: 100%;
+  max-width: 100%;
   min-height: clamp(300px, 42vw, 430px);
   height: 100%;
   display: block;
@@ -121,7 +122,7 @@
 
 .card-detalhes dt {
   color: #5f6368;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -175,7 +176,7 @@
 
 .botao-reportar-avistamento {
   flex-shrink: 0;
-  min-height: 40px;
+  min-height: 44px;
   padding: 0 16px;
   color: #ffffff;
   background: #ea580c;
@@ -304,10 +305,6 @@
 }
 
 @media (max-width: 850px) {
-  .conteudo-detalhes {
-    grid-template-columns: 1fr;
-  }
-
   .foto-detalhes,
   .foto-detalhes img {
     min-height: min(500px, 65vw);
@@ -315,10 +312,6 @@
 }
 
 @media (max-width: 680px) {
-  .pagina-detalhes {
-    padding: 20px 18px 40px;
-  }
-
   .banner-perdido {
     align-items: flex-start;
     padding: 14px 16px;
@@ -333,6 +326,25 @@
     gap: 16px;
   }
 
+}
+
+@media (min-width: 480px) {
+  .pagina-detalhes {
+    padding-inline: 20px;
+  }
+}
+
+@media (min-width: 768px) {
+  .conteudo-detalhes {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .pagina-detalhes {
+    padding: 32px max(18px, 7vw) 56px;
+  }
 }
 
 @media (max-width: 640px) {

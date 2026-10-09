@@ -145,3 +145,22 @@ class UsuarioSerializer(serializers.ModelSerializer):
             "last_name",
         )
         read_only_fields = fields
+
+
+class SolicitarRedefinicaoSenhaSerializer(serializers.Serializer):
+    email = serializers.EmailField(max_length=254)
+
+
+class RedefinirSenhaSerializer(serializers.Serializer):
+    uid = serializers.CharField(max_length=128)
+    token = serializers.CharField(max_length=256)
+    nova_senha = serializers.CharField(
+        write_only=True,
+        trim_whitespace=False,
+        style={"input_type": "password"},
+    )
+    confirmacao_senha = serializers.CharField(
+        write_only=True,
+        trim_whitespace=False,
+        style={"input_type": "password"},
+    )

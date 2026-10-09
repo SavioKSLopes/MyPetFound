@@ -1,4 +1,6 @@
 .card-ui {
+  min-width: 0;
+  max-width: 100%;
   background: var(--cor-superficie);
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-medio);
@@ -6,7 +8,9 @@
 }
 
 .botao-ui {
-  min-height: 40px;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 44px;
   padding: 0 14px;
   display: inline-flex;
   align-items: center;

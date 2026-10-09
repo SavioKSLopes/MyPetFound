@@ -1,3 +1,6 @@
+from functools import partial
+
+from django.db import transaction
 from django.shortcuts import get_object_or_404
 
 from rest_framework.permissions import IsAuthenticated
@@ -8,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import MensagemContato
+from .notificacoes import enviar_notificacao_nova_mensagem
 from apps.animais.models import Animal
 
 
@@ -38,6 +42,9 @@ class CriarMensagemContatoView(APIView):
         serializer.is_valid(raise_exception=True)
 
         mensagem = serializer.save(animal=animal)
+        transaction.on_commit(
+            partial(enviar_notificacao_nova_mensagem, mensagem)
+        )
 
         return Response(
             {

@@ -19,6 +19,7 @@ function MeusAnimais() {
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
   const [recarregar, setRecarregar] = useState(0);
+  const possuiAnimais = Array.isArray(animais) && animais.length > 0;
 
   useEffect(() => {
     async function carregarAnimais() {
@@ -61,7 +62,7 @@ function MeusAnimais() {
         className="intro-painel"
         conteudoClassName="conteudo-intro-painel"
         etiquetaClassName="tag-painel"
-        acao={(
+        acao={possuiAnimais && (
           <Link className="botao-cadastrar-animal" to="/meus-animais/novo">
             <span aria-hidden="true">+</span>
             Cadastrar animal
@@ -94,7 +95,7 @@ function MeusAnimais() {
         </EstadoTela>
       )}
 
-      {!carregando && !erro && animais.length === 0 && (
+      {!carregando && !erro && !possuiAnimais && (
         <EstadoTela tipo="vazio" className="estado-painel estado-vazio-painel">
           <span aria-hidden="true">🐾</span>
 
@@ -114,7 +115,7 @@ function MeusAnimais() {
         </EstadoTela>
       )}
 
-      {!carregando && !erro && animais.length > 0 && (
+      {!carregando && !erro && possuiAnimais && (
         <section className="grid-meus-animais">
           {animais.map((animal) => {
             const desaparecido = animalEstaDesaparecido(animal);

@@ -59,6 +59,10 @@
   z-index: 1;
 }
 
+.mapa-seletor-localizacao.avistamento__mapa {
+  height: clamp(210px, 42dvh, 300px);
+}
+
 .marcador-mypetfound {
   width: 42px;
   height: 42px;
@@ -87,7 +91,7 @@
 .localizacao-selecionada,
 .localizacao-nao-selecionada {
   margin: 12px 0 0;
-  font-size: 0.78rem;
+  font-size: 0.875rem;
   line-height: 1.45;
 }
 
@@ -110,5 +114,12 @@
 
   .mapa-seletor-localizacao {
     height: 260px;
+  }
+}
+
+@media (max-width: 380px) {
+  .seletor-localizacao { padding: 12px; }
+  .mapa-seletor-localizacao.avistamento__mapa {
+    height: clamp(200px, 38dvh, 250px);
   }
 }
