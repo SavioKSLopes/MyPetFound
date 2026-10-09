@@ -19,6 +19,7 @@ function CadastroAnimal() {
   const [especie, setEspecie] = useState("");
   const [raca, setRaca] = useState("");
   const [porte, setPorte] = useState("");
+  const [sexo, setSexo] = useState("M");
   const [cor, setCor] = useState("");
   const [descricao, setDescricao] = useState("");
   const [foto, setFoto] = useState(null);
@@ -45,7 +46,7 @@ function CadastroAnimal() {
   }
 
   function atualizarCampo(campo, valor) {
-    const setters = { nome: setNome, especie: setEspecie, raca: setRaca, porte: setPorte, cor: setCor, descricao: setDescricao };
+    const setters = { nome: setNome, especie: setEspecie, raca: setRaca, porte: setPorte, sexo: setSexo, cor: setCor, descricao: setDescricao };
     setters[campo](valor);
   }
 
@@ -55,12 +56,19 @@ function CadastroAnimal() {
     setErro("");
     setEnviando(true);
 
+    if (!sexo) {
+      setErro("Selecione o sexo do animal.");
+      setEnviando(false);
+      return;
+    }
+
     const dados = new FormData();
 
     dados.append("nome", nome);
     dados.append("especie", especie);
     dados.append("raca", raca);
     dados.append("porte", porte);
+    dados.append("sexo", sexo);
     dados.append("cor", cor);
     dados.append("descricao", descricao);
 
@@ -186,7 +194,7 @@ function CadastroAnimal() {
 
             <CamposAnimal
               modo="cadastro"
-              valores={{ nome, especie, raca, porte, cor, descricao }}
+              valores={{ nome, especie, raca, porte, sexo, cor, descricao }}
               aoAlterar={atualizarCampo}
             />
 

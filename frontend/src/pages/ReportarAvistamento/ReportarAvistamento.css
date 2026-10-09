@@ -65,6 +65,11 @@
   border-color: #fecdca;
 }
 
+.botao-fechar-modal:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 32%);
+  outline-offset: 2px;
+}
+
 .cabecalho-modal {
   flex: 0 0 auto;
   padding-right: 40px;
@@ -239,6 +244,12 @@
   border-color: #c24100;
   box-shadow: 0 4px 10px rgb(194 65 0 / 25%);
   transform: translateY(-1px);
+}
+
+.botao-cancelar-avistamento:focus-visible,
+.botao-enviar-avistamento:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 32%);
+  outline-offset: 2px;
 }
 
 .botao-cancelar-avistamento:disabled,

@@ -16,6 +16,7 @@ const filtrosIniciais = {
   busca: "",
   especie: "",
   porte: "",
+  sexo: "",
   cor: "",
   localidade: "",
 };
@@ -126,9 +127,10 @@ function BuscarAnimais() {
           className="formulario-filtros-animais"
           onSubmit={buscar}
         >
-          <label className="campo-busca-largo">
+          <label htmlFor="filtro-busca" className="campo-busca-largo">
             Nome, raça, cor ou característica
             <input
+              id="filtro-busca"
               type="search"
               name="busca"
               value={filtros.busca}
@@ -137,9 +139,10 @@ function BuscarAnimais() {
             />
           </label>
 
-          <label>
+          <label htmlFor="filtro-especie">
             Espécie
             <select
+              id="filtro-especie"
               name="especie"
               value={filtros.especie}
               onChange={atualizarFiltro}
@@ -151,9 +154,10 @@ function BuscarAnimais() {
             </select>
           </label>
 
-          <label>
+          <label htmlFor="filtro-porte">
             Porte
             <select
+              id="filtro-porte"
               name="porte"
               value={filtros.porte}
               onChange={atualizarFiltro}
@@ -165,9 +169,24 @@ function BuscarAnimais() {
             </select>
           </label>
 
-          <label>
+          <label htmlFor="filtro-sexo">
+            Sexo
+            <select
+              id="filtro-sexo"
+              name="sexo"
+              value={filtros.sexo}
+              onChange={atualizarFiltro}
+            >
+              <option value="">Todos os sexos</option>
+              <option value="M">Macho</option>
+              <option value="F">Fêmea</option>
+            </select>
+          </label>
+
+          <label htmlFor="filtro-cor">
             Cor predominante
             <input
+              id="filtro-cor"
               type="text"
               name="cor"
               value={filtros.cor}
@@ -176,9 +195,10 @@ function BuscarAnimais() {
             />
           </label>
 
-          <label>
+          <label htmlFor="filtro-localidade">
             Região ou localidade
             <input
+              id="filtro-localidade"
               type="text"
               name="localidade"
               value={filtros.localidade}

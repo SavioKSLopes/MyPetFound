@@ -32,7 +32,7 @@ class AnimalApiTests(TemporaryMediaTestCase):
         self.client.force_authenticate(self.tutor_a)
         resposta = self.client.post(reverse("animal-list"), {
             "nome": "Novo", "especie": "GATO", "porte": "PEQUENO",
-            "cor": "Preto", "tutor": self.tutor_b.id,
+            "cor": "Preto", "sexo": "M", "tutor": self.tutor_b.id,
         })
         self.assertEqual(resposta.status_code, 201)
         self.assertEqual(self.animal_a.__class__.objects.get(id=resposta.data["id"]).tutor, self.tutor_a)
@@ -72,7 +72,7 @@ class AnimalApiTests(TemporaryMediaTestCase):
         self.client.force_authenticate(self.tutor_a)
         resposta = self.client.post(reverse("animal-list"), {
             "nome": "Com foto", "especie": "GATO", "porte": "PEQUENO",
-            "cor": "Branco", "foto": imagem_png(),
+            "cor": "Branco", "sexo": "M", "foto": imagem_png(),
         }, format="multipart")
         self.assertEqual(resposta.status_code, 201, resposta.data)
         self.assertIn("/media/animais/", resposta.data["foto"])
@@ -118,3 +118,41 @@ class AnimalApiTests(TemporaryMediaTestCase):
         from django.core import signing
         codigo = signing.dumps(999999, salt="identificacao-animal-v1")
         self.assertEqual(self.client.get(reverse("animal-identificacao-publica", args=[codigo])).status_code, 404)
+
+    def test_criar_animal_com_sexo_macho(self):
+        self.client.force_authenticate(self.tutor_a)
+        resposta = self.client.post(reverse("animal-list"), {
+            "nome": "Rex", "especie": "CACHORRO", "porte": "MEDIO",
+            "cor": "Marrom", "sexo": "M",
+        })
+        self.assertEqual(resposta.status_code, 201, resposta.data)
+        self.assertEqual(resposta.data["sexo"], "M")
+        self.assertEqual(resposta.data["sexo_nome"], "Macho")
+
+    def test_criar_animal_com_sexo_femea(self):
+        self.client.force_authenticate(self.tutor_a)
+        resposta = self.client.post(reverse("animal-list"), {
+            "nome": "Luna", "especie": "GATO", "porte": "PEQUENO",
+            "cor": "Branco", "sexo": "F",
+        })
+        self.assertEqual(resposta.status_code, 201, resposta.data)
+        self.assertEqual(resposta.data["sexo"], "F")
+        self.assertEqual(resposta.data["sexo_nome"], "Fêmea")
+
+    def test_criar_animal_sem_sexo_e_rejeitado(self):
+        self.client.force_authenticate(self.tutor_a)
+        resposta = self.client.post(reverse("animal-list"), {
+            "nome": "Bob", "especie": "CACHORRO", "porte": "GRANDE",
+            "cor": "Preto",
+        })
+        self.assertEqual(resposta.status_code, 400, resposta.data)
+        self.assertIn("sexo", resposta.data)
+
+    def test_sexo_invalido_e_rejeitado(self):
+        self.client.force_authenticate(self.tutor_a)
+        resposta = self.client.post(reverse("animal-list"), {
+            "nome": "X", "especie": "CACHORRO", "porte": "MEDIO",
+            "cor": "Cinza", "sexo": "X",
+        })
+        self.assertEqual(resposta.status_code, 400, resposta.data)
+        self.assertIn("sexo", resposta.data)

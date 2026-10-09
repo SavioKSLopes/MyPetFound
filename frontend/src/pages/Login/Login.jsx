@@ -86,14 +86,9 @@ function Login() {
           </div>
 
           <div className="campo-login">
-            <div className="linha-senha">
-              <label htmlFor="senha">
-                Senha
-              </label>
-              <Link to="/esqueci-senha" className="acao-login-recuperacao">
-                Esqueci minha senha
-              </Link>
-            </div>
+            <label htmlFor="senha">
+              Senha
+            </label>
 
             <input
               id="senha"
@@ -104,6 +99,10 @@ function Login() {
               autoComplete="current-password"
               required
             />
+
+            <Link to="/esqueci-senha" className="acao-login-recuperacao">
+              Esqueci minha senha
+            </Link>
           </div>
 
           {erro && (

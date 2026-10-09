@@ -21,6 +21,7 @@ function EditarAnimal() {
   const [especie, setEspecie] = useState("");
   const [raca, setRaca] = useState("");
   const [porte, setPorte] = useState("");
+  const [sexo, setSexo] = useState("");
   const [cor, setCor] = useState("");
   const [descricao, setDescricao] = useState("");
   const [foto, setFoto] = useState(null);
@@ -45,6 +46,7 @@ function EditarAnimal() {
         setEspecie(dados.especie || "");
         setRaca(dados.raca || "");
         setPorte(dados.porte || "");
+        setSexo(dados.sexo || "");
         setCor(dados.cor || "");
         setDescricao(dados.descricao || "");
         setPreviewFoto(dados.foto || "");
@@ -86,7 +88,7 @@ function EditarAnimal() {
   }, [foto, previewFoto]);
 
   function atualizarCampo(campo, valor) {
-    const setters = { nome: setNome, especie: setEspecie, raca: setRaca, porte: setPorte, cor: setCor, descricao: setDescricao };
+    const setters = { nome: setNome, especie: setEspecie, raca: setRaca, porte: setPorte, sexo: setSexo, cor: setCor, descricao: setDescricao };
     setters[campo](valor);
   }
 
@@ -133,6 +135,11 @@ function EditarAnimal() {
       return;
     }
 
+    if (!sexo) {
+      setErro("Selecione o sexo do animal.");
+      return;
+    }
+
     try {
       setSalvando(true);
 
@@ -142,6 +149,7 @@ function EditarAnimal() {
       dados.append("especie", especie);
       dados.append("raca", raca.trim());
       dados.append("porte", porte);
+      dados.append("sexo", sexo);
       dados.append("cor", cor.trim());
       dados.append("descricao", descricao.trim());
 
@@ -281,7 +289,7 @@ function EditarAnimal() {
 
           <CamposAnimal
             modo="edicao"
-            valores={{ nome, especie, raca, porte, cor, descricao }}
+            valores={{ nome, especie, raca, porte, sexo, cor, descricao }}
             aoAlterar={atualizarCampo}
           />
         </Card>

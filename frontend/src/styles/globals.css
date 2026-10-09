@@ -74,3 +74,24 @@ select:focus-visible {
   outline: 3px solid rgb(21 101 192 / 32%);
   outline-offset: 3px;
 }
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cor-primaria);
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: var(--raio-pequeno);
+  font-weight: 700;
+  z-index: 10000;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 16px;
+  outline: 3px solid rgb(21 101 192 / 50%);
+  outline-offset: 3px;
+}

@@ -65,9 +65,15 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.card-acao:hover {
+.card-acao:hover,
+.card-acao:focus-visible {
   transform: translateY(-4px);
   box-shadow: 0 14px 30px rgb(0 0 0 / 10%);
+}
+
+.card-acao:focus-visible {
+  outline: 3px solid rgb(21 101 192 / 32%);
+  outline-offset: 3px;
 }
 
 .card-acao strong {

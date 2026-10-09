@@ -21,6 +21,11 @@ class AnimalPublicoSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    sexo_nome = serializers.CharField(
+        source="get_sexo_display",
+        read_only=True,
+    )
+
     ocorrencia_id = serializers.SerializerMethodField()
     localidade = serializers.SerializerMethodField()
     latitude = serializers.SerializerMethodField()
@@ -37,6 +42,8 @@ class AnimalPublicoSerializer(serializers.ModelSerializer):
             "raca",
             "porte",
             "porte_nome",
+            "sexo",
+            "sexo_nome",
             "cor",
             "descricao",
             "foto",

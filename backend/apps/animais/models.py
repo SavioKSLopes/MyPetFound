@@ -25,6 +25,10 @@ class Animal(models.Model):
         PERDIDO = "PERDIDO", "Perdido"
         REENCONTRADO = "REENCONTRADO", "Reencontrado"
 
+    class Sexo(models.TextChoices):
+        MACHO = "M", "Macho"
+        FEMEA = "F", "Fêmea"
+
     nome = models.CharField(
         max_length=100,
         verbose_name="Nome",
@@ -46,6 +50,14 @@ class Animal(models.Model):
         max_length=10,
         choices=Porte.choices,
         verbose_name="Porte",
+    )
+
+    sexo = models.CharField(
+        max_length=1,
+        choices=Sexo.choices,
+        blank=False,
+        null=False,
+        verbose_name="Sexo",
     )
 
     cor = models.CharField(

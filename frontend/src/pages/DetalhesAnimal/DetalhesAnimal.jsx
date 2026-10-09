@@ -138,6 +138,11 @@ function DetalhesAnimal() {
               </div>
 
               <div>
+                <dt>Sexo</dt>
+                <dd>{animal.sexo_nome}</dd>
+              </div>
+
+              <div>
                 <dt>Cor</dt>
                 <dd>{animal.cor || "Não informada"}</dd>
               </div>

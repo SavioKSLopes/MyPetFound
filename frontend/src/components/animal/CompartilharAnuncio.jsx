@@ -124,6 +124,7 @@ function CompartilharAnuncio({ animal }) {
         <Botao
           variant="secundario"
           onClick={() => abrirRede(montarUrlWhatsApp(texto), "WhatsApp")}
+          aria-label="Compartilhar via WhatsApp"
         >
           WhatsApp
         </Botao>
@@ -134,11 +135,11 @@ function CompartilharAnuncio({ animal }) {
         <Modal titulo="Compartilhar anúncio" aoFechar={fecharPainel} className="modal-compartilhar">
           <p className="compartilhar-introducao">Ajude a encontrar {animal.nome}.</p>
           <div className="compartilhar-opcoes">
-            <Botao onClick={() => abrirRede(montarUrlWhatsApp(texto), "WhatsApp")}>WhatsApp</Botao>
-            <Botao variant="secundario" onClick={() => copiar(url, "Link copiado para a área de transferência.")}>Copiar link</Botao>
-            <Botao variant="secundario" onClick={() => copiar(texto, "Texto do anúncio copiado.")}>Copiar texto</Botao>
-            <Botao variant="secundario" onClick={compartilharNoFacebook}>Facebook</Botao>
-            <Botao variant="secundario" onClick={() => abrirRede(montarUrlX(texto, url), "X")}>X</Botao>
+            <Botao onClick={() => abrirRede(montarUrlWhatsApp(texto), "WhatsApp")} aria-label="Compartilhar via WhatsApp">WhatsApp</Botao>
+            <Botao variant="secundario" onClick={() => copiar(url, "Link copiado para a área de transferência.")} aria-label="Copiar link do anúncio">Copiar link</Botao>
+            <Botao variant="secundario" onClick={() => copiar(texto, "Texto do anúncio copiado.")} aria-label="Copiar texto do anúncio">Copiar texto</Botao>
+            <Botao variant="secundario" onClick={compartilharNoFacebook} aria-label="Compartilhar no Facebook">Facebook</Botao>
+            <Botao variant="secundario" onClick={() => abrirRede(montarUrlX(texto, url), "X")} aria-label="Compartilhar no X">X</Botao>
           </div>
           {conteudoManual && (
             <label className="compartilhar-copia-manual">

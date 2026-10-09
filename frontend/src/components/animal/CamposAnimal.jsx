@@ -82,6 +82,21 @@ function CamposAnimal({ valores, aoAlterar, modo = "cadastro" }) {
     </CampoSelect>
   );
 
+  const sexo = (
+    <CampoSelect
+      key="sexo"
+      id={`${prefixo}-sexo`}
+      label={edicao ? "Sexo *" : "Sexo *"}
+      className={classesCampo}
+      value={valores.sexo}
+      onChange={(event) => aoAlterar("sexo", event.target.value)}
+      required
+    >
+      <option value="M">Macho</option>
+      <option value="F">Fêmea</option>
+    </CampoSelect>
+  );
+
   const cor = (
     <CampoFormulario
       key="cor"
@@ -116,8 +131,8 @@ function CamposAnimal({ valores, aoAlterar, modo = "cadastro" }) {
   );
 
   const campos = edicao
-    ? [nome, especie, raca, porte, cor, descricao]
-    : [nome, especie, porte, raca, cor, descricao];
+    ? [nome, especie, raca, porte, sexo, cor, descricao]
+    : [nome, especie, porte, raca, sexo, cor, descricao];
 
   return <div className={classes}>{campos}</div>;
 }

@@ -10,6 +10,7 @@ class AnimalAdmin(admin.ModelAdmin):
         "nome",
         "especie",
         "porte",
+        "sexo",
         "cor",
         "status",
         "criado_em",
@@ -18,6 +19,7 @@ class AnimalAdmin(admin.ModelAdmin):
     list_filter = (
         "especie",
         "porte",
+        "sexo",
         "status",
     )
 

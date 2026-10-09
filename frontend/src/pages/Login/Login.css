@@ -67,36 +67,6 @@
   margin-top: 0;
 }
 
-.linha-senha {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-}
-
-.linha-senha label,
-.link-esqueci-senha {
-  font-size: 0.875rem; /* mesmo tamanho */
-  line-height: 1.35;
-}
-
-.linha-senha label {
-  margin: 0;
-}
-
-.linha-senha > label,
-.linha-senha > a {
-  font-size: 14px;
-}
-
-.link-esqueci-senha {
-  color: #1565c0;
-  font-weight: 700;
-  text-decoration: none;
-  white-space: nowrap;
-}
-
 .campo-login label {
   margin-bottom: 7px;
   display: block;
@@ -127,6 +97,19 @@
   outline: none;
   border-color: #1565c0;
   box-shadow: 0 0 0 3px rgb(21 101 192 / 14%);
+}
+
+.acao-login-recuperacao {
+  display: block;
+  margin-top: 8px;
+  color: #1565c0;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 0.86rem;
+}
+
+.acao-login-recuperacao:hover {
+  text-decoration: underline;
 }
 
 .erro-login {
@@ -187,14 +170,6 @@
   margin-top: 16px;
 }
 
-.acoes-login {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  margin-top: 16px;
-}
-
 .acao-login-cadastro {
   margin: 0;
   color: #64748b;
@@ -203,8 +178,7 @@
   text-align: left;
 }
 
-.acao-login-cadastro a,
-.acao-login-recuperacao {
+.acao-login-cadastro a {
   color: #1565c0;
   font-weight: 700;
   text-decoration: none;

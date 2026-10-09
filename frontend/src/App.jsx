@@ -59,6 +59,9 @@ function Home() {
 
   return (
     <div className="pagina">
+      <a href="#conteudo-principal" className="skip-link">
+        Pular para o conteúdo principal
+      </a>
       <LayoutPublico className="pagina-inicial">
         <section className="hero">
           <p className="tag">

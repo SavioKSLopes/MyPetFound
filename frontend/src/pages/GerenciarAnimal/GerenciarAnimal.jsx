@@ -378,6 +378,12 @@ function GerenciarAnimal() {
             </div>
 
             <div>
+              <dt>Sexo</dt>
+
+              <dd>{animal.sexo_nome}</dd>
+            </div>
+
+            <div>
               <dt>Cor predominante</dt>
 
               <dd>{animal.cor || "Não informada"}</dd>

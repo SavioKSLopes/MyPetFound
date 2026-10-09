@@ -144,7 +144,22 @@
 }
 
 .botao-selecionar-foto input {
-  display: none;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  opacity: 0;
+}
+
+.botao-selecionar-foto input:focus + .botao-selecionar-foto {
+  outline: 3px solid rgb(21 101 192 / 32%);
+  outline-offset: 3px;
+  border-radius: 8px;
 }
 
 .cabecalho-card-editar {

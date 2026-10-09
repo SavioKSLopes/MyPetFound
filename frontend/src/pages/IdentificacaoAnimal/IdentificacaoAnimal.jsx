@@ -90,6 +90,11 @@ function IdentificacaoAnimal() {
                   <dt>Cor</dt>
                   <dd>{animal.cor || "Não informada"}</dd>
                 </div>
+
+                <div>
+                  <dt>Sexo</dt>
+                  <dd>{animal.sexo}</dd>
+                </div>
               </dl>
 
               {animal.status !== "REENCONTRADO" ? (

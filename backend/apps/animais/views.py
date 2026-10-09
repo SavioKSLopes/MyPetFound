@@ -130,6 +130,10 @@ class AnimaisPerdidosPublicosView(generics.ListAPIView):
                 cor__icontains=cor,
             )
 
+        sexo = self.request.query_params.get("sexo", "").strip()
+        if sexo:
+            animais = animais.filter(sexo=sexo)
+
         return animais.order_by("-id")
 
 

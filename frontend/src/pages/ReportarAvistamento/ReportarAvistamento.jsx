@@ -17,11 +17,86 @@ function ReportarAvistamento({ animal, aoFechar, aoConcluir }) {
   const [fechando, setFechando] = useState(false);
   const avistamentoCriadoRef = useRef(false);
   const timersRef = useRef([]);
+  const modalRef = useRef(null);
+  const previousActiveElementRef = useRef(null);
+  const firstFocusableRef = useRef(null);
+  const lastFocusableRef = useRef(null);
 
   useEffect(() => () => {
     timersRef.current.forEach((timer) => window.clearTimeout(timer));
     timersRef.current = [];
   }, []);
+
+  // Focus trap and accessibility
+  useEffect(() => {
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    // Store the previously focused element
+    previousActiveElementRef.current = document.activeElement;
+
+    // Find all focusable elements
+    const focusableSelectors = [
+      'button:not([disabled]):not([tabindex="-1"])',
+      'input:not([disabled]):not([type="hidden"]):not([tabindex="-1"])',
+      'select:not([disabled]):not([tabindex="-1"])',
+      'textarea:not([disabled]):not([tabindex="-1"])',
+      'a[href]:not([tabindex="-1"])',
+      '[tabindex="0"]',
+    ].join(", ");
+
+    const focusableElements = modal.querySelectorAll(focusableSelectors);
+    if (focusableElements.length > 0) {
+      firstFocusableRef.current = focusableElements[0];
+      lastFocusableRef.current = focusableElements[focusableElements.length - 1];
+
+      // Focus the first focusable element
+      firstFocusableRef.current.focus();
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        aoFechar();
+        return;
+      }
+
+      if (event.key === "Tab" && focusableElements.length > 0) {
+        const first = firstFocusableRef.current;
+        const last = lastFocusableRef.current;
+
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
+    }
+
+    modal.addEventListener("keydown", handleKeyDown);
+
+    // Prevent focus from leaving the modal
+    function handleFocusIn(event) {
+      if (!modal.contains(event.target)) {
+        event.preventDefault();
+        firstFocusableRef.current?.focus();
+      }
+    }
+
+    document.addEventListener("focusin", handleFocusIn);
+
+    return () => {
+      modal.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("focusin", handleFocusIn);
+
+      // Restore focus to the element that opened the modal
+      if (previousActiveElementRef.current && typeof previousActiveElementRef.current.focus === "function") {
+        previousActiveElementRef.current.focus();
+      }
+    };
+  }, [aoFechar]);
 
   const coordenadas = localizacaoMapa
     ? `${localizacaoMapa.latitude.toFixed(6)}, ${localizacaoMapa.longitude.toFixed(6)}`
@@ -74,6 +149,7 @@ function ReportarAvistamento({ animal, aoFechar, aoConcluir }) {
       onMouseDown={sucesso ? undefined : aoFechar}
     >
       <section
+        ref={modalRef}
         className={`modal-avistamento${sucesso ? " modal-avistamento--sucesso" : ""}${fechando ? " modal-avistamento--saindo" : ""}`}
         role="dialog"
         aria-modal="true"

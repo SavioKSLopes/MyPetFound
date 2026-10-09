@@ -19,6 +19,11 @@ class AnimalSerializer(serializers.ModelSerializer):
         read_only=True,
     )
 
+    sexo_nome = serializers.CharField(
+        source="get_sexo_display",
+        read_only=True,
+    )
+
     tutor_nome = serializers.CharField(
         source="tutor.username",
         read_only=True,
@@ -34,6 +39,8 @@ class AnimalSerializer(serializers.ModelSerializer):
             "raca",
             "porte",
             "porte_nome",
+            "sexo",
+            "sexo_nome",
             "cor",
             "descricao",
             "foto",
