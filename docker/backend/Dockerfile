@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 COPY backend/ /app/
 
-CMD ["sh", "-c", "python manage.py migrate && gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-10000}"]
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:${PORT:-10000}"]
