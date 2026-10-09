@@ -16,4 +16,4 @@ RUN pip install --no-cache-dir --upgrade pip \
 
 COPY backend/ /app/
 
-CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:${PORT:-10000}"]
+CMD ["sh", "-c", "exec gunicorn config.wsgi:application --bind 0.0.0.0:${PORT:-10000}"]
