@@ -34,6 +34,9 @@ class OcorrenciaSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
             "descricao",
+            "localidade_reencontro",
+            "descricao_reencontro",
+            "data_hora_reencontro",
             "criado_em",
             "atualizado_em",
         )

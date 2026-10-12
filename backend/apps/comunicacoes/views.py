@@ -1,5 +1,4 @@
 from functools import partial
-
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 
@@ -87,3 +86,14 @@ class MarcarMensagemComoLidaView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class ContarMensagensNaoLidasView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        count = MensagemContato.objects.filter(
+            animal__tutor=request.user,
+            lida=False,
+        ).count()
+        return Response({"nao_lidas": count}, status=status.HTTP_200_OK)

@@ -50,3 +50,72 @@ class OcorrenciaApiTests(TemporaryMediaTestCase):
 
     def test_endpoint_privado_exige_login(self):
         self.assertEqual(self.client.get(reverse("ocorrencia-list")).status_code, 401)
+
+    def test_marcar_reencontrado_com_local_e_descricao_persiste_dados(self):
+        ocorrencia = criar_ocorrencia(self.animal_a)
+        self.client.force_authenticate(self.tutor_a)
+        url = reverse("ocorrencia-marcar-reencontrado", args=[ocorrencia.id])
+        payload = {
+            "localidade_reencontro": "Bairro Ceraíma, Guanambi-BA",
+            "descricao_reencontro": "Encontrado por vizinho na rua de trás.",
+            "data_hora_reencontro": "2026-10-10T15:30:00Z",
+        }
+        resposta = self.client.post(url, payload)
+        self.assertEqual(resposta.status_code, 200, resposta.data)
+        ocorrencia.refresh_from_db()
+        self.assertEqual(ocorrencia.localidade_reencontro, "Bairro Ceraíma, Guanambi-BA")
+        self.assertEqual(ocorrencia.descricao_reencontro, "Encontrado por vizinho na rua de trás.")
+        self.assertIsNotNone(ocorrencia.data_hora_reencontro)
+
+    def test_marcar_reencontrado_sem_dados_opcionais_usa_valores_padrao(self):
+        ocorrencia = criar_ocorrencia(self.animal_a)
+        self.client.force_authenticate(self.tutor_a)
+        url = reverse("ocorrencia-marcar-reencontrado", args=[ocorrencia.id])
+        resposta = self.client.post(url, {})
+        self.assertEqual(resposta.status_code, 200, resposta.data)
+        ocorrencia.refresh_from_db()
+        self.assertEqual(ocorrencia.localidade_reencontro, "")
+        self.assertEqual(ocorrencia.descricao_reencontro, "")
+        self.assertIsNotNone(ocorrencia.data_hora_reencontro)
+
+    def test_historico_inclui_evento_reencontro_com_dados_informados(self):
+        from apps.animais.views import AnimalViewSet
+        ocorrencia = criar_ocorrencia(self.animal_a, localidade="Centro")
+        self.client.force_authenticate(self.tutor_a)
+        # Marca como reencontrado com dados
+        url = reverse("ocorrencia-marcar-reencontrado", args=[ocorrencia.id])
+        payload = {
+            "localidade_reencontro": "Bairro Ceraíma",
+            "descricao_reencontro": "Encontrado por vizinho.",
+            "data_hora_reencontro": "2026-10-10T15:30:00Z",
+        }
+        self.client.post(url, payload)
+        # Consulta histórico
+        historico = self.client.get(reverse("animal-historico", args=[self.animal_a.id]))
+        self.assertEqual(historico.status_code, 200)
+        eventos = historico.data["eventos"]
+        reencontros = [e for e in eventos if e["tipo"] == "REENCONTRO"]
+        self.assertEqual(len(reencontros), 1)
+        reencontro = reencontros[0]
+        self.assertEqual(reencontro["localidade"], "Bairro Ceraíma")
+        self.assertEqual(reencontro["descricao"], "Encontrado por vizinho.")
+        # data_hora vem como datetime no DRF, verifica o valor
+        self.assertEqual(reencontro["data_hora"].year, 2026)
+        self.assertEqual(reencontro["data_hora"].month, 10)
+        self.assertEqual(reencontro["data_hora"].day, 10)
+        self.assertEqual(reencontro["data_hora"].hour, 15)
+        self.assertEqual(reencontro["data_hora"].minute, 30)
+
+    def test_historico_inclui_evento_reencontro_sem_dados_mostra_local_nao_informado(self):
+        ocorrencia = criar_ocorrencia(self.animal_a)
+        self.client.force_authenticate(self.tutor_a)
+        url = reverse("ocorrencia-marcar-reencontrado", args=[ocorrencia.id])
+        self.client.post(url, {})  # Sem dados opcionais
+        historico = self.client.get(reverse("animal-historico", args=[self.animal_a.id]))
+        self.assertEqual(historico.status_code, 200)
+        eventos = historico.data["eventos"]
+        reencontros = [e for e in eventos if e["tipo"] == "REENCONTRO"]
+        self.assertEqual(len(reencontros), 1)
+        reencontro = reencontros[0]
+        self.assertEqual(reencontro["localidade"], "Local não informado")
+        self.assertEqual(reencontro["descricao"], "Reencontrado pelo tutor.")

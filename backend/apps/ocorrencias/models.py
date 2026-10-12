@@ -65,6 +65,25 @@ class Ocorrencia(models.Model):
         help_text="Ex.: Fugiu quando o portão ficou aberto.",
     )
 
+    localidade_reencontro = models.CharField(
+        max_length=255,
+        blank=True,
+        verbose_name="Local do reencontro",
+        help_text="Ex.: Bairro Ceraíma, Guanambi-BA",
+    )
+
+    descricao_reencontro = models.TextField(
+        blank=True,
+        verbose_name="Descrição do reencontro",
+        help_text="Ex.: Encontrado por vizinho na rua de trás.",
+    )
+
+    data_hora_reencontro = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Data e hora do reencontro",
+    )
+
     criado_em = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Criado em",

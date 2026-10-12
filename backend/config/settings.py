@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     "apps.avistamentos",
     "apps.usuarios",
     "apps.comunicacoes",
+    "cloudinary_storage",
+    "cloudinary",
 ]
 
 MIDDLEWARE = [
@@ -155,6 +157,14 @@ REST_FRAMEWORK = {
     },
 }
 
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 FRONTEND_URL = os.getenv(
     "FRONTEND_URL",

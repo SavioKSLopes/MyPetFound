@@ -157,3 +157,49 @@ class MensagemContatoApiTests(TemporaryMediaTestCase):
         self.assertEqual(callbacks, [])
         self.assertFalse(MensagemContato.objects.filter(pk=id_mensagem).exists())
         self.assertEqual(mail.outbox, [])
+
+    def test_contar_mensagens_nao_lidas_exige_autenticacao(self):
+        self.assertEqual(self.client.get(reverse("contar-mensagens-nao-lidas")).status_code, 401)
+
+    def test_contar_mensagens_nao_lidas_retorna_zero_para_tutor_sem_mensagens(self):
+        self.client.force_authenticate(self.tutor_a)
+        resposta = self.client.get(reverse("contar-mensagens-nao-lidas"))
+        self.assertEqual(resposta.status_code, 200)
+        self.assertEqual(resposta.data["nao_lidas"], 0)
+
+    def test_contar_mensagens_nao_lidas_isola_por_tutor(self):
+        # Tutor B envia mensagem para animal do tutor A
+        self.client.post(reverse("criar-mensagem-contato", args=[self.animal_a.id]), {
+            "mensagem": "Encontrei seu animal.",
+        })
+        # Tutor A vê 1 não lida
+        self.client.force_authenticate(self.tutor_a)
+        resposta_a = self.client.get(reverse("contar-mensagens-nao-lidas"))
+        self.assertEqual(resposta_a.data["nao_lidas"], 1)
+        # Tutor B vê 0
+        self.client.force_authenticate(self.tutor_b)
+        resposta_b = self.client.get(reverse("contar-mensagens-nao-lidas"))
+        self.assertEqual(resposta_b.data["nao_lidas"], 0)
+
+    def test_contar_mensagens_nao_lidas_atualiza_apos_marcar_como_lida(self):
+        self.client.post(reverse("criar-mensagem-contato", args=[self.animal_a.id]), {
+            "mensagem": "Primeira mensagem.",
+        })
+        self.client.post(reverse("criar-mensagem-contato", args=[self.animal_a.id]), {
+            "mensagem": "Segunda mensagem.",
+        })
+        self.client.force_authenticate(self.tutor_a)
+        self.assertEqual(self.client.get(reverse("contar-mensagens-nao-lidas")).data["nao_lidas"], 2)
+
+        # Lista mensagens e pega a primeira
+        listagem = self.client.get(reverse("listar-mensagens-contato"))
+        primeira_id = listagem.data[0]["id"]
+
+        # Marca como lida
+        self.client.patch(reverse("marcar-mensagem-como-lida", args=[primeira_id]))
+        self.assertEqual(self.client.get(reverse("contar-mensagens-nao-lidas")).data["nao_lidas"], 1)
+
+        # Marca a segunda como lida
+        segunda_id = listagem.data[1]["id"]
+        self.client.patch(reverse("marcar-mensagem-como-lida", args=[segunda_id]))
+        self.assertEqual(self.client.get(reverse("contar-mensagens-nao-lidas")).data["nao_lidas"], 0)

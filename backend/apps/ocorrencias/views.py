@@ -94,9 +94,27 @@ class OcorrenciaViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
+        localidade_reencontro = request.data.get("localidade_reencontro", "").strip()
+        descricao_reencontro = request.data.get("descricao_reencontro", "").strip()
+        data_hora_reencontro = request.data.get("data_hora_reencontro")
+
         with transaction.atomic():
             ocorrencia.status = Ocorrencia.Status.ENCERRADA
-            ocorrencia.save(update_fields=["status", "atualizado_em"])
+            ocorrencia.localidade_reencontro = localidade_reencontro
+            ocorrencia.descricao_reencontro = descricao_reencontro
+            if data_hora_reencontro:
+                ocorrencia.data_hora_reencontro = data_hora_reencontro
+            else:
+                ocorrencia.data_hora_reencontro = ocorrencia.data_hora
+            ocorrencia.save(
+                update_fields=[
+                    "status",
+                    "localidade_reencontro",
+                    "descricao_reencontro",
+                    "data_hora_reencontro",
+                    "atualizado_em",
+                ]
+            )
 
             Animal.objects.filter(pk=ocorrencia.animal_id).update(
                 status=Animal.Status.REENCONTRADO,

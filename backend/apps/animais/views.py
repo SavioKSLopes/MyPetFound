@@ -66,6 +66,23 @@ class AnimalViewSet(viewsets.ModelViewSet):
                     "ocorrencia": referencia,
                 })
 
+            # Evento de reencontro, se a ocorrência for de desaparecimento e estiver encerrada
+            if (
+                ocorrencia.tipo == Ocorrencia.Tipo.DESAPARECIMENTO
+                and ocorrencia.status == Ocorrencia.Status.ENCERRADA
+            ):
+                data_reencontro = ocorrencia.data_hora_reencontro or ocorrencia.atualizado_em
+                localidade_reencontro = ocorrencia.localidade_reencontro or "Local não informado"
+                descricao_reencontro = ocorrencia.descricao_reencontro or "Reencontrado pelo tutor."
+                eventos.append({
+                    "id": f"reencontro-{ocorrencia.pk}",
+                    "tipo": "REENCONTRO",
+                    "data_hora": data_reencontro,
+                    "localidade": localidade_reencontro,
+                    "descricao": descricao_reencontro,
+                    "ocorrencia": referencia,
+                })
+
         eventos.sort(key=lambda evento: evento["data_hora"])
         return Response({
             "animal": AnimalSerializer(animal, context={"request": request}).data,
