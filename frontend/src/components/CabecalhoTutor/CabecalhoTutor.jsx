@@ -2,11 +2,28 @@ import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
 import useAuth from "../../hooks/useAuth.js";
+import useMensagensNaoLidas from "../../hooks/useMensagensNaoLidas.js";
 import MarcaMyPetFound from "../MarcaMyPetFound/MarcaMyPetFound";
 import "./CabecalhoTutor.css";
 
+function MensagensBadge({ autenticado, contagem }) {
+  if (!autenticado || contagem <= 0) {
+    return null;
+  }
+
+  return (
+    <span
+      className="badge-mensagens"
+      aria-label={`${contagem} mensagem${contagem > 1 ? "s" : ""} não lida${contagem > 1 ? "s" : ""}`}
+    >
+      {contagem > 99 ? "99+" : contagem}
+    </span>
+  );
+}
+
 function CabecalhoTutor() {
-  const { sair } = useAuth();
+  const { sair, temToken } = useAuth();
+  const { contagem } = useMensagensNaoLidas();
   const [menuAberto, setMenuAberto] = useState(false);
 
   useEffect(() => {
@@ -77,6 +94,10 @@ function CabecalhoTutor() {
           onClick={() => setMenuAberto(false)}
         >
           Mensagens
+          <MensagensBadge
+            autenticado={temToken}
+            contagem={contagem}
+          />
         </NavLink>
 
         <NavLink

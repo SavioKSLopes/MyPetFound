@@ -248,7 +248,7 @@ function CadastroUsuario() {
           <CampoFormulario
             id="senha"
             label="Senha"
-            ajuda="Use pelo menos 8 caracteres; o backend também verifica a segurança da senha."
+            ajuda="Use pelo menos 8 caracteres."
             erro={erros.senha}
             required
           >

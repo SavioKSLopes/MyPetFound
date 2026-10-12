@@ -6,6 +6,10 @@ import AnimalCard from "../../components/animal/AnimalCard";
 import AnimalImagem from "../../components/animal/AnimalImagem";
 import AnimalStatus from "../../components/animal/AnimalStatus";
 import EstadoTela from "../../components/ui/EstadoTela";
+import Modal from "../../components/ui/Modal.jsx";
+import CampoFormulario from "../../components/ui/CampoFormulario.jsx";
+import CampoTextarea from "../../components/ui/CampoTextarea.jsx";
+import Botao from "../../components/ui/Botao.jsx";
 import { obterAnimalTutor, obterQrCodeAnimal } from "../../services/animaisService.js";
 import { listarAvistamentos } from "../../services/avistamentosService.js";
 import { listarOcorrencias, marcarOcorrenciaComoReencontrada } from "../../services/ocorrenciasService.js";
@@ -32,6 +36,15 @@ function GerenciarAnimal() {
     useState(false);
   const [mensagemSucesso, setMensagemSucesso] = useState("");
   const [erroOcorrencia, setErroOcorrencia] = useState("");
+
+  // Estado para modal de reencontro
+  const [modalReencontroAberto, setModalReencontroAberto] = useState(false);
+  const [dadosReencontro, setDadosReencontro] = useState({
+    localidade_reencontro: "",
+    descricao_reencontro: "",
+    data_hora_reencontro: "",
+  });
+  const [erroModalReencontro, setErroModalReencontro] = useState("");
 
   const [qrCodeUrl, setQrCodeUrl] = useState("");
   const [carregandoQrCode, setCarregandoQrCode] = useState(false);
@@ -183,31 +196,43 @@ function GerenciarAnimal() {
       ocorrencia.status === "ATIVA",
   );
 
-  async function marcarComoReencontrado() {
+  // Abre o modal para confirmar reencontro e coletar dados
+  function abrirModalReencontro() {
     if (!ocorrenciaAtiva || !animal) {
       setErroOcorrencia(
         "Não foi encontrada uma ocorrência ativa para este animal.",
       );
-
       return;
     }
+    // Reseta o formulário
+    setDadosReencontro({
+      localidade_reencontro: "",
+      descricao_reencontro: "",
+      data_hora_reencontro: new Date().toISOString().slice(0, 16), // Formato para input datetime-local
+    });
+    setErroModalReencontro("");
+    setModalReencontroAberto(true);
+  }
 
-    const confirmou = window.confirm(
-      `Você confirma que ${animal.nome} foi reencontrado?\n\n` +
-      "O anúncio deixará de aparecer publicamente e será " +
-      "removido do mapa de animais perdidos.",
-    );
+  function fecharModalReencontro() {
+    setModalReencontroAberto(false);
+    setErroModalReencontro("");
+  }
 
-    if (!confirmou) {
-      return;
-    }
+  async function confirmarReencontro(event) {
+    event.preventDefault();
+    if (!ocorrenciaAtiva || !animal) return;
 
     try {
       setMarcandoReencontrado(true);
+      setErroModalReencontro("");
       setErroOcorrencia("");
       setMensagemSucesso("");
 
-      const resposta = await marcarOcorrenciaComoReencontrada(ocorrenciaAtiva.id);
+      const resposta = await marcarOcorrenciaComoReencontrada(
+        ocorrenciaAtiva.id,
+        dadosReencontro,
+      );
 
       setOcorrencias((ocorrenciasAtuais) =>
         ocorrenciasAtuais.map((ocorrencia) =>
@@ -224,16 +249,16 @@ function GerenciarAnimal() {
       }));
 
       setMensagemSucesso(
-        resposta.data.mensagem ||
-        `${animal.nome} foi marcado como reencontrado.`,
+        resposta.data.mensagem || `${animal.nome} foi marcado como reencontrado.`,
       );
+      fecharModalReencontro();
     } catch (error) {
       console.error(
         "Erro ao marcar animal como reencontrado:",
         error,
       );
 
-      setErroOcorrencia(
+      setErroModalReencontro(
         error.response?.data?.detail ||
         error.response?.data?.mensagem ||
         "Não foi possível encerrar a ocorrência. Tente novamente.",
@@ -241,6 +266,14 @@ function GerenciarAnimal() {
     } finally {
       setMarcandoReencontrado(false);
     }
+  }
+
+  function handleDadosReencontroChange(event) {
+    const { name, value } = event.target;
+    setDadosReencontro((anterior) => ({
+      ...anterior,
+      [name]: value,
+    }));
   }
 
   if (carregando) {
@@ -532,7 +565,7 @@ function GerenciarAnimal() {
             <button
               className="botao-marcar-reencontrado"
               type="button"
-              onClick={marcarComoReencontrado}
+              onClick={abrirModalReencontro}
               disabled={marcandoReencontrado}
             >
               {marcandoReencontrado
@@ -724,6 +757,75 @@ function GerenciarAnimal() {
           você, tutor responsável pelo animal.
         </p>
       </section>
+
+      {/* Modal de confirmação de reencontro */}
+      {modalReencontroAberto && (
+        <Modal
+          titulo="Confirmar reencontro"
+          aoFechar={fecharModalReencontro}
+          className="modal-reencontro"
+        >
+          <form onSubmit={confirmarReencontro}>
+            <p className="modal-reencontro-intro">
+              Ao confirmar, o anúncio de desaparecimento de <strong>{animal?.nome}</strong>
+              será encerrado e deixará de aparecer publicamente.
+            </p>
+
+            {erroModalReencontro && (
+              <p className="mensagem-erro-modal" role="alert">
+                ⚠️ {erroModalReencontro}
+              </p>
+            )}
+
+            <div className="modal-reencontro-campos">
+              <CampoFormulario
+                label="Local do reencontro"
+                name="localidade_reencontro"
+                value={dadosReencontro.localidade_reencontro}
+                onChange={handleDadosReencontroChange}
+                placeholder="Ex.: Bairro Ceraíma, Guanambi-BA"
+                ajuda="Opcional: onde o animal foi encontrado."
+              />
+
+              <CampoFormulario
+                label="Data e hora do reencontro"
+                type="datetime-local"
+                name="data_hora_reencontro"
+                value={dadosReencontro.data_hora_reencontro}
+                onChange={handleDadosReencontroChange}
+                ajuda="Opcional: se não informado, será usado o momento atual."
+              />
+
+              <CampoTextarea
+                label="Descrição do reencontro"
+                name="descricao_reencontro"
+                value={dadosReencontro.descricao_reencontro}
+                onChange={handleDadosReencontroChange}
+                placeholder="Ex.: Encontrado por vizinho na rua de trás."
+                ajuda="Opcional: detalhes sobre como o animal foi reencontrado."
+                linhas={3}
+              />
+            </div>
+
+            <div className="modal-reencontro-acoes">
+              <Botao
+                variant="secundario"
+                type="button"
+                onClick={fecharModalReencontro}
+                disabled={marcandoReencontrado}
+              >
+                Cancelar
+              </Botao>
+              <Botao
+                type="submit"
+                disabled={marcandoReencontrado}
+              >
+                {marcandoReencontrado ? "Encerrando..." : "Confirmar reencontro"}
+              </Botao>
+            </div>
+          </form>
+        </Modal>
+      )}
     </LayoutTutor>
   );
 }

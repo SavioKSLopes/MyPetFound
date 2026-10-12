@@ -241,8 +241,8 @@ function BuscarAnimais() {
                 ? "Buscando animais..."
                 : `${animais.length} ${
                     animais.length === 1
-                      ? "animal encontrado"
-                      : "animais encontrados"
+                      ? "animal avistado"
+                      : "animais avistados"
                   }`}
             </h2>
           </div>
@@ -293,7 +293,7 @@ function BuscarAnimais() {
             <span aria-hidden="true">🐾</span>
 
             <div>
-              <h3>Nenhum animal encontrado</h3>
+              <h3>Nenhum animal Avistado</h3>
 
               <p>
                 Tente remover algum filtro ou pesquisar por outra

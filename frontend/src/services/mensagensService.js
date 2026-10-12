@@ -16,3 +16,7 @@ export function enviarMensagemPublica(animalId, payload) {
     localizacao_texto,
   });
 }
+
+export function contarMensagensNaoLidas() {
+  return api.get("/comunicacoes/mensagens/nao-lidas/contar/");
+}

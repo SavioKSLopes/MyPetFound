@@ -963,3 +963,65 @@
     align-self: center;
   }
 }
+
+/* Modal de reencontro */
+.modal-reencontro .modal-dialogo {
+  max-width: 480px;
+}
+
+.modal-reencontro-intro {
+  margin: 0 0 16px;
+  color: #475569;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.modal-reencontro-intro strong {
+  color: #0f172a;
+}
+
+.modal-reencontro-campos {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.modal-reencontro-campos .campo-formulario,
+.modal-reencontro-campos .campo-textarea {
+  width: 100%;
+}
+
+.mensagem-erro-modal {
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  color: #b42318;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.modal-reencontro-acoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #e2e8f0;
+}
+
+@media (max-width: 480px) {
+  .modal-reencontro .modal-dialogo {
+    margin: 16px;
+    max-width: calc(100% - 32px);
+  }
+
+  .modal-reencontro-acoes {
+    flex-direction: column-reverse;
+  }
+
+  .modal-reencontro-acoes .botao-base {
+    width: 100%;
+  }
+}

@@ -8,6 +8,6 @@ export function registrarOcorrencia(payload) {
   return api.post("/ocorrencias/", payload);
 }
 
-export function marcarOcorrenciaComoReencontrada(id) {
-  return api.post(`/ocorrencias/${id}/marcar-reencontrado/`);
+export function marcarOcorrenciaComoReencontrada(id, dados = {}) {
+  return api.post(`/ocorrencias/${id}/marcar-reencontrado/`, dados);
 }

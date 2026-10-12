@@ -43,6 +43,8 @@ function useMensagens() {
           mensagem.id === mensagemId ? { ...mensagem, lida: true } : mensagem,
         ),
       );
+      // Dispara evento para atualizar o badge no cabeçalho
+      window.dispatchEvent(new CustomEvent("mensagens:atualizar-contagem"));
     } catch (error) {
       console.error("Erro ao marcar mensagem como lida:", error);
       setErro("Não foi possível atualizar a mensagem. Tente novamente.");

@@ -139,9 +139,8 @@ function CadastroAnimal() {
             <span aria-hidden="true">🔒</span>
 
             <p>
-              Os dados do tutor não são exibidos publicamente. Apenas as
-              informações necessárias para identificar o pet poderão aparecer
-              em um anúncio de desaparecimento.
+              Os dados do tutor não são exibidos publicamente. Apenas as informações
+              necessárias para identificar o seu pet aparecerão no anúncio de desaparecimento.
             </p>
           </div>
         </div>

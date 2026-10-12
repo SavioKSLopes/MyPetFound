@@ -94,7 +94,7 @@ Configurações lidas pelo backend (`backend/config/settings.py`):
 | `POSTGRES_PASSWORD` | Senha PostgreSQL | Conforme ambiente local/Compose |
 | `POSTGRES_HOST` | Host PostgreSQL | `localhost` |
 | `POSTGRES_PORT` | Porta PostgreSQL | `5432` |
-| `FRONTEND_URL` | Origem usada nos links de QR Code e recuperação de senha | `http://localhost:5173` |
+| `FRONTEND_URL` | Origem pública do frontend usada nos links de QR Code e recuperação de senha. **Em produção, deve ser a URL completa do frontend (ex.: `https://mypetfound.exemplo.com`), sem `/api` nem caminho adicional. A barra final é normalizada automaticamente.** | `http://localhost:5173` |
 | `EMAIL_HOST` | Host SMTP; vazio seleciona o envio em console | Vazio |
 | `EMAIL_PORT` | Porta SMTP | `587` |
 | `EMAIL_HOST_USER` | Usuário SMTP | Vazio |
@@ -151,8 +151,8 @@ Protegidas por token:
 - `/meus-animais/:id` — gerenciamento.
 - `/meus-animais/:id/editar` — edição do animal.
 - `/meus-animais/:id/desaparecimento` — novo desaparecimento.
-- `/meus-animais/:id/historico` — histórico privado por animal.
-- `/mensagens` — mensagens privadas recebidas.
+- `/meus-animais/:id/historico` — histórico privado por animal (inclui evento de reencontro).
+- `/mensagens` — mensagens privadas recebidas (badge de não lidas no cabeçalho).
 
 ## Endpoints principais da API
 
@@ -178,18 +178,38 @@ Todos usam o prefixo `/api/v1/`.
 | `GET avistamentos/?animal=:id` | Token; consulta avistamentos de animal do tutor |
 | `GET comunicacoes/mensagens/` | Token; lista mensagens recebidas pelo tutor |
 | `PATCH comunicacoes/mensagens/:id/ler/` | Token; marca mensagem própria como lida |
+| `GET comunicacoes/mensagens/nao-lidas/contar/` | Token; retorna contagem de mensagens não lidas do tutor |
 
 As fotos de animal e avistamento são enviadas como `multipart/form-data`. `TokenAuthentication` usa o cabeçalho `Authorization: Token …`; no navegador, o token fica em `localStorage` sob `mypetfound_token`. Cadastro e login mantêm os contratos próprios existentes.
 
 ### QR Code, identificação e mensagens
 
-O endpoint privado gera um QR contendo uma URL `/identificacao/:codigo`, assinada pelo Django. A página pública resolve o código no backend e oferece o formulário de mensagem. O destinatário vem do animal identificado pelo caminho da API; o visitante não escolhe tutor. Animais marcados como `REENCONTRADO` não aceitam novas mensagens nesse endpoint. QR Codes e URLs com `localhost` só podem ser abertos no próprio dispositivo; para leitura por outros dispositivos, configure uma origem de frontend acessível via `FRONTEND_URL`.
+O endpoint privado (`GET /api/v1/animais/:id/qrcode/`) gera um PNG do QR Code contendo a URL pública de identificação: `{FRONTEND_URL}/identificacao/:codigo`. O código `:codigo` é assinado pelo Django (`signing.dumps`) e só pode ser resolvido pelo backend.
+
+A página pública `/identificacao/:codigo`:
+- Chama `GET /api/v1/publico/identificacao/:codigo/` para validar o código e obter dados básicos do animal.
+- Exibe foto, nome, espécie, raça, porte, cor, sexo e status.
+- Se o animal **não** estiver `REENCONTRADO`, mostra o formulário de mensagem ao tutor.
+- Se o animal estiver `REENCONTRADO`, exibe a mensagem "Animal reencontrado" e não aceita novas mensagens.
+
+**Configuração obrigatória para QR Codes funcionarem em produção:**
+- Defina `FRONTEND_URL` como a **origem pública do frontend** (ex.: `https://app.mypetfound.org`), **sem `/api` e sem caminho adicional**. A barra final é removida automaticamente.
+- O frontend deve expor a rota `/identificacao/:codigo` (já configurada no `App.jsx`).
+- QR Codes gerados com `localhost` só abrem no próprio dispositivo; para leitura por terceiros, o frontend precisa ser acessível na rede/Internet.
+
+O formulário de mensagem (`POST /api/v1/animais/:id/mensagens/`) é público; o destinatário vem do animal identificado — o visitante não escolhe tutor. Mensagens criadas ficam `lida=false` até o tutor marcá-las como lidas na área privada.
 
 ### Compartilhamento e histórico
 
 Na página pública `/animais/:id`, o compartilhamento apresenta nome, espécie, raça/cor/porte quando disponíveis, localidade e URL pública. O Web Share e o link do WhatsApp só abrem após ação da pessoa. Sem `VITE_PUBLIC_URL`, a URL usa a origem atualmente aberta: em desenvolvimento, ela normalmente será localhost e não estará acessível a outras pessoas.
 
-O histórico é privado e agrega o timestamp de cadastro, ocorrências e avistamentos vinculados a cada ocorrência. Encerrar como reencontrado altera o estado da ocorrência e do animal, mas o modelo atual não guarda timestamp separado do reencontro; por isso, o histórico não inventa um evento de reencontro datado e apresenta o estado encerrado junto à ocorrência original.
+O histórico privado (`GET /api/v1/animais/:id/historico/`) agrega eventos cronológicos:
+- **Cadastro**: quando o animal foi cadastrado.
+- **Desaparecimento/Reencontro**: ocorrências registradas pelo tutor.
+- **Avistamentos**: relatos públicos vinculados à ocorrência ativa correspondente.
+- **Reencontro**: quando o tutor marca uma ocorrência de desaparecimento como reencontrada, um card "Reencontrado" é adicionado com a data/hora, local (se informado) e descrição (se informada). Para reencontros antigos sem esses dados, exibe "Local não informado" e a data do evento (usa `data_hora_reencontro` se preenchido, senão `atualizado_em` da ocorrência; descrição padrão: "Reencontrado pelo tutor.").
+
+Ao marcar como reencontrado, o tutor pode informar opcionalmente: local do reencontro, descrição e data/hora. Esses dados são salvos na ocorrência e aparecem no histórico.
 
 ## Verificações e testes
 
