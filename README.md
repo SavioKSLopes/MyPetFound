@@ -95,7 +95,9 @@ Configurações lidas pelo backend (`backend/config/settings.py`):
 | `POSTGRES_HOST` | Host PostgreSQL | `localhost` |
 | `POSTGRES_PORT` | Porta PostgreSQL | `5432` |
 | `FRONTEND_URL` | Origem pública do frontend usada nos links de QR Code e recuperação de senha. **Em produção, deve ser a URL completa do frontend (ex.: `https://mypetfound.exemplo.com`), sem `/api` nem caminho adicional. A barra final é normalizada automaticamente.** | `http://localhost:5173` |
-| `EMAIL_HOST` | Host SMTP; vazio seleciona o envio em console | Vazio |
+| `BREVO_API_KEY` | Chave da API HTTPS Brevo; tem prioridade sobre SMTP | Vazio |
+| `EMAIL_TIMEOUT` | Timeout de conexão/envio em segundos | `10` |
+| `EMAIL_HOST` | Host SMTP; sem chave Brevo e sem host, seleciona console | Vazio |
 | `EMAIL_PORT` | Porta SMTP | `587` |
 | `EMAIL_HOST_USER` | Usuário SMTP | Vazio |
 | `EMAIL_HOST_PASSWORD` | Credencial SMTP, somente no `.env` local | Vazio |
@@ -107,13 +109,17 @@ O Compose injeta as variáveis do `.env` e define o host do banco como `db` para
 
 ### Recuperação de senha e e-mail
 
-Sem `EMAIL_HOST`, o desenvolvimento local usa o `ConsoleEmailBackend`; os e-mails de recuperação e links temporários aparecem nos logs do backend:
+Sem `BREVO_API_KEY` e `EMAIL_HOST`, o desenvolvimento local usa o `ConsoleEmailBackend`; os e-mails de recuperação e links temporários aparecem nos logs do backend:
 
 ```sh
 docker compose logs -f backend
 ```
 
-Para enviar por SMTP, defina `EMAIL_HOST` e as demais variáveis no `.env` local. Com o host preenchido, o Django seleciona automaticamente o backend SMTP. Exemplo de configuração:
+No Render Free, configure `BREVO_API_KEY` e `DEFAULT_FROM_EMAIL` nas variáveis de ambiente do serviço. O remetente deve estar validado no Brevo. O backend envia via `POST https://api.brevo.com/v3/smtp/email`, conforme a [documentação Brevo](https://developers.brevo.com/reference/send-transac-email), sem SMTP ou dependências adicionais. `EMAIL_TIMEOUT` controla o timeout (padrão: 10 segundos). A chave tem prioridade sobre `EMAIL_HOST`.
+
+Redefinição de senha e notificação de nova mensagem usam esse backend automaticamente. Texto, HTML, assunto e destinatários são preservados. Apenas HTTP 201 conta como envio aceito; erros HTTP e de conexão levantam uma exceção sem incluir credenciais, conteúdo ou resposta do provedor. Com `fail_silently=True`, falhas não levantam exceção nem contam como sucesso. Anexos e alternativas MIME diferentes de texto/HTML são rejeitados explicitamente.
+
+Para enviar por SMTP em desenvolvimento, deixe `BREVO_API_KEY` vazia e defina `EMAIL_HOST` e as demais variáveis no `.env` local. Com o host preenchido, o Django seleciona automaticamente o backend SMTP. Exemplo de configuração:
 
 ```env
 FRONTEND_URL=http://localhost:5173

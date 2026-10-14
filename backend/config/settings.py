@@ -174,16 +174,21 @@ FRONTEND_URL = os.getenv(
 def obter_configuracao_email(variaveis=None):
     variaveis = os.environ if variaveis is None else variaveis
     email_host = variaveis.get("EMAIL_HOST", "").strip()
+    brevo_api_key = variaveis.get("BREVO_API_KEY", "").strip()
     usa_ssl = variaveis.get("EMAIL_USE_SSL", "False").lower() == "true"
     usa_tls = variaveis.get("EMAIL_USE_TLS", "True").lower() == "true"
 
     return {
         "EMAIL_BACKEND": (
-            "django.core.mail.backends.smtp.EmailBackend"
+            "apps.comunicacoes.email_backend.BrevoEmailBackend"
+            if brevo_api_key
+            else "django.core.mail.backends.smtp.EmailBackend"
             if email_host
             else "django.core.mail.backends.console.EmailBackend"
         ),
         "EMAIL_HOST": email_host,
+        "BREVO_API_KEY": brevo_api_key,
+        "EMAIL_TIMEOUT": float(variaveis.get("EMAIL_TIMEOUT", "10")),
         "EMAIL_PORT": int(variaveis.get("EMAIL_PORT", "587")),
         "EMAIL_HOST_USER": variaveis.get("EMAIL_HOST_USER", ""),
         "EMAIL_HOST_PASSWORD": variaveis.get("EMAIL_HOST_PASSWORD", ""),
@@ -198,6 +203,8 @@ def obter_configuracao_email(variaveis=None):
 
 _configuracao_email = obter_configuracao_email()
 EMAIL_BACKEND = _configuracao_email["EMAIL_BACKEND"]
+BREVO_API_KEY = _configuracao_email["BREVO_API_KEY"]
+EMAIL_TIMEOUT = _configuracao_email["EMAIL_TIMEOUT"]
 EMAIL_HOST = _configuracao_email["EMAIL_HOST"]
 EMAIL_PORT = _configuracao_email["EMAIL_PORT"]
 EMAIL_HOST_USER = _configuracao_email["EMAIL_HOST_USER"]
